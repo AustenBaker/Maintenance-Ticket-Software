@@ -2,7 +2,7 @@
 
 ## clone
 ```sh
-$ git clone https://git.harryxue.com/cs506maint/project.git
+$ git clone https://github.com/AustenBaker/Maintenance-Ticket-Software.git
 ```
 
 ## local
