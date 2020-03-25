@@ -1,0 +1,35 @@
+{
+  "name": "cs506project",
+  "version": "1.0.0",
+  "description": "Dependencies for project",
+  "main": "server/index.js",
+  "scripts": {
+    "postinstall": "cd client && npm i",
+    "start": "cd client && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.harryxue.com/cs506maint/project.git"
+  },
+  "author": "Team",
+  "license": "Unlicense",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "create-react-app": "^3.4.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "mongoose": "^5.9.5",
+    "mustache-express": "^1.3.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-native": "^0.61.5",
+    "react-native-web": "^0.12.2",
+    "react-scripts": "^3.4.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5",
+    "socket.io": "^2.3.0"
+  }
+}
