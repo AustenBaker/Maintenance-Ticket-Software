@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import User from './User';
+import User from '../User';
 import { createRenderer } from 'react-dom/test-utils';
 
 describe('<User />', () => {
@@ -14,11 +14,16 @@ describe('<User />', () => {
                 entry="Accompanied"
                 contact="Text"
                 unit= { "203" }
-                createTicket={() => Console.log('User.createTicket() successful test!')}
+                createTicket={() => Console.log('User.createTicket() not implemented')}
+                editProfile={() => Console.log('User.editProfile() not implemented')}
+                viewTicket={() => Console.log('User.viewTicket() not implemented')}
+                notify={() => Console.log('User.notify() not implemented')}
+                assignUnit={() => Console.log('User.assignUnit() not implemented')}
+                
             />,
         )
         .toJSON();
-        expect(tree.length).toBe(1);
+        expect(some_value).toBe();
     });
 });
 
@@ -62,4 +67,8 @@ test('renders User unit', () => {
     const { getByText } = render(<User />);
     const linkElement = getByText(/203/i);
     expect(linkElement).toBeInTheDocument();
+});
+
+test('', () => {
+
 });
