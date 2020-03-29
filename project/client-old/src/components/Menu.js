@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactNative from 'react-native';
+import { SafeViewArea } from 'react-native';
 import './Menu.css';
 
 // create our navigation menu
@@ -23,11 +23,9 @@ export default class Menu extends Component {
     render() {
         var buttonList = this.state.buttons.map(button => (button.render()));
         return (
-            <ReactNative.ScreenContainer className='Menu' accessibilityRole='menu' id={this.state.id}>
+            <SafeViewArea className='Menu' accessibilityRole='menu' id={this.state.id}>
                 {buttonList}
-            </ReactNative.ScreenContainer>
+            </SafeViewArea>
         );
     }
 };
-
-export default Menu;
