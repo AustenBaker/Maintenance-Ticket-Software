@@ -1,6 +1,14 @@
 import React from 'react';
 import { SafeAreaView, View, FlatList, Text } from 'react-native';
 
+export default class Home extends React.Component{
+  render() {
+    return (
+      <text>temp</text>
+    );
+  }
+}
+
 // placeholder example
 const TICKETS = [
     {
