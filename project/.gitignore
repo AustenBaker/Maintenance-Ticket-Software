@@ -5,3 +5,10 @@ npm-debug.log
 desktop.ini
 settings.json
 .vscode
+.gradle
+.gradle/*
+.idea
+.idea/*
+local.properties
+client.iml
+build.gradle
