@@ -29,10 +29,27 @@ export default class User extends React.Component {
             contact: props.contact,
             entry_permission: props.entry_permission,
             note: props.note,
-            edit_mode: false,
+            edit_mode: props.edit_mode,
             tickets: []
         }
         this.handleEvent = this.handleEvent.bind(this);
+    }
+
+    /**
+     * Declare default values for User props in the event they
+     * are not all passed into the constructor.
+     */
+    static defaultProps = {
+        first_name: "John",
+        last_name: "Doe",
+        units: ["1703"],
+        email: "default@CastlebergCommunities.com",
+        phone: "000-000-0000",
+        contact: "email",
+        entry_permission: "accompanied",
+        note: "",
+        edit_mode: "false",
+        tickets: []
     }
 
     /**
@@ -47,7 +64,7 @@ export default class User extends React.Component {
         // if phone number exists, create text output
         // and add star to user's preferred contact type
         var contact = this.state.email;
-        if (this.state.phone !== undefined) {
+        if (this.state.phone !== this.defaultProps.phone) {
             if (this.state.contact === 'email') {
                 contact += "* Phone: ";
                 contact += this.state.phone;
@@ -56,11 +73,32 @@ export default class User extends React.Component {
                 contact += this.state.phone;
                 contact += "*";
             }
+            contact += "\n* = Preferred contact method."
         }
+
+        // create <Text> container for entry permission data
+        var entry = "";
+        if (this.state.entry_permission === "any") {
+            entry = (
+                <Text>
+                    Entry: Allowed
+                </Text>
+            );
+        } else if (this.state.entry_permission === "notify") {
+            entry = (
+                <Text>
+                    Entry: Notify before entry.
+                </Text>
+            );
+        } else entry = (
+            <Text>
+                Entry: Accompanied entry only.
+            </Text>
+        );
 
         // if note exists, create a <Text> container for it
         var note = "";
-        if (this.state.note !== undefined) {
+        if (this.state.note !== "") {
             note = (
                 <Text>
                   {"Note: \n"}
@@ -82,6 +120,7 @@ export default class User extends React.Component {
                 Email:
                 {contact}
               </Text>
+              {entry}
               {note}
             </View>
           );
@@ -119,31 +158,33 @@ export default class User extends React.Component {
      */
     update = (props) => {
         var updated = false;
-        var checked = {};
+        var checked = [];
+        // check and store valid values in an array
         if ('first_name' in props && REGEX[NAME].exec(props.first_name)) {
-            checked = {first_name: props.first_name};
+            checked = [{first_name: props.first_name}];
         }
         if ('last_name' in props && REGEX[NAME].exec(props.last_name)) {
-            checked = {...checked, last_name: props.last_name};
+            checked = [...checked, {last_name: props.last_name}];
         }
         if ('email' in props && REGEX[EMAIL].exec(props.email)) {
-            checked = {...checked, email: props.email};
+            checked = [...checked, {email: props.email}];
         }
         if ('phone' in props && REGEX[PHONE].exec(props.phone)) {
-            checked = {...checked, phone: props.phone};
+            checked = [...checked, {phone: props.phone}];
         }
         if ('contact' in props && props.contact in ['email', 'text']) {
-            checked = {...checked, contact: props.contact};
+            checked = [...checked, {contact: props.contact}];
         }
         if ('entry_permission' in props &&
             props.entry_permission in ['any','notify','accompanied']){
-            checked = {...checked, entry: props.entry};
+            checked = [...checked, {entry: props.entry}];
         }
         if ('note' in props) { // add REGEX check here for note
-            checked = {...checked, note: props.note};
+            checked = [...checked, {note: props.note}];
         }
+        
+        // update server state and this.setState
         return updated;
-
     }
 
     /**
