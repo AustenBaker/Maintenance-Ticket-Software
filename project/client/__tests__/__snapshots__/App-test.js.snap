@@ -17,6 +17,6 @@ exports[`App renders the root without loading screen 1`] = `
     }
   }
 >
-  <AppNavigator />
+  <BottomTabNavigator />
 </View>
 `;
