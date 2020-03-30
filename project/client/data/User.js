@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormInput, Text } from 'react-native';
+import { Input, Text } from 'react-native';
 
 // REGEX constant 
 const REGEX = {
@@ -32,7 +32,6 @@ export default class User extends React.Component {
             edit_mode: props.edit_mode,
             tickets: []
         }
-        this.handleEvent = this.handleEvent.bind(this);
     }
 
     /**
@@ -199,71 +198,69 @@ export default class User extends React.Component {
         const entry = 'accompanied';
         content = (
             <form name="updateProfile">
-              <FormLabel>First Name</FormLabel>
-              <FormInput
-                  onSubmitEditing={fname => this.setState(first_name, fname)}
-                  defaultValue={this.state.first_name}
-                  keyboardType="default"
-                  maxLength="32"
-                  selectTextOnFocus="true"
-                  textContentType="name"
-                  autoCompleteType="name"
+              <Input
+                label="First Name"
+                onSubmitEditing={fname => this.setState(first_name, fname)}
+                defaultValue={this.state.first_name}
+                keyboardType="default"
+                maxLength="32"
+                selectTextOnFocus="true"
+                textContentType="name"
+                autoCompleteType="name"
+                errorMessage="This field is required."
               />
-              <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-              <FormLabel>Last Name</FormLabel>
-              <FormInput
-                  onSubmitEditing={lname => this.setState(last_name, lname)}
-                  defaultValue={this.state.last_name}
-                  keyboardType="default"
-                  maxLength="32"
-                  selectTextOnFocus="true"
-                  textContentType="familyName"
-                  autoCompleteType="name"
+              <Input
+                label="Last Name"
+                onSubmitEditing={lname => this.setState(last_name, lname)}
+                defaultValue={this.state.last_name}
+                keyboardType="default"
+                maxLength="32"
+                selectTextOnFocus="true"
+                textContentType="familyName"
+                autoCompleteType="name"
+                errorMessage="This field is required."
               />
-              <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-              <FormLabel>Email</FormLabel>
-              <FormInput
-                  onSubmitEditing={emailAddr => this.setState(email, emailAddr)}
-                  defaultValue={this.state.email}
-                  keyboardType="email-address"
-                  maxLength="32"
-                  selectTextOnFocus="true"
-                  textContentType="emailAddress"
-                  autoCompleteType="email"
+              <Input
+                label="Email"
+                onSubmitEditing={emailAddr => this.setState(email, emailAddr)}
+                defaultValue={this.state.email}
+                keyboardType="email-address"
+                maxLength="32"
+                selectTextOnFocus="true"
+                textContentType="emailAddress"
+                autoCompleteType="email"
+                errorMessage="This field is required.  Please enter valid email address."
               />
-              <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-              <FormLabel>Phone Number</FormLabel>
-              <FormInput
-                  onSubmitEditing={phoneNum => this.setState(phone, phoneNum)}
-                  defaultValue={this.state.phone}
-                  keyboardType="phone-pad"
-                  maxLength="12"
-                  selectTextOnFocus="true"
-                  textContentType="telephoneNumber"
-                  autoCompleteType="tel"
+              <Input
+                label="Phone Number"
+                onSubmitEditing={phoneNum => this.setState(phone, phoneNum)}
+                defaultValue={this.state.phone}
+                keyboardType="phone-pad"
+                maxLength="12"
+                selectTextOnFocus="true"
+                textContentType="telephoneNumber"
+                autoCompleteType="tel"
+                errorMessage="Please enter valid phone number: ###-###-####"
               />
-              <FormValidationMessage>{'Please enter phone number: ###-###-####'}</FormValidationMessage>
-              <FormLabel>Preferred Contact</FormLabel>
-              <FormInput>
+              <Input label="Preferred Contact">
                   <CheckBox 
                       checkedTitle='Email preferred'
                       title='Email'
                       checkedIcon='dot-circle-o'
                       uncheckedIcon='circle-o'
-                      checked={contact === 'email'}
-                      onIconPress={contact = 'email'}
+                      checked={this.state.contact === 'email'}
+                      onIconPress={this.setState(contact, 'email')}
                   />
                   <CheckBox 
                       checkedTitle='Text preferred'
                       title='Text'
                       checkedIcon='dot-circle-o'
                       uncheckedIcon='circle-o'
-                      checked={contact === 'text'}
-                      onIconPress={contact = 'text'}
+                      checked={this.state.contact === 'text'}
+                      onIconPress={this.setState(contact, 'text')}
                   />
-              </FormInput>
-              <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-              <FormInput>
+              </Input>
+              <Input label="Entry Permission">
                   <CheckBox 
                       title='Allow entry.'
                       checkedIcon='dot-circle-o'
@@ -285,10 +282,10 @@ export default class User extends React.Component {
                       checked={entry === 'accompanied'}
                       onIconPress={entry = 'accompanied'}
                   />
-              </FormInput>
+              </Input>
               <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
               <FormLabel>Note</FormLabel>
-              <FormInput
+              <Input
                   onSubmitEditing={someNote => this.setState(note, someNote)}
                   defaultValue={this.state.note}
                   keyboardType="default"
