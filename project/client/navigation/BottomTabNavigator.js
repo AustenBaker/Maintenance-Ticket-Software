@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import LoginScreen from '../screens/LoginScreen';
-import TicketsScreen from '../screens/TicketsScreen';
+import TicketScreen from '../screens/TicketScreen';
 import UserScreen from '../screens/UserScreen';
 import CreateTicketScreen from '../screens/CreateTicketScreen';
 
