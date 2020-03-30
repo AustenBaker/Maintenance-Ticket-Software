@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Input, Text } from 'react-native';
 
 // REGEX constant 
-const REGEX = {
+export const REGEX = {
     // name pattern: up to 32 ASCII alphabetical characters
     NAME: /^[a-zA-Z]{1,32}$/,
     // email pattern:  some(.name)*@site.com
@@ -193,14 +193,20 @@ export default class User extends React.Component {
      * @returns React Native encoding to edit user profile
      */
     editUser = () => {
+        // store React Native element encoding being generated for return
         var content;
+
+        // store user profile modifications in progress before submission
+        // set initial value to pre-existing user profile
+        var profile = [];
+        // read out current state values into profile until
+        // users submit form.
         const contact = 'email';
         const entry = 'accompanied';
         content = (
             <form name="updateProfile">
               <Input
                 label="First Name"
-                onSubmitEditing={fname => this.setState(first_name, fname)}
                 defaultValue={this.state.first_name}
                 keyboardType="default"
                 maxLength="32"
@@ -208,10 +214,10 @@ export default class User extends React.Component {
                 textContentType="name"
                 autoCompleteType="name"
                 errorMessage="This field is required."
+                onSubmitEditing={fname => this.setState(first_name, fname)}
               />
               <Input
                 label="Last Name"
-                onSubmitEditing={lname => this.setState(last_name, lname)}
                 defaultValue={this.state.last_name}
                 keyboardType="default"
                 maxLength="32"
@@ -219,10 +225,10 @@ export default class User extends React.Component {
                 textContentType="familyName"
                 autoCompleteType="name"
                 errorMessage="This field is required."
+                onSubmitEditing={lname => this.setState(last_name, lname)}
               />
               <Input
                 label="Email"
-                onSubmitEditing={emailAddr => this.setState(email, emailAddr)}
                 defaultValue={this.state.email}
                 keyboardType="email-address"
                 maxLength="32"
@@ -230,10 +236,10 @@ export default class User extends React.Component {
                 textContentType="emailAddress"
                 autoCompleteType="email"
                 errorMessage="This field is required.  Please enter valid email address."
+                onSubmitEditing={emailAddr => this.setState(email, emailAddr)}
               />
               <Input
                 label="Phone Number"
-                onSubmitEditing={phoneNum => this.setState(phone, phoneNum)}
                 defaultValue={this.state.phone}
                 keyboardType="phone-pad"
                 maxLength="12"
@@ -241,6 +247,7 @@ export default class User extends React.Component {
                 textContentType="telephoneNumber"
                 autoCompleteType="tel"
                 errorMessage="Please enter valid phone number: ###-###-####"
+                onSubmitEditing={phoneNum => this.setState(phone, phoneNum)}
               />
               <Input label="Preferred Contact">
                   <CheckBox 
@@ -265,22 +272,22 @@ export default class User extends React.Component {
                       title='Allow entry.'
                       checkedIcon='dot-circle-o'
                       uncheckedIcon='circle-o'
-                      checked={entry === 'any'}
-                      onIconPress={entry = 'any'}
+                      checked={this.state.entry === 'any'}
+                      onIconPress={this.setState(entry, 'any')}
                   />
                   <CheckBox 
                       title='Notify before entry.'
                       checkedIcon='dot-circle-o'
                       uncheckedIcon='circle-o'
-                      checked={entry === 'notify'}
-                      onIconPress={entry = 'notify'}
+                      checked={this.state.entry === 'notify'}
+                      onIconPress={this.setState(entry,'notify')}
                   />
                   <CheckBox 
                       title='Allow accompanied entry.'
                       checkedIcon='dot-circle-o'
                       uncheckedIcon='circle-o'
-                      checked={entry === 'accompanied'}
-                      onIconPress={entry = 'accompanied'}
+                      checked={this.state.entry === 'accompanied'}
+                      onIconPress={this.setState(entry, 'accompanied')}
                   />
               </Input>
               <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
