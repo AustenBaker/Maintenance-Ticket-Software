@@ -35,7 +35,7 @@ export default function LoginScreen() {
           />
           
           <Button
-            onPress={() => handleLogin(user, pass)}
+            onPress={() => handleLogin(user, pass) }
             style={styles.topText}
             title="Sign In"
             accessibilityLabel="Sign In Button"
@@ -50,10 +50,10 @@ LoginScreen.navigationOptions = {
 };
 
 function handleLogin(user, pass) {
-    fetch('/account/login', {
+    fetch('http://127.0.0.1:3001/account/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: { username: user, password: pass }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: user, password: pass })
     }).then(res => res.json()).then(data => {
         // This is successful login, data = { first, last, username . . .}
     }).catch(err => {
