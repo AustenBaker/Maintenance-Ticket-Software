@@ -10,6 +10,7 @@ export default class Ticket extends React.Component{
       unit: props.unit,
       user: props.user,
       status: props.status,
+      edit_mode: props.edit_mode,
       ticket_updates: [props.ticket_updates]
     }
   }
@@ -23,11 +24,15 @@ export default class Ticket extends React.Component{
     unit: "316",
     user: "John Doe",
     status: "in-progress",
+    edit_mode: "false",
     ticket_updates: []
   }
 
+  
   /**
    * This method displays tickets
+   * emergency level, ticket number, unit number, status
+   * 
    */
   displayTicket = () => {
     var content;
@@ -55,17 +60,43 @@ export default class Ticket extends React.Component{
           Status:
           {this.status}
         </Text>
-        {emergency}
-        <Text>
-        </Text>
+          {emergency}
       </View>
     );
     return content;
   }
 
+  /**
+   * This method updates ticket information
+   * 
+   * @param ticket_number Ticket number/id
+   * @param emergency Ticket level
+   * @param unit Ticket unit number
+   * @param user User who created ticket
+   * @param status Ticket status
+   * 
+   * @returns true if updated correctly
+   */
   update = (props) => {
     var updated = false;
+    var checked = [];
+    if('ticket_number' in props){
+      checked = [{ticket_number: props.ticket_number}];
+    }
+    if('emergency' in props){
+      checked = [...checked, {emergency: props.emergency}];
+    }
+    if('unit' in props){
+      checked = [...checked, {unit: props.unit}];
+    }
+    if('user' in props){
+      checked = [...checked, {user: props.user}];
+    }
+    if('status' in props){
+      checked = [...checked, {status: props.status}];
+    }
 
+    //update server state and this.setState
     return updated;
   }
 
@@ -93,7 +124,7 @@ export default class Ticket extends React.Component{
         </FormInput>
         <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
 
-        <FormLabel>Ticket Level:</FormLabel>
+        <FormLabel>Ticket Importance Level:</FormLabel>
         <FormInput>
           <CheckBox
             title='Emergency'
@@ -143,14 +174,22 @@ export default class Ticket extends React.Component{
             onIconPress={status = 'closed'}
           />
         </FormInput>
-
-
-
+        <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
 
       </form>
     );
     return content;
   }
 
+
+  render = () => {
+    var content;
+    if(this.state.editMode === false){
+      content = this.displayTicket();
+    }else{
+      content = this.editUser();
+    }
+    return (content);
+  }
 
 }
