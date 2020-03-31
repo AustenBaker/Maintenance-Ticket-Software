@@ -7,6 +7,10 @@ settings.json
 .vscode
 .gradle
 .gradle/*
+gradlew
+gradlew.*
+gradle/*
+gradle-*
 .idea
 .idea/*
 local.properties
