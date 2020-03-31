@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "cd client && npm i",
     "start": "cd client && npm start",
-    "backend-tests": "mocha -R tests server/testing/tests.js"
+    "backend-tests": "mocha server/testing/tests.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,7 @@
     "bcrypt": "^4.0.1",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
     "cookie-parser": "^1.4.5",
     "create-react-app": "^3.4.0",
     "express": "^4.17.1",
