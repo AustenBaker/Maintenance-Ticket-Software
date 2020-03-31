@@ -1,21 +1,6 @@
 import * as React from 'react';
-import { FormInput, Text } from 'react-native';
-
-// REGEX constant 
-const REGEX = {
-    // name pattern: up to 32 ASCII alphabetical characters
-    NAME: /^[a-zA-Z]{1,32}$/,
-    // email pattern:  some(.name)*@site.com
-    // where some name & site are any combination of letters
-    // and numbers, and the site ends in a 2-3 letter/digit extension
-    EMAIL: /^[[\w]+[\.\w]*@[\w]+\.[\w]{2,3}]{6,32}$/,
-    // phone pattern:  ###-###-#### where # is a digit 0-9
-    PHONE: /^[\d]{3}-[\d]{3}-[\d]{4}$/,
-    // password pattern: a-zA-Z0-9_-!@#$%^&*+=
-    // requires at least one each: uppercase letter, number, punctuation
-    // length of 8-32 characters
-    PASSWORD: /^[[\w]*[A-Z]+[\d]+[\-!@#$%\^\*\+=]+]{8,32}$/
-}
+import { Input, Text, Picker } from 'react-native';
+import * as CONSTANTS from '../constants/Reference';
 
 export default class User extends React.Component {
     constructor(props) {
@@ -28,11 +13,11 @@ export default class User extends React.Component {
             phone: props.phone,
             contact: props.contact,
             entry_permission: props.entry_permission,
+            user_type: props.user_type,
             note: props.note,
             edit_mode: props.edit_mode,
             tickets: []
         }
-        this.handleEvent = this.handleEvent.bind(this);
     }
 
     /**
@@ -47,6 +32,7 @@ export default class User extends React.Component {
         phone: "000-000-0000",
         contact: "email",
         entry_permission: "accompanied",
+        user_type: "resident",
         note: "",
         edit_mode: "false",
         tickets: []
@@ -160,31 +146,70 @@ export default class User extends React.Component {
         var updated = false;
         var checked = [];
         // check and store valid values in an array
-        if ('first_name' in props && REGEX[NAME].exec(props.first_name)) {
-            checked = [{first_name: props.first_name}];
+        if ('first_name' in props && CONSTANTS.REGEX.NAME.exec(props.first_name)) {
+            checked.push({['first_name']: props.first_name});
         }
-        if ('last_name' in props && REGEX[NAME].exec(props.last_name)) {
-            checked = [...checked, {last_name: props.last_name}];
+        if ('last_name' in props && CONSTANTS.REGEX.NAME.exec(props.last_name)) {
+            checked.push({['last_name']: props.last_name});
         }
-        if ('email' in props && REGEX[EMAIL].exec(props.email)) {
-            checked = [...checked, {email: props.email}];
+        if ('email' in props && CONSTANTS.REGEX.EMAIL.exec(props.email)) {
+            checked.push({['email']: props.email});
         }
-        if ('phone' in props && REGEX[PHONE].exec(props.phone)) {
-            checked = [...checked, {phone: props.phone}];
+        if ('phone' in props && CONSTANTS.REGEX.PHONE.exec(props.phone)) {
+            checked.push({['phone']: props.phone});
         }
-        if ('contact' in props && props.contact in ['email', 'text']) {
-            checked = [...checked, {contact: props.contact}];
+        if ('contact' in props && props.contact in CONSTANTS.PREFERRED_CONTACT) {
+            checked.push({['contact']: props.contact});
         }
         if ('entry_permission' in props &&
-            props.entry_permission in ['any','notify','accompanied']){
-            checked = [...checked, {entry: props.entry}];
+          props.entry_permission in  CONSTANTS.ENTRY_PERMISSION){
+            checked.push({['entry']: props.entry});
         }
         if ('note' in props) { // add REGEX check here for note
-            checked = [...checked, {note: props.note}];
+            checked.push({['note']: props.note});
         }
         
         // update server state and this.setState
         return updated;
+    }
+
+    /**
+     * This method allows a management user to change
+     * another user's user type.
+     * 
+     * @requires User to be management user type
+     * 
+     * @param userName Name of user to be upgraded
+     * @param userType Desired new user type
+     * 
+     * @returns True if user type successfully changed.
+     */
+    setUserType = (props) => {
+        let success = false;
+        if (this.state.user_type === CONSTANTS.USER_TYPE[2]) {
+            // need to implement this!
+            // access server in order to
+            // verify userName is a valid user and then update
+            // their user type to userType
+            // once a response is received from server,
+            // update success & return
+            success = true;
+        }
+        return success;
+    }
+
+    /**
+     * This method checks to see if the user is authorized to
+     * perform the requested activity.
+     * 
+     * @param activity The activity to be performed
+     * 
+     * @returns True if the user is authorized to perform the
+     * specified activity.
+     */
+    isAuthorized(props) {
+        let valid = false;
+        return valid;
     }
 
     /**
@@ -194,101 +219,98 @@ export default class User extends React.Component {
      * @returns React Native encoding to edit user profile
      */
     editUser = () => {
-        var content;
-        const contact = 'email';
-        const entry = 'accompanied';
+        // store React Native element encoding being generated for return
+        let content;
+
+        // store user profile modifications in progress before submission
+        // set initial value to pre-existing user profile
+        let profile = [];
+        // read out current state values into profile until
+        // users submit form.
+        const [contact, setContact] = useState(CONSTANTS.PREFERRED_CONTACT[0]);
+        const [entry, setEntry] = useState(CONSTANTS.ENTRY_PERMISSION[0]);
         content = (
             <form name="updateProfile">
-              <FormLabel>First Name</FormLabel>
-              <FormInput
-                  onSubmitEditing={fname => this.setState(first_name, fname)}
-                  defaultValue={this.state.first_name}
-                  keyboardType="default"
-                  maxLength="32"
-                  selectTextOnFocus="true"
-                  textContentType="name"
-                  autoCompleteType="name"
+              <Input
+                label="First Name"
+                defaultValue={this.state.first_name}
+                keyboardType="default"
+                maxLength="32"
+                selectTextOnFocus="true"
+                textContentType="name"
+                autoCompleteType="name"
+                errorMessage="This field is required."
+                onSubmitEditing={fname => this.setState(first_name, fname)}
               />
-              <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-              <FormLabel>Last Name</FormLabel>
-              <FormInput
-                  onSubmitEditing={lname => this.setState(last_name, lname)}
-                  defaultValue={this.state.last_name}
-                  keyboardType="default"
-                  maxLength="32"
-                  selectTextOnFocus="true"
-                  textContentType="familyName"
-                  autoCompleteType="name"
+              <Input
+                label="Last Name"
+                defaultValue={this.state.last_name}
+                keyboardType="default"
+                maxLength="32"
+                selectTextOnFocus="true"
+                textContentType="familyName"
+                autoCompleteType="name"
+                errorMessage="This field is required."
+                onSubmitEditing={lname => this.setState(last_name, lname)}
               />
-              <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-              <FormLabel>Email</FormLabel>
-              <FormInput
-                  onSubmitEditing={emailAddr => this.setState(email, emailAddr)}
-                  defaultValue={this.state.email}
-                  keyboardType="email-address"
-                  maxLength="32"
-                  selectTextOnFocus="true"
-                  textContentType="emailAddress"
-                  autoCompleteType="email"
+              <Input
+                label="Email"
+                defaultValue={this.state.email}
+                keyboardType="email-address"
+                maxLength="32"
+                selectTextOnFocus="true"
+                textContentType="emailAddress"
+                autoCompleteType="email"
+                errorMessage="This field is required.  Please enter valid email address."
+                onSubmitEditing={emailAddr => this.setState(email, emailAddr)}
               />
-              <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-              <FormLabel>Phone Number</FormLabel>
-              <FormInput
-                  onSubmitEditing={phoneNum => this.setState(phone, phoneNum)}
-                  defaultValue={this.state.phone}
-                  keyboardType="phone-pad"
-                  maxLength="12"
-                  selectTextOnFocus="true"
-                  textContentType="telephoneNumber"
-                  autoCompleteType="tel"
+              <Input
+                label="Phone Number"
+                defaultValue={this.state.phone}
+                keyboardType="phone-pad"
+                maxLength="12"
+                selectTextOnFocus="true"
+                textContentType="telephoneNumber"
+                autoCompleteType="tel"
+                errorMessage="Please enter valid phone number: ###-###-####"
+                onSubmitEditing={phoneNum => this.setState(phone, phoneNum)}
               />
-              <FormValidationMessage>{'Please enter phone number: ###-###-####'}</FormValidationMessage>
-              <FormLabel>Preferred Contact</FormLabel>
-              <FormInput>
-                  <CheckBox 
-                      checkedTitle='Email preferred'
-                      title='Email'
-                      checkedIcon='dot-circle-o'
-                      uncheckedIcon='circle-o'
-                      checked={contact === 'email'}
-                      onIconPress={contact = 'email'}
-                  />
-                  <CheckBox 
-                      checkedTitle='Text preferred'
-                      title='Text'
-                      checkedIcon='dot-circle-o'
-                      uncheckedIcon='circle-o'
-                      checked={contact === 'text'}
-                      onIconPress={contact = 'text'}
-                  />
-              </FormInput>
-              <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-              <FormInput>
-                  <CheckBox 
-                      title='Allow entry.'
-                      checkedIcon='dot-circle-o'
-                      uncheckedIcon='circle-o'
-                      checked={entry === 'any'}
-                      onIconPress={entry = 'any'}
-                  />
-                  <CheckBox 
-                      title='Notify before entry.'
-                      checkedIcon='dot-circle-o'
-                      uncheckedIcon='circle-o'
-                      checked={entry === 'notify'}
-                      onIconPress={entry = 'notify'}
-                  />
-                  <CheckBox 
-                      title='Allow accompanied entry.'
-                      checkedIcon='dot-circle-o'
-                      uncheckedIcon='circle-o'
-                      checked={entry === 'accompanied'}
-                      onIconPress={entry = 'accompanied'}
-                  />
-              </FormInput>
-              <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
-              <FormLabel>Note</FormLabel>
-              <FormInput
+              <Picker
+                label="Preferred Contact Method"
+                selectedValue={contact}
+                onValueChange={(itemValue, itemIndex) => setContact(itemValue)}
+                errorMessage='This field is required.'
+                >
+                <Picker.Item
+                    label='Email'
+                    value={CONSTANTS.PREFERRED_CONTACT[0]}
+                />
+                <Picker.Item
+                    label='Text'
+                    value={CONSTANTS.PREFERRED_CONTACT[1]}
+                />
+              </Picker>
+              <Picker
+                label="Entry Permission"
+                selectedValue={entry}
+                onValueChange={(itemValue, itemIndex) => setEntry(itemValue)}
+                errorMessage='This field is required.'
+                >
+                <Picker.Item
+                    label='Allow accompanied entry.'
+                    value={CONSTANTS.ENTRY_PERMISSION[0]}
+                />
+                <Picker.Item
+                    title='Notify before entry.'
+                    value={CONSTANTS.ENTRY_PERMISSION[1]}
+                />
+                <Picker.Item
+                    title='Allow entry.'
+                    value={CONSTANTS.ENTRY_PERMISSION[2]}
+                />
+              </Picker>
+              <Input
+                  label="Note"
                   onSubmitEditing={someNote => this.setState(note, someNote)}
                   defaultValue={this.state.note}
                   keyboardType="default"
@@ -339,7 +361,7 @@ export default class User extends React.Component {
      */
     changePassword = (props) => {
         var updated = false;
-        if (props.pwd !== undefined && REGEX[PASSWORD].exec(props.pwd)) {
+        if (props.pwd !== undefined && CONSTANTS.REGEX.PASSWORD.exec(props.pwd)) {
             // process password update
         }
         return updated;

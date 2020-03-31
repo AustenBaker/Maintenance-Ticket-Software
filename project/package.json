@@ -5,7 +5,8 @@
   "main": "server/index.js",
   "scripts": {
     "postinstall": "cd client && npm i",
-    "start": "cd client && npm start"
+    "start": "cd client && npm start",
+    "backend-tests": "mocha -R tests server/testing/tests.js"
   },
   "repository": {
     "type": "git",
@@ -31,5 +32,9 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "mocha": "^7.1.1",
+    "supertest": "^4.0.2"
   }
 }
