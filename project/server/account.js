@@ -16,8 +16,9 @@ router.post('/login', async (req, res) => {
         if (match) {
             req.session.loggedIn = true;
             const { first, last, username, email, type } = user;
-            console.log(`User: ${username} logged in!`);
+            //console.log(`User: ${username} logged in!`);
             return res
+                .status(200)
                 .writeHead(200, { first, last, username, email, type })
                 .end('Sucess - login');
         }
@@ -33,7 +34,7 @@ router.post('/logout', (req, res) => {
 
 // Register account
 router.post('/register', async (req, res) => {
-    console.log(`Trying to register user with username=${req.body.username}`);
+    //console.log(`Trying to register user with username=${req.body.username}`);
 
     // Checks if user already exists
     const userExists = await User.findOne( { username: req.body.username });
@@ -65,7 +66,7 @@ router.post('/deactivate', (req, res) => {
 
 // Delete user
 router.delete('/delete', async (req, res) => {
-    console.log(`Trying to delete user with username=${req.body.username}`);
+    //console.log(`Trying to delete user with username=${req.body.username}`);
 
     // Checks if user already exists
     const userDeleted = await User.findOneAndDelete( { username: req.body.username });
