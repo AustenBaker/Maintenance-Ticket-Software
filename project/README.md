@@ -1,3 +1,7 @@
+# Run Backend Tests
+* To run the back end test run the following line of code.
+`npm run backend-tests`
+
 # Common `git` commands
 
 ## clone
