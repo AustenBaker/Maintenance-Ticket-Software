@@ -1,5 +1,10 @@
-# Run Backend Tests
-* To run the back end test run the following line of code.
+# Build and Run Application
+- To use our application download the files from github under Maintenance-Ticket-Software and use visual studio code to open it (branch 1 will be for iteration 1). 
+- The front end can be run by executing the command `npm start` in the terminal of the client folder.
+- The Back end can be run by executing `node server` in another shell from the project folder. To run our database, download mongodb and type “mongod”.
+
+# Running Tests
+- To run the back end test run the following line of code.
 `npm run backend-tests`
 
 # Common `git` commands
