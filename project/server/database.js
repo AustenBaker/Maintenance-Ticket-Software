@@ -18,7 +18,7 @@ exports.User = mongoose.model('User', {
 });
 
 exports.Ticket = mongoose.model('Ticket', {
-    timestring: Number,
+    id: Number,
     issue: String,
     emergency: Boolean,
     resolvedTime: Number,
