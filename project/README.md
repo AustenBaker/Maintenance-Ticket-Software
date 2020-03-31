@@ -4,8 +4,8 @@
 - The Back end can be run by executing `node server` in another shell from the project folder. To run our database, download mongodb and type “mongod”.
 
 # Running Tests
-- To run the back end test run the following line of code.
-`npm run backend-tests`
+- To run the front end test cd into client folder and run `npm test`
+- To run the back end test run `npm run backend-tests`
 
 # Common `git` commands
 
