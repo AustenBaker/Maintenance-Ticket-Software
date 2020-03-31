@@ -1,23 +1,16 @@
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, TextInput, Button } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 
-import { MonoText } from '../components/StyledText';
-
 export default function LoginScreen() {
+    const [user, onChangeUser] = React.useState('');
+    const [pass, onChangePass] = React.useState('');
+    
   return (
     <View style={styles.container}>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/uwcrest.png')
-                : require('../assets/images/robot-prod.png')
-            }
-            style={styles.welcomeImage}
-          />
-        </View>
+          <Image source={require('../assets/images/uwcrest.png')}
+            style={styles.smallImage}/>
 
           <Text style={styles.topText}>Log In</Text>
 
@@ -28,7 +21,7 @@ export default function LoginScreen() {
             keyboardAppearance='dark'
             style={styles.textInput}
             onChangeText={text => onChangeUser(text)}
-            //value={user}
+            value={user}
           />
           <TextInput
             secureTextEntry
@@ -38,8 +31,16 @@ export default function LoginScreen() {
             keyboardAppearance='dark'
             style={styles.textInput}
             onChangeText={text => onChangePass(text)}
-            //value={pass}
+            value={pass}
           />
+          
+          <Button
+            onPress={() => handleLogin(user, pass)}
+            style={styles.topText}
+            title="Sign In"
+            accessibilityLabel="Sign In Button"
+          />
+          
     </View>
   );
 }
@@ -47,6 +48,28 @@ export default function LoginScreen() {
 LoginScreen.navigationOptions = {
   header: null,
 };
+
+function handleLogin(user, pass) {
+    fetch('/account/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: { username: user, password: pass }
+    }).then(res => res.json()).then(data => {
+        // This is successful login, data = { first, last, username . . .}
+    }).catch(err => {
+        // Error login, error code is err.error
+    })
+}
+
+// User landing page: check login status:
+function componentDidMount() {
+    fetch('/account', { method: 'POST' }).then(res => res.json()).then(data => {
+        // User has logged in before, session cookie is valid
+    }).catch(err => {
+        // User did not login, or session has expired
+        // redirect back to un-authenticated route or login screen
+    })
+}
 
 
 const styles = StyleSheet.create({
@@ -64,12 +87,13 @@ const styles = StyleSheet.create({
 },
   textInput: {
     marginTop: 8,
+    marginBottom: 8,
     height: 40,
     width: '90%',
     borderColor: 'black',
     borderWidth: 2,
     fontSize: 18,
-    color: 'white',
+    color: 'black',
 },
   developmentModeText: {
     marginBottom: 20,
@@ -78,12 +102,7 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     textAlign: 'center',
   },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
+  smallImage: {
     width: 100,
     height: 80,
     resizeMode: 'contain',
