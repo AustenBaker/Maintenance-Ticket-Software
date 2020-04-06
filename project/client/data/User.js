@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Input, Text, Picker } from 'react-native';
+import { TextInput, Text, Picker } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
+import Ticket from './Ticket.js';
 
 export default class User extends React.Component {
     constructor(props) {
@@ -227,11 +228,20 @@ export default class User extends React.Component {
         let profile = [];
         // read out current state values into profile until
         // users submit form.
-        const [contact, setContact] = useState(CONSTANTS.PREFERRED_CONTACT[0]);
-        const [entry, setEntry] = useState(CONSTANTS.ENTRY_PERMISSION[0]);
+
+        // if edit mode, then update profile
+        // if not edit mode, then create user
+        let editUser = this.state.edit_mode;
+        if (editUser) {
+
+        } else {
+
+        };
+        const [contactMode, setContact] = useState(CONSTANTS.PREFERRED_CONTACT[0]);
+        const [entryMode, setEntry] = useState(CONSTANTS.ENTRY_PERMISSION[0]);
         content = (
-            <form name="updateProfile">
-              <Input
+            <View>
+              <TextInput
                 label="First Name"
                 defaultValue={this.state.first_name}
                 keyboardType="default"
@@ -242,7 +252,7 @@ export default class User extends React.Component {
                 errorMessage="This field is required."
                 onSubmitEditing={fname => this.setState(first_name, fname)}
               />
-              <Input
+              <TextInput
                 label="Last Name"
                 defaultValue={this.state.last_name}
                 keyboardType="default"
@@ -253,7 +263,7 @@ export default class User extends React.Component {
                 errorMessage="This field is required."
                 onSubmitEditing={lname => this.setState(last_name, lname)}
               />
-              <Input
+              <TextInput
                 label="Email"
                 defaultValue={this.state.email}
                 keyboardType="email-address"
@@ -264,7 +274,7 @@ export default class User extends React.Component {
                 errorMessage="This field is required.  Please enter valid email address."
                 onSubmitEditing={emailAddr => this.setState(email, emailAddr)}
               />
-              <Input
+              <TextInput
                 label="Phone Number"
                 defaultValue={this.state.phone}
                 keyboardType="phone-pad"
@@ -276,10 +286,9 @@ export default class User extends React.Component {
                 onSubmitEditing={phoneNum => this.setState(phone, phoneNum)}
               />
               <Picker
-                label="Preferred Contact Method"
-                selectedValue={contact}
+                label="Preferred Contact Method:"
+                selectedValue={contactMode}
                 onValueChange={(itemValue, itemIndex) => setContact(itemValue)}
-                errorMessage='This field is required.'
                 >
                 <Picker.Item
                     label='Email'
@@ -291,25 +300,24 @@ export default class User extends React.Component {
                 />
               </Picker>
               <Picker
-                label="Entry Permission"
-                selectedValue={entry}
+                label="Entry Permission:"
+                selectedValue={entryMode}
                 onValueChange={(itemValue, itemIndex) => setEntry(itemValue)}
-                errorMessage='This field is required.'
                 >
                 <Picker.Item
-                    label='Allow accompanied entry.'
+                    label='Allow accompanied entry'
                     value={CONSTANTS.ENTRY_PERMISSION[0]}
                 />
                 <Picker.Item
-                    title='Notify before entry.'
+                    title='Notify before entry'
                     value={CONSTANTS.ENTRY_PERMISSION[1]}
                 />
                 <Picker.Item
-                    title='Allow entry.'
+                    title='Allow entry'
                     value={CONSTANTS.ENTRY_PERMISSION[2]}
                 />
               </Picker>
-              <Input
+              <TextInput
                   label="Note"
                   onSubmitEditing={someNote => this.setState(note, someNote)}
                   defaultValue={this.state.note}
@@ -317,7 +325,11 @@ export default class User extends React.Component {
                   maxLength="256"
                   selectTextOnFocus="true"
               />
-            </form>
+              <Button 
+                  label={}
+                  onPress={() => alert('fix this!')}
+              />
+            </View>
         );
         return content;
     }

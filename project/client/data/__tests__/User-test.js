@@ -12,9 +12,14 @@ describe('User', () => {
     jest.useFakeTimers();
   
     beforeEach(() => {
-      
+      // setup
     });
-  
+
+    afterEach(() => {
+
+    });
+
+      
     it(`renders the user screen`, () => {
       const tree = renderer.create(<User />).toJSON();
       expect(tree).toMatchSnapshot();
@@ -24,4 +29,6 @@ describe('User', () => {
       const tree = renderer.create(<User edit_mode="true" />).toJSON();
       expect(tree).toMatchSnapshot();
     });
+
+
   });
