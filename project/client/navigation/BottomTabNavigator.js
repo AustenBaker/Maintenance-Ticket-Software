@@ -7,7 +7,7 @@ import UserScreen from '../screens/UserScreen';
 import CreateTicketScreen from '../screens/CreateTicketScreen';
 
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = 'Home';
+const INITIAL_ROUTE_NAME = 'Login';
 
 export default function BottomTabNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
@@ -22,7 +22,12 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={TicketScreen}
         options={{
           title: 'Tickets',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
+          headerTintColor: '#000',
+          headerStyle: {
+            backgroundColor: '#000',
+          },
+          headerTitleStyle: { fontWeight: 'italic', },
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-filing" />,
         }}
       />
       <BottomTab.Screen
@@ -30,15 +35,15 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={CreateTicketScreen}
         options={{
           title: 'Create Ticket',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-add-circle" />,
         }}
       />
         <BottomTab.Screen
           name="Profile"
           component={UserScreen}
           options={{
-            title: 'Profile',
-            tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+            title: 'Change This?',
+            tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-person" />,
           }}
           />
       <BottomTab.Screen
@@ -57,9 +62,13 @@ function getHeaderTitle(route) {
   const routeName = route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
 
   switch (routeName) {
-    case 'Home':
-      return 'How to get started';
-    case 'Links':
-      return 'Links to learn more';
+    case 'Tickets':
+      return 'Tickets';
+    case 'CreateTicket':
+      return 'Create Ticket';
+    case 'Profile':
+      return 'My Profile';
+    case 'Login':
+      return 'Login';
   }
 }

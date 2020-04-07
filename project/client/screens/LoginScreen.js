@@ -6,13 +6,13 @@ import * as WebBrowser from 'expo-web-browser';
 export default function LoginScreen() {
     const [user, onChangeUser] = React.useState('');
     const [pass, onChangePass] = React.useState('');
-    
+
   return (
     <View style={styles.container}>
           <Image source={require('../assets/images/uwcrest.png')}
             style={styles.smallImage}/>
 
-          <Text style={styles.topText}>Log In</Text>
+          <Text style={styles.largeTitle}>Log In</Text>
 
           <TextInput
             placeholder="Username"
@@ -33,14 +33,14 @@ export default function LoginScreen() {
             onChangeText={text => onChangePass(text)}
             value={pass}
           />
-          
+
           <Button
             onPress={() => handleLogin(user, pass) }
-            style={styles.topText}
+            style={styles.largeTitle}
             title="Sign In"
             accessibilityLabel="Sign In Button"
           />
-          
+
     </View>
   );
 }
@@ -78,10 +78,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
   },
- topText: {
+ largeTitle: {
     marginTop: 8,
     marginBottom: 8,
-    fontSize: 24,
+    fontSize: 34,
     color: 'black',
     textAlign: 'center',
 },
