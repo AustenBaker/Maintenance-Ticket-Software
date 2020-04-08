@@ -1,21 +1,48 @@
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, SafeAreaView } from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
 
 const Stack = createStackNavigator();
 
-export default function App(props) {
+export default function AppContainer() {
+  return (
+    <AppearanceProvider>
+      <App />
+    </AppearanceProvider>
+  )
+}
+
+function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
+
+  let colorScheme = Appearance.getColorScheme();
+  let subscription = Appearance.addChangeListener(({ colorScheme }) => {
+    this.setState({ colorScheme: useColorScheme() });
+  });
+
+  const themeStatusBarStyle =
+    colorScheme === 'light' ? 'dark-content' : 'light-content';
+  const themeTextStyle =
+    colorScheme === 'light' ? styles.iosLightThemeText : styles.iosDarkThemeText;
+  const themeContainerStyle =
+    colorScheme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
+  const headerBackgroundColor =
+    colorScheme === 'light' ? '#fff' : '#000';
+  const headerTextColor =
+    colorScheme === 'light' ? '#000' : '#fff';
+
+    subscription.remove();
 
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
@@ -25,7 +52,6 @@ export default function App(props) {
 
         // Load our initial navigation state
         setInitialNavigationState(await getInitialState());
-
         // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,
@@ -47,22 +73,22 @@ export default function App(props) {
     return null;
   } else {
     return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
+      <SafeAreaView style={[styles.container, themeContainerStyle]}>
+        <StatusBar barStyle={themeStatusBarStyle} />
         <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
           <Stack.Navigator
           screenOptions={{
               headerStyle: {
-                backgroundColor: '#fff',
+                backgroundColor: headerBackgroundColor
               },
-              headerTintColor: '#000',
-              headerTitleStyle: { fontWeight: 'bold', textAlign: 'left', flex: 1, },
+              headerTintColor: headerTextColor,
+              headerTitleStyle: { fontSize: 17 },
               }}
           >
             <Stack.Screen name="Root" component={BottomTabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -70,6 +96,17 @@ export default function App(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
+  iosLightContainer: {
+    backgroundColor: '#FFF',
+  },
+  iosLightThemeText: {
+    color: '#000'
+  },
+  iosDarkContainer: {
+    backgroundColor: '#000',
+  },
+  iosDarkThemeText: {
+    color: '#FFF'
+  }
 });

@@ -1,6 +1,14 @@
 {
   "expo": {
-    "name": "Tab Navigation Template",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "userInterfaceStyle": "automatic",
+    },
+    "android": {
+      "userInterfaceStyle": "automatic",
+    },
+    "name": "Maintenance App",
     "slug": "client",
     "privacy": "public",
     "sdkVersion": "36.0.0",
@@ -24,8 +32,5 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    }
   }
 }

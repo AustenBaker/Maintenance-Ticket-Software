@@ -3,15 +3,30 @@ import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList, Heade
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 
 const TICKETS = [
-  { id: 1, title: 'Test Ticket', description: 'Yeet', },
-  { id: 2, title: 'Anotha One', description: 'DJ Khaled' },
-  { id: 3, title: 'Do Not Click', description: 'Click me' },
-  { id: 4, title: 'Kachow', description: 'Gotta go fast' }
+  { id: '1', title: 'Test Ticket', description: 'Yeet', },
+  { id: '2', title: 'Anotha One', description: 'DJ Khaled' },
+  { id: '3', title: 'Do Not Click', description: 'Click me' },
+  { id: '4', title: 'Kachow', description: 'Gotta go fast' }
 ];
 
 export default function TicketScreen() {
+  let colorScheme = Appearance.getColorScheme();
+  let subscription = Appearance.addChangeListener(({ colorScheme }) => {
+    this.setState({ colorScheme: Appearance.getColorScheme() });
+  });
+  const themeContainer =
+    colorScheme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
+  const themeLargeTitle =
+    colorScheme === 'light' ? styles.lightLargeTitle : styles.darkLargeTitle;
+  const themeBodyText =
+    colorScheme === 'light' ? styles.lightBodyText : styles.darkBodyText;
+  const themeItem =
+    colorScheme === 'light' ? '#FFF' : '#000';
+
+
   const [selected, setSelected] = React.useState(new Map());
   const onSelect = React.useCallback(
     id => {
@@ -24,7 +39,7 @@ export default function TicketScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container, themeContainer}>
       <FlatList data={TICKETS}
       renderItem={({ item }) => (
         <Item
@@ -33,6 +48,8 @@ export default function TicketScreen() {
           description={item.description}
           selected={!!selected.get(item.id)}
           onSelect={onSelect}
+          itemTheme={themeItem}
+          bodyTheme={themeBodyText}
         />
       )}
       keyExtractor={item => item.id}
@@ -42,16 +59,16 @@ export default function TicketScreen() {
   );
 }
 
-function Item({ id, title, selected, onSelect }) {
+function Item({ id, title, selected, onSelect, itemTheme, bodyTheme }) {
   return (
     <TouchableOpacity
       onPress={() => onSelect(id)}
       style={[
         styles.item,
-        { backgroundColor: selected ? '#c7c7cc' : '#fff' },
+        { backgroundColor: selected ? '#8E8E93' : itemTheme },
       ]}
     >
-      <Text style={styles.bodyText}>{title}</Text>
+      <Text style={bodyTheme}>{title}</Text>
     </TouchableOpacity>
   );
 }
@@ -59,34 +76,48 @@ function Item({ id, title, selected, onSelect }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fafafa',
   },
-  largeTitle: {
-     marginTop: 8,
-     marginBottom: 8,
-     fontSize: 34,
-     color: 'black',
-     textAlign: 'center',
-   },
-   bodyText: {
+  lightLargeTitle: {
+    marginTop: 8,
+    marginBottom: 8,
+    fontSize: 34,
+    color: '#000',
+    textAlign: 'center',
+},
+  darkLargeTitle: {
+   marginTop: 8,
+   marginBottom: 8,
+   fontSize: 34,
+   color: '#fff',
+   textAlign: 'center',
+},
+   lightBodyText: {
      fontSize: 17,
-     color: 'black',
+     color: '#000',
      textAlign: 'left',
   },
+  darkBodyText: {
+    fontSize: 17,
+    color: '#FFF',
+    textAlign: 'left',
+ },
   item: {
     padding: 20,
     borderBottomColor: '#c8c7cc',
     borderBottomWidth: 1,
   },
-  optionIconContainer: {
-    marginRight: 12,
+  iosLightContainer: {
+    flex: 1,
+    backgroundColor: '#F2F2F7',
   },
-  option: {
-    backgroundColor: '#fdfdfd',
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: 0,
-    borderColor: '#ededed',
+  iosLightThemeText: {
+    color: '#000'
+  },
+  iosDarkContainer: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
+  iosDarkThemeText: {
+    color: '#F2F2F7'
   },
 });

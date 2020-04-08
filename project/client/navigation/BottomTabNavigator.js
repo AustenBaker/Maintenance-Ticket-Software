@@ -5,6 +5,7 @@ import LoginScreen from '../screens/LoginScreen';
 import TicketScreen from '../screens/TicketScreen';
 import UserScreen from '../screens/UserScreen';
 import CreateTicketScreen from '../screens/CreateTicketScreen';
+import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Login';
@@ -22,11 +23,6 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={TicketScreen}
         options={{
           title: 'Tickets',
-          headerTintColor: '#000',
-          headerStyle: {
-            backgroundColor: '#000',
-          },
-          headerTitleStyle: { fontWeight: 'italic', },
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-filing" />,
         }}
       />
