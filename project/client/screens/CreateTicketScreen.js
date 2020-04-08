@@ -2,40 +2,60 @@ import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
 import { MonoText } from '../components/StyledText';
 
-export default function CreateTicketScreen() {
+var radio_props = [
+  {label: 'normal',    value: 0 },
+  {label: 'emergency', value: 1 }
+]
 
+class CreateTicketScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: 0,
+    };
+  }
 
-  return (
-    <View style={styles.container}>
-      <TextInput
-        placeholder="Apartment Complex:"
-        style={styles.textInput}    
-      />
-      <TextInput
-        placeholder="Unit Number"
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Issue"
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Details:"
-        style={styles.largeTextInput}
-      />
-      <TextInput
-        placeholder="Other Notes:"
-        style={styles.largeTextInput}
-      />
-      <Button
-        title="Create Ticket Request"
-        accessibilityLabel="Create Ticket Request Button"
-      />
-    </View>
-  );
+  render(){
+    return (
+      <View style={styles.container}>
+
+        <TextInput
+          placeholder="Apartment Complex:"
+          style={styles.textInput}    
+        />
+        <TextInput
+          placeholder="Unit Number"
+          style={styles.textInput}
+        />
+        <Text>Emergency Ticket?</Text>
+        <RadioForm
+          radio_props={radio_props}
+          formHorizontal={true}
+          onPress={value => this.setState({value:value})}
+        />
+        <TextInput
+          placeholder="Issue"
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Details:"
+          style={styles.largeTextInput}
+        />
+        <TextInput
+          placeholder="Other Notes:"
+          style={styles.largeTextInput}
+        />
+        <Button
+          title="Create Ticket Request"
+          accessibilityLabel="Create Ticket Request Button"
+        />
+      </View>
+    );
+}
 }
 
 const styles = StyleSheet.create({
@@ -80,3 +100,5 @@ borderColor: 'black',
     marginTop: 5,
   },
 });
+
+export default CreateTicketScreen;
