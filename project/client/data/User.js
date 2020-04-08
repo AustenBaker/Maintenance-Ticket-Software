@@ -26,8 +26,8 @@ export default class User extends React.Component {
      * are not all passed into the constructor.
      */
     static defaultProps = {
-        first_name: "John",
-        last_name: "Doe",
+        first_name: "FirstName",
+        last_name: "LastName",
         units: ["1703"],
         email: "default@CastlebergCommunities.com",
         phone: "000-000-0000",
@@ -326,6 +326,7 @@ export default class User extends React.Component {
                   selectTextOnFocus="true"
               />
               <Button 
+                  // TODO: edit profile update button
                   label={}
                   onPress={() => alert('fix this!')}
               />
