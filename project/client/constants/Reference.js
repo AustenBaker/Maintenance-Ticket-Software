@@ -7,7 +7,7 @@ export const REGEX = {
     // email pattern:  some(.name)*@site.com
     // where some name & site are any combination of letters
     // and numbers, and the site ends in a 2-3 letter/digit extension
-    EMAIL: /^[[\w]+[\.\w]*@[\w]+\.[\w]{2,3}]{6,32}$/,
+    EMAIL: /^[[\w]+[\.\w]*@[[\w]+\.+]+[\w]{2,3}]{6,32}$/,
 
     // phone pattern:  ###-###-#### where # is a digit 0-9
     PHONE: /^[\d]{3}-[\d]{3}-[\d]{4}$/,
@@ -19,11 +19,22 @@ export const REGEX = {
 }
 
 // User type options
-export const USER_TYPE = ['resident','maintenance','management'];
+export const USER_TYPE = {
+    RES: 'resident',
+    MNT: 'maintenance',
+    MGMT: 'management'
+};
 
 // User entry permissions
-export const ENTRY_PERMISSION = ['accompanied','notify','any'];
+export const ENTRY_PERMISSION = {
+    ACC: 'accompanied',
+    NOT: 'notify',
+    ANY: 'any'
+};
 
 // User preferred contact method
-export const PREFERRED_CONTACT = ['email','text'];
+export const PREFERRED_CONTACT = {
+    EMAIL: 'email',
+    TXT: 'text'
+};
 
