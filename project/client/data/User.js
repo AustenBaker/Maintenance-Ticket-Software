@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextInput, Text, Picker } from 'react-native';
+import { TextInput, Text, Picker, Button, View } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import Ticket from './Ticket.js';
 
@@ -16,7 +16,7 @@ export default class User extends React.Component {
             entry_permission: props.entry_permission,
             user_type: props.user_type,
             note: props.note,
-            edit_mode: props.edit_mode,
+            edit_mode: (props.edit_mode === "true"),
             tickets: []
         }
     }
@@ -35,7 +35,7 @@ export default class User extends React.Component {
         entry_permission: "accompanied",
         user_type: "resident",
         note: "",
-        edit_mode: "false",
+        edit_mode: false,
         tickets: []
     }
 
@@ -123,15 +123,15 @@ export default class User extends React.Component {
     assignUnit = (props) => {
         for (let unit of props.units) {
             // check to see if the unit is already assigned to user
-            if (unit in this.state.units === 'false') {
+            if (unit in this.state.units === false) {
                 this.setState(units, [...this.state.units, unit]);
             }
         }
     }
 
     /**
-     * This method updates user information.
-     * Allows update for all user data except password.
+     * This method posts updated user information to server.
+     * Allows update for all user profile data except password.
      * 
      * @param first_name User first name
      * @param last_name User last name
@@ -166,11 +166,11 @@ export default class User extends React.Component {
           props.entry_permission in  CONSTANTS.ENTRY_PERMISSION){
             checked.push({['entry']: props.entry});
         }
-        if ('note' in props) { // add REGEX check here for note
+        if ('note' in props) { // TODO: add REGEX check here for note
             checked.push({['note']: props.note});
         }
         
-        // update server state and this.setState
+        // TODO: update server state and this.setState
         return updated;
     }
 
@@ -188,7 +188,7 @@ export default class User extends React.Component {
     setUserType = (props) => {
         let success = false;
         if (this.state.user_type === CONSTANTS.USER_TYPE[2]) {
-            // need to implement this!
+            // TODO: implement this!
             // access server in order to
             // verify userName is a valid user and then update
             // their user type to userType
@@ -210,8 +210,31 @@ export default class User extends React.Component {
      */
     isAuthorized(props) {
         let valid = false;
+        // TODO: check user type vs. authorized user types for activity
         return valid;
     }
+
+    /**
+     * This method returns object containing current user profile values.
+     * 
+     * @returns Object containing properties and values of the user.
+     */
+    getProfile = () => {
+        let profile = {
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            units: [...this.state.units],
+            email: this.state.email,
+            phone: this.state.phone,
+            contact: this.state.contact,
+            entry_permission: this.state.entry_permission,
+            user_type: this.state.user_type,
+            note: this.state.note,
+            edit_mode: this.state.edit_mode,
+            tickets: [...this.state.tickets]
+        };
+        return profile;
+    };
 
     /**
      * This method generates the form to display when editing
@@ -225,20 +248,41 @@ export default class User extends React.Component {
 
         // store user profile modifications in progress before submission
         // set initial value to pre-existing user profile
-        let profile = [];
-        // read out current state values into profile until
-        // users submit form.
+        const profile = this.getProfile();
 
         // if edit mode, then update profile
         // if not edit mode, then create user
-        let editUser = this.state.edit_mode;
-        if (editUser) {
-
+        let editable = this.state.edit_mode;
+        var submitButton;
+        if (editable) {
+            submitButton = (<Button
+                title="Update"
+                onPress={() => this.update(this)}
+                accessibilityLabel="Update Profile Button"
+            />);
         } else {
-
+            submitButton = (<Button
+                title="Create Account"
+                onPress={() => {
+                    // TODO: generate 'new account' message for management to flag account for unit assignment
+                    this.update(this);
+                }}
+                accessibilityLabel="Create Account Button"
+            />);
         };
-        const [contactMode, setContact] = useState(CONSTANTS.PREFERRED_CONTACT[0]);
-        const [entryMode, setEntry] = useState(CONSTANTS.ENTRY_PERMISSION[0]);
+        let resetButton = (<Button
+            title="Reset"
+            onPress={() => {
+                // TODO: return this.state to previous state using profile values
+            }}
+            accessibilityLabel="Reset Profile Button"
+        />);
+        let cancelButton = (<Button
+            title="Cancel"
+            onPress={() => alert(`TODO: navigate to previous page or home`)}
+            accessibilityLabel="Cancel Button"
+        />);
+
         content = (
             <View>
               <TextInput
@@ -250,7 +294,7 @@ export default class User extends React.Component {
                 textContentType="name"
                 autoCompleteType="name"
                 errorMessage="This field is required."
-                onSubmitEditing={fname => this.setState(first_name, fname)}
+                onChangeText={fname => this.setState(first_name, fname)}
               />
               <TextInput
                 label="Last Name"
@@ -287,8 +331,8 @@ export default class User extends React.Component {
               />
               <Picker
                 label="Preferred Contact Method:"
-                selectedValue={contactMode}
-                onValueChange={(itemValue, itemIndex) => setContact(itemValue)}
+                selectedValue={this.state.contact}
+                onValueChange={(itemValue, itemIndex) => this.setState(contact, itemValue)}
                 >
                 <Picker.Item
                     label='Email'
@@ -301,35 +345,33 @@ export default class User extends React.Component {
               </Picker>
               <Picker
                 label="Entry Permission:"
-                selectedValue={entryMode}
-                onValueChange={(itemValue, itemIndex) => setEntry(itemValue)}
+                selectedValue={this.state.entry_permission}
+                onValueChange={(itemValue, itemIndex) => this.setState(entry_permission, itemValue)}
                 >
                 <Picker.Item
                     label='Allow accompanied entry'
                     value={CONSTANTS.ENTRY_PERMISSION[0]}
                 />
                 <Picker.Item
-                    title='Notify before entry'
+                    label='Notify before entry'
                     value={CONSTANTS.ENTRY_PERMISSION[1]}
                 />
                 <Picker.Item
-                    title='Allow entry'
+                    label='Allow entry'
                     value={CONSTANTS.ENTRY_PERMISSION[2]}
                 />
               </Picker>
               <TextInput
                   label="Note"
-                  onSubmitEditing={someNote => this.setState(note, someNote)}
                   defaultValue={this.state.note}
                   keyboardType="default"
                   maxLength="256"
                   selectTextOnFocus="true"
+                  onSubmitEditing={someNote => this.setState(note, someNote)}
               />
-              <Button 
-                  // TODO: edit profile update button
-                  label={}
-                  onPress={() => alert('fix this!')}
-              />
+              {submitButton}
+              {resetButton}
+              {cancelButton}
             </View>
         );
         return content;
@@ -387,11 +429,12 @@ export default class User extends React.Component {
      */
     render = () => {
         var content;
-        if (this.state.editMode===false){
+        // TODO: Currently always rendering editMode version, fix this!
+        if (this.state.editMode === false){
             // if not in edit mode, simply display user info
             content=this.displayUser();
         } else {
-            // if in edit mode, display form for user info update
+            // if in edit mode, display form for user profile update
             content=this.editUser();
         }
         return (content);
