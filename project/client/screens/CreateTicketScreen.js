@@ -8,7 +8,13 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-
 import { MonoText } from '../components/StyledText';
 
 var radio_props = [
+<<<<<<< HEAD
   {label: 'Emergency', value: 0 }
+=======
+  {label: 'low',       value: 2},
+  {label: 'normal',    value: 0 },
+  {label: 'emergency', value: 1 }
+>>>>>>> 21026e3eaafb2f195c9430efe82a7fb6adc739e7
 ]
 
 class CreateTicketScreen extends React.Component {
@@ -40,11 +46,23 @@ class CreateTicketScreen extends React.Component {
         onChangeText={text => onChangeUser(text)}
         />
 
+<<<<<<< HEAD
         <RadioForm
           radio_props={ radio_props }
           formHorizontal={ true }
           onPress={value => this.setState({ value: value })}
+=======
+        <Text style={{fontSize:20, padding: 10}}>Ticket Importance Level</Text>
+        <RadioForm
+          radio_props={radio_props}
+          formHorizontal={true}
+          labelStyle={{fontSize: 20, paddingRight: 30, paddingBottom: 5 }}
+          buttonSize={30}
+          buttonColor={'black'}
+          onPress={value => this.setState({value:value})}
+>>>>>>> 21026e3eaafb2f195c9430efe82a7fb6adc739e7
         />
+
         <TextInput
           placeholder="Issue"
           placeholderTextColor={themeBodyText}
