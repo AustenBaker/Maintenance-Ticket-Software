@@ -4,50 +4,67 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
+
 import { MonoText } from '../components/StyledText';
 
 var radio_props = [
-  {label: 'normal',    value: 0 },
-  {label: 'emergency', value: 1 }
+  {label: 'Emergency', value: 0 }
 ]
 
 class CreateTicketScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 0,
+      value: 1,
     };
   }
 
   render(){
+
     return (
-      <View style={styles.container}>
+      <View style={styles.container, themeContainer}>
 
         <TextInput
-          placeholder="Apartment Complex:"
-          style={styles.textInput}    
+          placeholder="Apartment Complex"
+          placeholderTextColor={themeBodyText}
+          keyboardAppearance={themeKeyboard}
+          style={themeTextBox}
+          onChangeText={text => onChangeUser(text)}
         />
+
         <TextInput
-          placeholder="Unit Number"
-          style={styles.textInput}
+        placeholder="Unit Number"
+        placeholderTextColor={themeBodyText}
+        keyboardAppearance={themeKeyboard}
+        style={themeTextBox}
+        onChangeText={text => onChangeUser(text)}
         />
-        <Text>Emergency Ticket?</Text>
+
         <RadioForm
-          radio_props={radio_props}
-          formHorizontal={true}
-          onPress={value => this.setState({value:value})}
+          radio_props={ radio_props }
+          formHorizontal={ true }
+          onPress={value => this.setState({ value: value })}
         />
         <TextInput
           placeholder="Issue"
-          style={styles.textInput}
+          placeholderTextColor={themeBodyText}
+          keyboardAppearance={themeKeyboard}
+          style={themeTextBox}
+          onChangeText={text => onChangeUser(text)}
         />
         <TextInput
-          placeholder="Details:"
-          style={styles.largeTextInput}
+          placeholder="Details"
+          placeholderTextColor={themeBodyText}
+          keyboardAppearance={themeKeyboard}
+          style={themeTextBox}
+          onChangeText={text => onChangeUser(text)}
         />
         <TextInput
-          placeholder="Other Notes:"
-          style={styles.largeTextInput}
+          placeholder="Other Notes"
+          placeholderTextColor={themeBodyText}
+          keyboardAppearance={themeKeyboard}
+          style={themeTextBox}
+          onChangeText={text => onChangeUser(text)}
         />
         <Button
           title="Create Ticket Request"
@@ -55,49 +72,57 @@ class CreateTicketScreen extends React.Component {
         />
       </View>
     );
-}
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
   },
-  textInput: {
+  lightTextInput: {
     marginTop: 8,
     marginBottom: 8,
     height: 40,
+    width: '90%',
+    borderColor: '#000',
+    borderWidth: 2,
+    fontSize: 18,
+    color: '#000',
+},
+  darkTextInput: {
+    marginTop: 8,
+    marginBottom: 8,
+    height: 40,
+    width: '90%',
+    borderColor: '#fff',
+    borderWidth: 2,
+    fontSize: 18,
+    color: '#fff',
+},
+  largeTextInput: {
+    marginTop: 8,
+    marginBottom: 8,
+    height: 120,
     width: '90%',
     borderColor: 'black',
     borderWidth: 2,
     fontSize: 18,
     color: 'black',
   },
-  largeTextInput: {
-    marginTop: 8,
-    marginBottom: 8,
-    height: 120,
-    width: '90%',
-borderColor: 'black',
-    borderWidth: 2,
-    fontSize: 18,
-    color: 'black',
+  iosLightContainer: {
+    flex: 1,
+    backgroundColor: '#F2F2F7',
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
+  iosLightThemeText: {
+    color: '#000'
   },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
+  iosDarkContainer: {
+    flex: 1,
+    backgroundColor: '#1C1C1E',
   },
-  navigationFilename: {
-    marginTop: 5,
+  iosDarkThemeText: {
+    color: '#F2F2F7'
   },
 });
 

@@ -14,12 +14,12 @@ export default function LoginScreen() {
     });
     const themeContainerStyle =
       colorScheme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
-    const themeTextBoxStyle =
+    const themeTextBox =
       colorScheme === 'light' ? styles.lightTextInput : styles.darkTextInput;
     const themeLargeTitle =
       colorScheme === 'light' ? styles.lightLargeTitle : styles.darkLargeTitle;
-      const themeKeyboard =
-        colorScheme === 'light' ? 'light' : 'dark';
+    const themeKeyboard =
+      colorScheme === 'light' ? 'light' : 'dark';
 
   return (
     <AppearanceProvider>
@@ -34,7 +34,7 @@ export default function LoginScreen() {
             placeholderTextColor='#8E8E93'
             autoCapitalize="none"
             keyboardAppearance={themeKeyboard}
-            style={themeTextBoxStyle}
+            style={themeTextBox}
             onChangeText={text => onChangeUser(text)}
             value={user}
           />
@@ -44,7 +44,7 @@ export default function LoginScreen() {
             placeholderTextColor='#8E8E93'
             autoCapitalize="none"
             keyboardAppearance={themeKeyboard}
-            style={themeTextBoxStyle}
+            style={themeTextBox}
             onChangeText={text => onChangePass(text)}
             value={pass}
           />

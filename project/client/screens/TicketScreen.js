@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   iosDarkContainer: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#1C1C1E',
   },
   iosDarkThemeText: {
     color: '#F2F2F7'
