@@ -7,6 +7,7 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-
 import { MonoText } from '../components/StyledText';
 
 var radio_props = [
+  {label: 'low',       value: 2},
   {label: 'normal',    value: 0 },
   {label: 'emergency', value: 1 }
 ]
@@ -31,12 +32,17 @@ class CreateTicketScreen extends React.Component {
           placeholder="Unit Number"
           style={styles.textInput}
         />
-        <Text>Emergency Ticket?</Text>
+
+        <Text style={{fontSize:20, padding: 10}}>Ticket Importance Level</Text>
         <RadioForm
           radio_props={radio_props}
           formHorizontal={true}
+          labelStyle={{fontSize: 20, paddingRight: 30, paddingBottom: 5 }}
+          buttonSize={30}
+          buttonColor={'black'}
           onPress={value => this.setState({value:value})}
         />
+
         <TextInput
           placeholder="Issue"
           style={styles.textInput}
