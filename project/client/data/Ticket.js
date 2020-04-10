@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, CheckBox, FormInput } from 'react-native';
+import { View, CheckBox, Picker, FormInput } from 'react-native';
+import * as CONSTANTS from '../constants/Reference';
 
 export default class Ticket extends React.Component{
   constructor(props) {
@@ -8,7 +9,8 @@ export default class Ticket extends React.Component{
       ticket_number: props.ticket_number,
       emergency: props.emergency,
       unit: props.unit,
-      user: props.user,
+      first_name: props.first_name,
+      last_name: props.last_name,
       status: props.status,
       edit_mode: props.edit_mode,
       ticket_updates: [props.ticket_updates]
@@ -19,22 +21,31 @@ export default class Ticket extends React.Component{
    * Declare default values for Ticket props
    */
   static defaultProps = {
-    ticket_number: "999",
+    ticket_number: "99999",
     emergency: true,
     unit: "316",
-    user: "John Doe",
+    first_name: "FirstName",
+    last_name: "LastName",
     status: "in-progress",
     edit_mode: "false",
     ticket_updates: []
   }
 
+  //method to create ticket
+  createTicket = () => {
+	  
+  }
+  
+  
+  
   
   /**
    * This method displays tickets
    * emergency level, ticket number, unit number, status
-   * 
+   * display list of tickets
+   * this should be called when a ticket from the list is pressed
    */
-  displayTicket = () => {
+  displayTicketDetails = () => {
     var content;
 
     // create <Text> container for emergency data
@@ -54,17 +65,20 @@ export default class Ticket extends React.Component{
       <View>
         <Text>
           Ticket Number:
-          {this.ticket_number}
+          {this.state.ticket_number}
           Unit Number:
-          {this.unit}
+          {this.state.unit}
           Status:
-          {this.status}
+          {this.state.status}
         </Text>
-          {emergency}
+        {emergency}
+		//TODO add edit button
       </View>
     );
     return content;
   }
+  
+  //display ticket list using flatlist
 
   /**
    * This method updates ticket information
@@ -72,7 +86,6 @@ export default class Ticket extends React.Component{
    * @param ticket_number Ticket number/id
    * @param emergency Ticket level
    * @param unit Ticket unit number
-   * @param user User who created ticket
    * @param status Ticket status
    * 
    * @returns true if updated correctly
@@ -81,26 +94,24 @@ export default class Ticket extends React.Component{
     var updated = false;
     var checked = [];
     if('ticket_number' in props){
-      checked = [{ticket_number: props.ticket_number}];
-    }
+      checked.push({['ticket_number']: props.ticket_number});
+	}
     if('emergency' in props){
-      checked = [...checked, {emergency: props.emergency}];
+	  checked.push({['emergency']: props.emergency});
     }
     if('unit' in props){
-      checked = [...checked, {unit: props.unit}];
-    }
-    if('user' in props){
-      checked = [...checked, {user: props.user}];
+	  checked.push({['unit']: props.unit});
     }
     if('status' in props){
-      checked = [...checked, {status: props.status}];
+	  checked.push({['status']: props.status});
     }
 
-    //update server state and this.setState
+    //TODO: update server state and this.setState
     return updated;
   }
 
   /**
+   * TODO: UPDATE
    * Generates form to display when editing a ticket
    * so far includes:
    * Ticket Number, Unit Number, Emergency/Ticket Level Checkbox,
@@ -125,62 +136,64 @@ export default class Ticket extends React.Component{
         <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
 
         <FormLabel>Ticket Importance Level:</FormLabel>
-        <FormInput>
-          <CheckBox
+        <Picker>
+          <Picker
             title='Emergency'
             checkedIcon='dot-circle-o'
             uncheckedIcon='circle-o'
             checked={emergency === true}
             onIconPress={emergency = true}
           />
-          <CheckBox
-            title='Normal'
+          <Picker.Item
+            label='Normal'
             checkedIcon='dot-circle-o'
             uncheckedIcon='circle-o'
             checked={emergency === false}
             onIconPress={emergency = false}
           />
-          <CheckBox
-            title='Low'
+          <P
+            label='Low'
             checkedIcon='dot-circle-o'
             uncheckedIcon='circle-o'
             checked={emergency === false}
             onIconPress={emergency = false}
           />
-        </FormInput>
+        </Picker>
         <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
 
         <FormLabel>Ticket Status:</FormLabel>
-        <FormInput>
-          <CheckBox
+        <Picker>
+          <Picker.Item
             title='Open'
             checkedIcon='dot-circle-o'
             uncheckedIcon='circle-o'
             checked={status === 'open'}
             onIconPress={status = 'open'}
           />
-          <CheckBox
+          <Picker.Item
             title='In-Progress'
             checkedIcon='dot-circle-o'
             uncheckedIcon='circle-o'
             checked={status === 'in-progress'}
             onIconPress={status = 'in-progress'}
           />
-          <CheckBox
+          <Picker.Item
             title='Closed'
             checkedIcon='dot-circle-o'
             uncheckedIcon='circle-o'
             checked={status === 'closed'}
             onIconPress={status = 'closed'}
           />
-        </FormInput>
+        </Picker>
         <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
 
       </form>
     );
     return content;
   }
-
+  
+  //create a close ticket method
+  //method to delete tickets for management
 
   render = () => {
     var content;
