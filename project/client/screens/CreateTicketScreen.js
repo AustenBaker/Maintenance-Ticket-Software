@@ -3,9 +3,11 @@ import { Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, B
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
-
-
+import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
+import { ColorScheme } from '../stores';
 import { MonoText } from '../components/StyledText';
+
+const colorScheme = new ColorScheme();
 
 var radio_props = [
   {label: 'low',       value: 2},
@@ -19,9 +21,18 @@ class CreateTicketScreen extends React.Component {
     this.state = {
       value: 1,
     };
+    console.log("here");
   }
 
   render(){
+    let themeContainer =
+      colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
+    let themeTextBox =
+      colorScheme.theme === 'light' ? styles.lightTextInput : styles.darkTextInput;
+    let themeBodyText =
+      colorScheme.theme === 'light' ? styles.lightBodyText : styles.darkBodyText;
+    let themeKeyboard =
+      colorScheme.theme === 'light' ? 'light' : 'dark';
 
     return (
       <View style={styles.container, themeContainer}>

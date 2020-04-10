@@ -11,16 +11,17 @@ import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
 
 import { observer } from 'mobx-react';
-import { UserStore, TicketStore } from './stores';
+import { UserStore, TicketStore, ColorScheme } from './stores';
 const userStore = new UserStore();
 const ticketStore = new TicketStore();
+const colorScheme = new ColorScheme();
 
 const Stack = createStackNavigator();
 
 function AppContainer() {
   return (
     <AppearanceProvider>
-      <App userStore={userStore} ticketStore={ticketStore}/>
+      <App userStore={userStore} ticketStore={ticketStore} colorScheme={colorScheme}/>
     </AppearanceProvider>
   )
 }
@@ -33,23 +34,18 @@ function App(props) {
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
 
-  let colorScheme = Appearance.getColorScheme();
-  let subscription = Appearance.addChangeListener(({ colorScheme }) => {
-    this.setState({ colorScheme: useColorScheme() });
-  });
+  console.log("ColorScheme " + colorScheme.theme);
 
-  const themeStatusBarStyle =
-    colorScheme === 'light' ? 'dark-content' : 'light-content';
-  const themeTextStyle =
-    colorScheme === 'light' ? styles.iosLightThemeText : styles.iosDarkThemeText;
-  const themeContainerStyle =
-    colorScheme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
-  const headerBackgroundColor =
-    colorScheme === 'light' ? '#fff' : '#000';
-  const headerTextColor =
-    colorScheme === 'light' ? '#000' : '#fff';
-
-    subscription.remove();
+  let themeStatusBarStyle =
+    colorScheme.theme === 'light' ? 'dark-content' : 'light-content';
+  let themeTextStyle =
+    colorScheme.theme === 'light' ? styles.iosLightThemeText : styles.iosDarkThemeText;
+  let themeContainerStyle =
+    colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
+  let headerBackgroundColor =
+    colorScheme.theme === 'light' ? '#fff' : '#000';
+  let headerTextColor =
+    colorScheme.theme === 'light' ? '#000' : '#fff';
 
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
