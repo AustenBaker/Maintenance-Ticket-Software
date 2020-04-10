@@ -7,7 +7,7 @@ export const REGEX = {
     // email pattern:  some(.name)*@site.com
     // where some name & site are any combination of letters
     // and numbers, and the site ends in a 2-3 letter/digit extension
-    EMAIL: /^[[\w]+[\.\w]*@[\w]+\.[\w]{2,3}]{6,32}$/,
+    EMAIL: /^[[\w]+[\.\w]*@{1}[[\w]+\.{1}]+[\w]{2,3}]{6,32}$/,
 
     // phone pattern:  ###-###-#### where # is a digit 0-9
     PHONE: /^[\d]{3}-[\d]{3}-[\d]{4}$/,
@@ -15,15 +15,39 @@ export const REGEX = {
     // password pattern: a-zA-Z0-9_-!@#$%^&*+=
     // requires at least one each: uppercase letter, number, punctuation
     // length of 8-32 characters
-    PASSWORD: /^[[\w]*[A-Z]+[\d]+[\-!@#$%\^\*\+=]+]{8,32}$/
+    PASSWORD: /^[[\w]*[A-Z]+[\d]+[\-!@#$%\^\*\+=]+]{8,32}$/,
+
+    // memo pattern: a-zA-Z0-9_-+=!?.,;:()&
+    // allows any combination of letters, digits and select punctuation
+    // length up to 255 characters
+    MEMO: /^[[\w]*[\-\+=!\?.,;:/(/)&]?]{,255}$/
 }
 
 // User type options
-export const USER_TYPE = ['resident','maintenance','management'];
+export const USER_TYPE = {
+    RES: 'resident',
+    MNT: 'maintenance',
+    MGMT: 'management'
+};
 
 // User entry permissions
-export const ENTRY_PERMISSION = ['accompanied','notify','any'];
+export const ENTRY_PERMISSION = {
+    ACC: 'accompanied',
+    NOT: 'notify',
+    ANY: 'any'
+};
 
 // User preferred contact method
-export const PREFERRED_CONTACT = ['email','text'];
+export const PREFERRED_CONTACT = {
+    EMAIL: 'email',
+    TXT: 'text'
+};
 
+// Properties managed
+export const PROPERTY = {
+    WSP: 'Whispering Pines',
+    RH: 'Richmond Hills',
+    SA: 'Stoughton Arms',
+    LAA: 'Lincoln Avenue Apartments',
+    TAW: 'Tuc-A-Way Apartments'
+}

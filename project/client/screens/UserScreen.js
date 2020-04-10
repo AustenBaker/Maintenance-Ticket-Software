@@ -4,8 +4,14 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 
 import { MonoText } from '../components/StyledText';
+import User from '../data/User';
 
 export default function UserScreen() {
+  // TODO: add in code that checks for active user session,
+  // redirects to login if no active session found,
+  // attempts to load user data into properties if found,
+  // loads account creation page if referred to account creation
+  var properties = {};
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -38,6 +44,10 @@ export default function UserScreen() {
           <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
             <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
           </TouchableOpacity>
+        </View>
+
+        <View>
+          <User {...properties}/>
         </View>
       </ScrollView>
 
