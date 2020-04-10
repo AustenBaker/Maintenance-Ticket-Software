@@ -3,6 +3,8 @@ import { TextInput, Text, Picker, Button, View } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import Ticket from './Ticket.js';
 
+// TODO: Add an 'active|inactive' flag
+// TODO: Update unit to include property indicator
 export default class User extends React.Component {
     constructor(props) {
         super(props);
@@ -110,7 +112,7 @@ export default class User extends React.Component {
               {entry}
               {note}
             </View>
-          );
+          ); // TODO: add edit button
         return content;
     }
 
@@ -166,7 +168,7 @@ export default class User extends React.Component {
           props.entry_permission in  CONSTANTS.ENTRY_PERMISSION){
             checked.push({['entry']: props.entry});
         }
-        if ('note' in props) { // TODO: add REGEX check here for note
+        if ('note' in props && CONSTANTS.REGEX.MEMO.exec(props.note)) {
             checked.push({['note']: props.note});
         }
         
@@ -187,7 +189,7 @@ export default class User extends React.Component {
      */
     setUserType = (props) => {
         let success = false;
-        if (this.state.user_type === CONSTANTS.USER_TYPE[2]) {
+        if (this.state.user_type === CONSTANTS.USER_TYPE.MGMT) {
             // TODO: implement this!
             // access server in order to
             // verify userName is a valid user and then update
@@ -237,8 +239,8 @@ export default class User extends React.Component {
     };
 
     /**
-     * This method generates the form to display when editing
-     * User profile.
+     * This method generates the form to display the User profile
+     * when in edit mode.
      * 
      * @returns React Native encoding to edit user profile
      */
@@ -264,7 +266,10 @@ export default class User extends React.Component {
             submitButton = (<Button
                 title="Create Account"
                 onPress={() => {
-                    // TODO: generate 'new account' message for management to flag account for unit assignment
+                    // TODO: generate 'human validation' captcha test, and if passed, 
+                    // generate 'new account' message for management to flag account for unit assignment
+
+                    // calls function to update user profile data in database
                     this.update(this);
                 }}
                 accessibilityLabel="Create Account Button"
@@ -336,11 +341,11 @@ export default class User extends React.Component {
                 >
                 <Picker.Item
                     label='Email'
-                    value={CONSTANTS.PREFERRED_CONTACT[0]}
+                    value={CONSTANTS.PREFERRED_CONTACT.EMAIL}
                 />
                 <Picker.Item
                     label='Text'
-                    value={CONSTANTS.PREFERRED_CONTACT[1]}
+                    value={CONSTANTS.PREFERRED_CONTACT.TXT}
                 />
               </Picker>
               <Picker
@@ -350,15 +355,15 @@ export default class User extends React.Component {
                 >
                 <Picker.Item
                     label='Allow accompanied entry'
-                    value={CONSTANTS.ENTRY_PERMISSION[0]}
+                    value={CONSTANTS.ENTRY_PERMISSION.ACC}
                 />
                 <Picker.Item
                     label='Notify before entry'
-                    value={CONSTANTS.ENTRY_PERMISSION[1]}
+                    value={CONSTANTS.ENTRY_PERMISSION.NOT}
                 />
                 <Picker.Item
                     label='Allow entry'
-                    value={CONSTANTS.ENTRY_PERMISSION[2]}
+                    value={CONSTANTS.ENTRY_PERMISSION.ANY}
                 />
               </Picker>
               <TextInput
@@ -386,23 +391,27 @@ export default class User extends React.Component {
      * @returns List of user's tickets.
      */
     listTickets = (props) => {
-        var content = [];
+        var ticketList = [];
+        var content;
         if (props.filter === undefined || props.filter === 'none') {
-            content = this.state.tickets;
-        } else if (props === 'open') {
+            ticketList = this.state.tickets;
+        } else if (props.filter === 'open') {
             // generates list of user's tickets that are open
             for (let ticket of this.state.tickets) {
                 if (ticket.isOpen()) {
-                    content.push(ticket);
+                    ticketList.push(ticket);
                 }
             }
-        } else if (props === 'closed') {
+        } else if (props.filter === 'closed') {
             // generates list of user's tickets that are closed
             for (let ticket of this.state.tickets) {
                 if (!ticket.isOpen()) {
-                    content.push(ticket);
+                    ticketList.push(ticket);
                 }
             }
+        }
+        for (ticket in ticketList) {
+            content += ""; // TODO: add Ticket display items
         }
         return content;
     }
@@ -416,8 +425,9 @@ export default class User extends React.Component {
      */
     changePassword = (props) => {
         var updated = false;
+        // TODO: add session validation check
         if (props.pwd !== undefined && CONSTANTS.REGEX.PASSWORD.exec(props.pwd)) {
-            // process password update
+            // TODO: process password update
         }
         return updated;
     }
