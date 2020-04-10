@@ -10,15 +10,22 @@ import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-app
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
 
+import { observer } from 'mobx-react';
+import { UserStore, TicketStore } from './stores';
+const userStore = new UserStore();
+const ticketStore = new TicketStore();
+
 const Stack = createStackNavigator();
 
-export default function AppContainer() {
+function AppContainer() {
   return (
     <AppearanceProvider>
-      <App />
+      <App userStore={userStore} ticketStore={ticketStore}/>
     </AppearanceProvider>
   )
 }
+
+export default observer(AppContainer);
 
 function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
