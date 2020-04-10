@@ -11,6 +11,7 @@ export default function(containerRef) {
           Tickets: 'tickets',
           CreateTicket: 'createticket',
           Profile:  'profile',
+          SignUp: 'signup',
           Login:  'login',
           Settings: 'settings',
         },

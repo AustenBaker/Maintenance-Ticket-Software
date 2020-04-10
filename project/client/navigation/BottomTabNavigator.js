@@ -6,6 +6,7 @@ import TicketScreen from '../screens/TicketScreen';
 import UserScreen from '../screens/UserScreen';
 import CreateTicketScreen from '../screens/CreateTicketScreen';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
+import SignUpScreen from '../screens/SignUpScreen';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Login';
@@ -50,6 +51,14 @@ export default function BottomTabNavigator({ navigation, route }) {
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-person" />,
         }}
         />
+      <BottomTab.Screen
+        name="SignUp"
+        component={SignUpScreen}
+        options={{
+          title: 'Sign Up',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-person" />,
+        }}
+        />
     </BottomTab.Navigator>
   );
 }
@@ -66,5 +75,7 @@ function getHeaderTitle(route) {
       return 'My Profile';
     case 'Login':
       return 'Login';
+    case 'Sign Up':
+      return 'Sign Up';
   }
 }
