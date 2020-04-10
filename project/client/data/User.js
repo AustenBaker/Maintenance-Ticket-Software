@@ -18,7 +18,7 @@ export default class User extends React.Component {
             entry_permission: props.entry_permission,
             user_type: props.user_type,
             note: props.note,
-            edit_mode: (props.edit_mode === "true"),
+            edit_mode: (props.edit_mode === true),
             tickets: []
         }
     }
@@ -294,8 +294,8 @@ export default class User extends React.Component {
                 label="First Name"
                 defaultValue={this.state.first_name}
                 keyboardType="default"
-                maxLength="32"
-                selectTextOnFocus="true"
+                maxLength={32}
+                selectTextOnFocus={true}
                 textContentType="name"
                 autoCompleteType="name"
                 errorMessage="This field is required."
@@ -305,8 +305,8 @@ export default class User extends React.Component {
                 label="Last Name"
                 defaultValue={this.state.last_name}
                 keyboardType="default"
-                maxLength="32"
-                selectTextOnFocus="true"
+                maxLength={32}
+                selectTextOnFocus={true}
                 textContentType="familyName"
                 autoCompleteType="name"
                 errorMessage="This field is required."
@@ -316,8 +316,8 @@ export default class User extends React.Component {
                 label="Email"
                 defaultValue={this.state.email}
                 keyboardType="email-address"
-                maxLength="32"
-                selectTextOnFocus="true"
+                maxLength={32}
+                selectTextOnFocus={true}
                 textContentType="emailAddress"
                 autoCompleteType="email"
                 errorMessage="This field is required.  Please enter valid email address."
@@ -327,8 +327,8 @@ export default class User extends React.Component {
                 label="Phone Number"
                 defaultValue={this.state.phone}
                 keyboardType="phone-pad"
-                maxLength="12"
-                selectTextOnFocus="true"
+                maxLength={12}
+                selectTextOnFocus={true}
                 textContentType="telephoneNumber"
                 autoCompleteType="tel"
                 errorMessage="Please enter valid phone number: ###-###-####"
@@ -370,8 +370,8 @@ export default class User extends React.Component {
                   label="Note"
                   defaultValue={this.state.note}
                   keyboardType="default"
-                  maxLength="256"
-                  selectTextOnFocus="true"
+                  maxLength={256}
+                  selectTextOnFocus={true}
                   onSubmitEditing={someNote => this.setState(note, someNote)}
               />
               {submitButton}
