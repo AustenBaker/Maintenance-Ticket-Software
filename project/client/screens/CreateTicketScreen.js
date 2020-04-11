@@ -4,7 +4,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
-import { PrioritySelection } from '../components/PrioritySelection'
 import { ColorScheme } from '../stores';
 import Colors from '../constants/Colors';
 
@@ -79,7 +78,7 @@ class CreateTicketScreen extends React.Component {
         />
 
         <Text style={{ color: themeBodyText }}>Emergency</Text>
-        
+        <PrioritySelection />
 
         <Text style={{fontSize:20, padding: 10, color: radioColor }}>Ticket Importance Level</Text>
         <RadioForm
@@ -121,6 +120,37 @@ class CreateTicketScreen extends React.Component {
       </View>
     );
   }
+}
+
+function PrioritySelection() {
+  Platform.select({
+    ios: {
+      <Switch
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={isEnabled}
+        />
+    },
+    android: {
+      let radioColor =
+        colorScheme.theme === 'light' ? Colors.black : Colors.white;
+      let radioLabel =
+        colorScheme.theme === 'light' ? Colors.black : Colors.white;
+      return (
+        <RadioForm
+          labelColor={radioLabel}
+          radio_props={radio_props}
+          formHorizontal={true}
+          labelHorizontal={false}
+          labelStyle={{fontSize: 20, paddingRight: 8, paddingLeft: 8, paddingBottom: 5, color: radioLabel }}
+          buttonSize={20}
+          buttonColor={radioColor}
+          onPress={value => this.setState({value:value})}
+        />
+    }
+  })
 }
 
 const styles = StyleSheet.create({
