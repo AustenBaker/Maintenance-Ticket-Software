@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, TextInput, Button } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, TextInput, Button, SafeAreaView } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import { Appearance, AppearanceProvider } from 'react-native-appearance';
 import { ColorScheme } from '../stores';
+import Colors from '../constants/Colors';
 
 // may need to pass in navigation?
 export default function LoginScreen({ navigation }) {
@@ -21,8 +22,7 @@ export default function LoginScreen({ navigation }) {
       colorScheme.theme === 'light' ? 'light' : 'dark';
 
   return (
-    <AppearanceProvider>
-    <View style={styles.container, themeContainerStyle}>
+    <SafeAreaView style={styles.container, themeContainerStyle}>
           <Image source={require('../assets/images/uwcrest.png')}
             style={styles.smallImage}/>
 
@@ -62,8 +62,7 @@ export default function LoginScreen({ navigation }) {
             accessibilityLabel="Secret Dev Button to Skip Sign In"
           />
 
-    </View>
-    </AppearanceProvider>
+    </SafeAreaView>
   );
 }
 
@@ -97,20 +96,19 @@ function componentDidMount() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
   },
   lightLargeTitle: {
     marginTop: 8,
     marginBottom: 8,
     fontSize: 34,
-    color: '#000',
+    color: Colors.black,
     textAlign: 'center',
 },
   darkLargeTitle: {
    marginTop: 8,
    marginBottom: 8,
    fontSize: 34,
-   color: '#fff',
+   color: Colors.white,
    textAlign: 'center',
 },
   lightTextInput: {
@@ -118,20 +116,20 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     height: 40,
     width: '90%',
-    borderColor: '#000',
+    borderColor: Colors.black,
     borderWidth: 2,
     fontSize: 18,
-    color: '#000',
+    color: Colors.black,
 },
   darkTextInput: {
     marginTop: 8,
     marginBottom: 8,
     height: 40,
     width: '90%',
-    borderColor: '#fff',
+    borderColor: Colors.white,
     borderWidth: 2,
     fontSize: 18,
-    color: '#fff',
+    color: Colors.white,
 },
   smallImage: {
     width: 100,
@@ -142,18 +140,12 @@ const styles = StyleSheet.create({
   },
   iosLightContainer: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: Colors.iosLightBar,
     alignItems: 'center'
-  },
-  iosLightThemeText: {
-    color: '#000'
   },
   iosDarkContainer: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: Colors.iosDarkBar,
     alignItems: 'center'
   },
-  iosDarkThemeText: {
-    color: '#F2F2F7'
-  }
 });

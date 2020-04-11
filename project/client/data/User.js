@@ -2,6 +2,10 @@ import * as React from 'react';
 import { TextInput, Text, Picker, Button, View } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import Ticket from './Ticket.js';
+import Colors from '../constants/Colors'
+import { ColorScheme } from '../stores';
+
+const colorScheme = new ColorScheme();
 
 // TODO: Add an 'active|inactive' flag
 // TODO: Update unit to include property indicator
@@ -44,12 +48,12 @@ export default class User extends React.Component {
     /**
      * This method generates the <View> to display the
      * user information.
-     * 
+     *
      * @returns React Native encoding for user display
      */
     displayUser = () => {
         var content;
-        
+
         // if phone number exists, create text output
         // and add star to user's preferred contact type
         var contact = this.state.email;
@@ -119,7 +123,7 @@ export default class User extends React.Component {
     /**
      * This method is used to assign a unit to a resident user.
      * No duplicate values will be added to assigned units list.
-     * 
+     *
      * @param units array of units to be assigned to user
      */
     assignUnit = (props) => {
@@ -134,7 +138,7 @@ export default class User extends React.Component {
     /**
      * This method posts updated user information to server.
      * Allows update for all user profile data except password.
-     * 
+     *
      * @param first_name User first name
      * @param last_name User last name
      * @param email User email address
@@ -142,7 +146,7 @@ export default class User extends React.Component {
      * @param contact User preferred contact method (email/text)
      * @param entry_permission User entry preference
      * @param note Note from user regarding special circumstances
-     * 
+     *
      * @returns true if updated successfully
      */
     update = (props) => {
@@ -171,7 +175,7 @@ export default class User extends React.Component {
         if ('note' in props && CONSTANTS.REGEX.MEMO.exec(props.note)) {
             checked.push({['note']: props.note});
         }
-        
+
         // TODO: update server state and this.setState
         return updated;
     }
@@ -179,12 +183,12 @@ export default class User extends React.Component {
     /**
      * This method allows a management user to change
      * another user's user type.
-     * 
+     *
      * @requires User to be management user type
-     * 
+     *
      * @param userName Name of user to be upgraded
      * @param userType Desired new user type
-     * 
+     *
      * @returns True if user type successfully changed.
      */
     setUserType = (props) => {
@@ -204,9 +208,9 @@ export default class User extends React.Component {
     /**
      * This method checks to see if the user is authorized to
      * perform the requested activity.
-     * 
+     *
      * @param activity The activity to be performed
-     * 
+     *
      * @returns True if the user is authorized to perform the
      * specified activity.
      */
@@ -218,7 +222,7 @@ export default class User extends React.Component {
 
     /**
      * This method returns object containing current user profile values.
-     * 
+     *
      * @returns Object containing properties and values of the user.
      */
     getProfile = () => {
@@ -241,7 +245,7 @@ export default class User extends React.Component {
     /**
      * This method generates the form to display the User profile
      * when in edit mode.
-     * 
+     *
      * @returns React Native encoding to edit user profile
      */
     editUser = () => {
@@ -266,7 +270,7 @@ export default class User extends React.Component {
             submitButton = (<Button
                 title="Create Account"
                 onPress={() => {
-                    // TODO: generate 'human validation' captcha test, and if passed, 
+                    // TODO: generate 'human validation' captcha test, and if passed,
                     // generate 'new account' message for management to flag account for unit assignment
 
                     // calls function to update user profile data in database
@@ -386,9 +390,9 @@ export default class User extends React.Component {
     /**
      * This method generates a list of tickets created by this
      * user.
-     * 
+     *
      * @param filter Filter ticket list by none, open, closed.
-     * 
+     *
      * @returns List of user's tickets.
      */
     listTickets = (props) => {
@@ -419,9 +423,9 @@ export default class User extends React.Component {
 
     /**
      * This method allows user to update their password.
-     * 
+     *
      * @param pwd New password
-     * 
+     *
      * @returns True if password change completed successfully.
      */
     changePassword = (props) => {
@@ -436,7 +440,7 @@ export default class User extends React.Component {
 
     /**
      * This method renders the User element on the client device.
-     * 
+     *
      * @returns React Native encoding for User element display.
      */
     render = () => {

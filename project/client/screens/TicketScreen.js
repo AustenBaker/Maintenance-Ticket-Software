@@ -5,6 +5,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { ColorScheme } from '../stores';
+import Colors from '../constants/Colors'
 
 const colorScheme = new ColorScheme();
 
@@ -15,7 +16,7 @@ const TICKETS = [
   { id: '4', title: 'Kachow', description: 'Gotta go fast' }
 ];
 
-export default function TicketScreen() {
+export default function TicketScreen({ navigation }) {
   let themeContainer =
     colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
   let themeLargeTitle =
@@ -23,7 +24,9 @@ export default function TicketScreen() {
   let themeBodyText =
     colorScheme.theme === 'light' ? styles.lightBodyText : styles.darkBodyText;
   let themeItem =
-    colorScheme.theme === 'light' ? '#FFF' : '#000';
+    colorScheme.theme === 'light' ? Colors.white : Colors.iosDarkTable;
+  let themeSeparator =
+    colorScheme.theme === 'light' ? Colors.iosLightSeparator : Colors.iosDarkSeparator;
 
 
   const [selected, setSelected] = React.useState(new Map());
@@ -61,10 +64,10 @@ export default function TicketScreen() {
 function Item({ id, title, selected, onSelect, itemTheme, bodyTheme }) {
   return (
     <TouchableOpacity
-      onPress={() => onSelect(id)}
+      onPress={() => navigation.navigate('DetailedView')}
       style={[
         styles.item,
-        { backgroundColor: selected ? '#8E8E93' : itemTheme },
+        { backgroundColor: selected ? Colors.iosSystemGray : itemTheme },
       ]}
     >
       <Text style={bodyTheme}>{title}</Text>
@@ -81,43 +84,43 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 8,
     fontSize: 34,
-    color: '#000',
+    color: Colors.black,
     textAlign: 'center',
 },
   darkLargeTitle: {
    marginTop: 8,
    marginBottom: 8,
    fontSize: 34,
-   color: '#fff',
+   color: Colors.white,
    textAlign: 'center',
 },
-   lightBodyText: {
+  lightBodyText: {
      fontSize: 17,
-     color: '#000',
+     color: Colors.black,
      textAlign: 'left',
   },
   darkBodyText: {
     fontSize: 17,
-    color: '#FFF',
+    color: Colors.white,
     textAlign: 'left',
  },
   item: {
-    padding: 20,
-    borderBottomColor: '#c8c7cc',
-    borderBottomWidth: 1,
+    padding: 15,
+    borderBottomColor: Colors.iosDarkSeparator,
+    borderBottomWidth: 0.5,
   },
   iosLightContainer: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: Colors.white,
   },
   iosLightThemeText: {
-    color: '#000'
+    color: Colors.black
   },
   iosDarkContainer: {
     flex: 1,
-    backgroundColor: '#1C1C1E',
+    backgroundColor: Colors.black,
   },
   iosDarkThemeText: {
-    color: '#F2F2F7'
+    color: Colors.white
   },
 });
