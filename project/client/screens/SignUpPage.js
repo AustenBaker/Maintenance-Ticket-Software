@@ -7,7 +7,7 @@ import { AppearanceProvider } from 'react-native-appearance';
 
 const colorScheme = new ColorScheme();
 
-export default function SignUpScreen() {
+export default function SignUpScreen({ navigation }) {
     const [email, onChangeEmail] = React.useState('');
     const [pass, onChangePass] = React.useState('');
     const [fname, onChangeFname] = React.useState('');
@@ -27,10 +27,8 @@ export default function SignUpScreen() {
   return (
     <AppearanceProvider>
     <View style={styles.container, themeContainerStyle}>
-          <Image source={require('../assets/images/uwcrest.png')}
-            style={styles.smallImage}/>
 
-          <Text style={themeLargeTitle}>Sign Up</Text>
+          <Text style={themeLargeTitle}>Let’s Get Started</Text>
 
           <TextInput
             placeholder="Email"
@@ -99,6 +97,13 @@ export default function SignUpScreen() {
             accessibilityLabel="Sign Up Button"
           />
 
+          <Button
+            onPress={() => navigation.replace('Root') }
+            style={themeLargeTitle}
+            title="I have an account"
+            accessibilityLabel="Go to Login page"
+          />
+
     </View>
     </AppearanceProvider>
   );
@@ -137,14 +142,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   lightLargeTitle: {
-    marginTop: 8,
+    marginTop: 50,
     marginBottom: 8,
     fontSize: 34,
     color: '#000',
     textAlign: 'center',
 },
   darkLargeTitle: {
-   marginTop: 8,
+   marginTop: 50,
    marginBottom: 8,
    fontSize: 34,
    color: '#fff',
