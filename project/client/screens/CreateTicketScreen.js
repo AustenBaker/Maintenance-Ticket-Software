@@ -105,7 +105,7 @@ class CreateTicketScreen extends React.Component {
         <Button
           title="Create Ticket Request"
           accessibilityLabel="Create Ticket Request Button"
-          //onPress = {this.submitTicket} 
+          //onPress = {this.submitTicket}
         />
       </View>
     );
