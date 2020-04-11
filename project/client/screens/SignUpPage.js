@@ -3,6 +3,7 @@ import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, TextInput, B
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import { ColorScheme } from '../stores';
+import Colors from '../constants/Colors';
 import { AppearanceProvider } from 'react-native-appearance';
 
 const colorScheme = new ColorScheme();
@@ -145,14 +146,14 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginBottom: 8,
     fontSize: 34,
-    color: '#000',
+    color: Colors.black,
     textAlign: 'center',
 },
   darkLargeTitle: {
    marginTop: 50,
    marginBottom: 8,
    fontSize: 34,
-   color: '#fff',
+   color: Colors.white,
    textAlign: 'center',
 },
   lightTextInput: {
@@ -160,20 +161,20 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     height: 40,
     width: '90%',
-    borderColor: '#000',
-    borderWidth: 2,
+    borderColor: Colors.black,
+    borderBottomWidth: 2,
     fontSize: 18,
-    color: '#000',
+    color: Colors.black,
 },
   darkTextInput: {
     marginTop: 8,
     marginBottom: 8,
     height: 40,
     width: '90%',
-    borderColor: '#fff',
-    borderWidth: 2,
+    borderColor: Colors.white,
+    borderBottomWidth: 2,
     fontSize: 18,
-    color: '#fff',
+    color: Colors.white,
 },
   smallImage: {
     width: 100,
@@ -184,18 +185,18 @@ const styles = StyleSheet.create({
   },
   iosLightContainer: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: Colors.iosLightBar,
     alignItems: 'center'
   },
   iosLightThemeText: {
-    color: '#000'
+    color: Colors.black
   },
   iosDarkContainer: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: Colors.iosDarkBar,
     alignItems: 'center'
   },
   iosDarkThemeText: {
-    color: '#F2F2F7'
+    color: Colors.white
   }
 });

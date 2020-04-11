@@ -18,6 +18,8 @@ export default function LoginScreen({ navigation }) {
       colorScheme.theme === 'light' ? styles.lightTextInput : styles.darkTextInput;
     let themeLargeTitle =
       colorScheme.theme === 'light' ? styles.lightLargeTitle : styles.darkLargeTitle;
+    let themeBodyText =
+      colorScheme.theme === 'light' ? styles.iosLightThemeText : styles.iosDarkThemeText;
     let themeKeyboard =
       colorScheme.theme === 'light' ? 'light' : 'dark';
 
@@ -26,7 +28,7 @@ export default function LoginScreen({ navigation }) {
           <Image source={require('../assets/images/uwcrest.png')}
             style={styles.smallImage}/>
 
-          <Text style={themeLargeTitle}>Welcome</Text>
+          <Text style={themeLargeTitle}>Welcome Back</Text>
 
           <TextInput
             placeholder="Username"
@@ -57,14 +59,14 @@ export default function LoginScreen({ navigation }) {
 
           <Button
             onPress={() => navigation.replace('SignUp') }
-            style={themeLargeTitle}
+            style={themeBodyText}
             title="Don’t have an account?"
             accessibilityLabel="Go to Sign Up page"
           />
 
           <Button
             onPress={() => navigation.replace('Tabs') }
-            style={themeLargeTitle}
+            style={themeBodyText}
             title="Skip Sign In"
             accessibilityLabel="Secret Dev Button to Skip Sign In"
           />
@@ -124,7 +126,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: '90%',
     borderColor: Colors.black,
-    borderWidth: 2,
+    borderBottomWidth: 2,
     fontSize: 18,
     color: Colors.black,
 },
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: '90%',
     borderColor: Colors.white,
-    borderWidth: 2,
+    borderBottomWidth: 2,
     fontSize: 18,
     color: Colors.white,
 },
@@ -145,10 +147,18 @@ const styles = StyleSheet.create({
     marginTop: 3,
     marginLeft: -10,
   },
+  iosLightThemeText: {
+    color: Colors.black,
+    fontSize: 17
+  },
   iosLightContainer: {
     flex: 1,
     backgroundColor: Colors.iosLightBar,
     alignItems: 'center'
+  },
+  iosDarkThemeText: {
+    color: Colors.white,
+    fontSize: 17
   },
   iosDarkContainer: {
     flex: 1,
