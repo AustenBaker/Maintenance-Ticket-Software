@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextInput, Text, Picker, Button, View } from 'react-native';
+import { TextInput, Text, Picker, Button, View, StyleSheet } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import Ticket from './Ticket.js';
 import Colors from '../constants/Colors'
@@ -52,6 +52,9 @@ export default class User extends React.Component {
      * @returns React Native encoding for user display
      */
     displayUser = () => {
+      let themeBodyText =
+        colorScheme.theme === 'light' ? styles.iosLightThemeText : styles.iosDarkThemeText;
+
         var content;
         let phoneCheck = this.state.phone !== User.defaultProps.phone;
 
@@ -61,13 +64,13 @@ export default class User extends React.Component {
         var contact = [];
         if (this.state.contact === CONSTANTS.PREFERRED_CONTACT.EMAIL && phoneCheck) {
             contact.push(
-            <Text testID="user-name">
+            <Text testID="user-name" style={themeBodyText}>
             Email: {this.state.email + "* "}
             </Text>
             );
         } else {
             contact.push(
-            <Text testID="user-name">
+            <Text testID="user-name" style={themeBodyText}>
             Email: {this.state.email}
             </Text>
             );
@@ -75,28 +78,28 @@ export default class User extends React.Component {
         if (phoneCheck) {
             if (this.state.contact === CONSTANTS.PREFERRED_CONTACT.TXT) {
                 contact.push(
-                    <Text testID="user-phone">Phone: {this.state.phone + "*\n"}
+                    <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "*\n"}
                     * = Preferred contact method.
                     </Text>
                 );
             } else {
                 contact.push(
-                    <Text testID="user-phone">Phone: {this.state.phone + "\n"}
+                    <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "\n"}
                     * = Preferred contact method.
                     </Text>
                 );
             }
-        } else contact.push('');
+        } else contact.push(<Text></Text>);
 
         // create <Text> container for entry permission data
         var entry = (
-            <Text testID="user-entry">
+            <Text testID="user-entry" style={themeBodyText}>
                 {(this.state.entry_permission === CONSTANTS.ENTRY_PERMISSION.ANY) ? "Entry: Allowed."
                 : (this.state.entry_permission === CONSTANTS.ENTRY_PERMISSION.NOT) ? "Entry: Notify before entry."
                 : "Entry: Accompanied entry only."}
             </Text>
         );
-        
+
         // if note exists, create a <Text> container for it
         var note = "";
         if (this.state.note !== "") {
@@ -106,6 +109,8 @@ export default class User extends React.Component {
                   {this.state.note}
                 </Text>
             );
+        } else {
+          note = (<Text></Text>);
         }
 
         var editButton = (<Button
@@ -466,3 +471,17 @@ export default class User extends React.Component {
         return (content);
     }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  iosLightThemeText: {
+    color: Colors.black,
+    fontSize: 17
+  },
+  iosDarkThemeText: {
+    color: Colors.white,
+    fontSize: 17
+  }
+});

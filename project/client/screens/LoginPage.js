@@ -26,7 +26,7 @@ export default function LoginScreen({ navigation }) {
           <Image source={require('../assets/images/uwcrest.png')}
             style={styles.smallImage}/>
 
-          <Text style={themeLargeTitle}>Log In</Text>
+          <Text style={themeLargeTitle}>Welcome</Text>
 
           <TextInput
             placeholder="Username"
@@ -53,6 +53,13 @@ export default function LoginScreen({ navigation }) {
             style={themeLargeTitle}
             title="Sign In"
             accessibilityLabel="Sign In Button"
+          />
+
+          <Button
+            onPress={() => navigation.replace('SignUp') }
+            style={themeLargeTitle}
+            title="Don’t have an account?"
+            accessibilityLabel="Go to Sign Up page"
           />
 
           <Button

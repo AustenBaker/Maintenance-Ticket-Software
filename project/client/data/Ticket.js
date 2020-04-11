@@ -42,7 +42,7 @@ export default class Ticket extends React.Component{
     ticket_edit_mode: false,
     ticket_updates: []
   }
-  
+
   /**
    * This method displays ticket details like an expanded view
    * emergency level, ticket number, unit number, status
@@ -92,7 +92,7 @@ export default class Ticket extends React.Component{
 
         <Button
           title="Edit Ticket"
-          onPress={() => {       
+          onPress={() => {
             this.setState(ticket_edit_mode, true);
           }}
           accessibilityLabel="Edit Ticket Button"
@@ -102,7 +102,7 @@ export default class Ticket extends React.Component{
     );
     return content;
   }
-  
+
   //generate ticket list using flatlist
   generateTicketList = () => {
 
@@ -110,12 +110,12 @@ export default class Ticket extends React.Component{
 
   /**
    * This method updates ticket information
-   * 
+   *
    * @param ticket_number Ticket number/id
    * @param emergency Ticket level
    * @param unit Ticket unit number
    * @param status Ticket status
-   * 
+   *
    * @returns true if updated correctly
    */
   update = (props) => {
@@ -143,11 +143,11 @@ export default class Ticket extends React.Component{
   /**
    * TODO: UPDATE
    *       add emergency warning
-   * 
+   *
    * Generates form to display when editing a ticket
-   * 
+   *
    * includes the following fields:
-   * Unit Number(text input), 
+   * Unit Number(text input),
    * Emergency(Picker YES NO)
    * Ticket Status(Picker Open Closed)
    */
@@ -156,7 +156,7 @@ export default class Ticket extends React.Component{
     var content;
 
     const ticket = this.getTicket();
-    
+
     let editable = this.state.ticket_edit_mode;
     var submitButton;
     if(editable = true) {
@@ -175,7 +175,7 @@ export default class Ticket extends React.Component{
           selectedValue={this.state.location}
           style={{ hieght: 50, width: 200}}
           onValueChange={
-            (itemValue, itemIndex) => this.setState({location: itemValue}) 
+            (itemValue, itemIndex) => this.setState({location: itemValue})
           }
         >
           <Picker.Item label={CONSTANTS.PROPERTY[0]} value={CONSTANTS.PROPERTY[0]} />
@@ -186,7 +186,7 @@ export default class Ticket extends React.Component{
           <Picker.Item label={CONSTANTS.PROPERTY[5]} value={CONSTANTS.PROPERTY[5]} />
         </Picker>
 
-        <TextInput 
+        <TextInput
           label="Unit Number"
           placeholder={this.state.unit_number}
           maxLength={4}
@@ -197,11 +197,11 @@ export default class Ticket extends React.Component{
 
 
         <Text>Is this an emergency?</Text>
-        <Picker 
+        <Picker
           selectedValue={this.state.emergency}
           style={{ height: 50, width: 50 }}
           onValueChange={
-            (itemValue, itemIndex) => this.setState({emergency: itemValue}) 
+            (itemValue, itemIndex) => this.setState({emergency: itemValue})
           }
         >
           <Picker.Item label='NO'  value={CONSTANTS.EMERGENCY.NO}  />
@@ -210,11 +210,11 @@ export default class Ticket extends React.Component{
 
 
         <Text>Ticket Status (Open/Closed):</Text>
-        <Picker 
+        <Picker
           selectedValue={this.state.status}
           style={{ height: 50, width: 150 }}
           onValueChange={
-            (itemValue, itemIndex) => this.setState({status: itemValue}) 
+            (itemValue, itemIndex) => this.setState({status: itemValue})
           }
         >
           <Picker.Item label='Open'  value={CONSTANTS.STATUS.OPEN}   />
@@ -237,9 +237,9 @@ export default class Ticket extends React.Component{
    * If switched to emergency, display warning
    */
   createTicket = () => {
-	  
+
   }
-  
+
   /**
    * boolean change ticket status
    */
@@ -249,7 +249,7 @@ export default class Ticket extends React.Component{
     if(this.state.status === CONSTANTS.STATUS.CLOSED){
       success = true;
     }
-    return success; 
+    return success;
   }
 
   /**
@@ -258,7 +258,7 @@ export default class Ticket extends React.Component{
   deleteTicket = () => {
 
   }
-  
+
   //returns a ticket
   getTicket = () => {
     let ticket = {

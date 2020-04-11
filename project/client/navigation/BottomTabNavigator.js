@@ -11,7 +11,7 @@ import { ColorScheme } from '../stores';
 import Colors from '../constants/Colors';
 
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = 'Profile';
+const INITIAL_ROUTE_NAME = 'Tickets';
 
 export default function BottomTabNavigator({ navigation, route }) {
   const colorScheme = new ColorScheme();

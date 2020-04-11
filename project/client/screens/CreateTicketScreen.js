@@ -4,12 +4,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
-//import { PrioritySelection } from '../components/PrioritySelection'
 import { ColorScheme } from '../stores';
 import Colors from '../constants/Colors';
-import request from 'request';
-const express = require('supertest')
-const app = express();
+//import request from 'request';
+//const express = require('express')
+//const app = express();
 const colorScheme = new ColorScheme();
 
 var radio_props = [
@@ -25,15 +24,15 @@ class CreateTicketScreen extends React.Component {
       value: 1,
     };
   }
-
+/*
   submitTicket() {
     request(app)
         .post('/ticket/create')
-        .send({issue: "PLEASE WORK", emergency: false, resolvedTime: 0, progress: "VIEWED",closed: false })
+        .send({issue: this.state, emergency: false, resolvedTime: 0, progress: "VIEWED",closed: false })
         .expect(200, done)
     done()
   }
-
+*/
   render(){
 
     let themeContainer =
@@ -69,7 +68,6 @@ class CreateTicketScreen extends React.Component {
         />
 
         <Text style={{ color: themeBodyText }}>Emergency</Text>
-        
 
         <Text style={{fontSize:20, padding: 10, color: radioColor }}>Ticket Importance Level</Text>
         <RadioForm
@@ -107,7 +105,7 @@ class CreateTicketScreen extends React.Component {
         <Button
           title="Create Ticket Request"
           accessibilityLabel="Create Ticket Request Button"
-          onPress = {this.submitTicket} 
+          //onPress = {this.submitTicket}
         />
       </View>
     );
