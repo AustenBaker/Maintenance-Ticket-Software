@@ -1,24 +1,30 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Colors from '../constants/Colors'
 import TabBarIcon from '../components/TabBarIcon';
 import LoginScreen from '../screens/LoginScreen';
 import TicketScreen from '../screens/TicketScreen';
 import UserScreen from '../screens/UserScreen';
 import CreateTicketScreen from '../screens/CreateTicketScreen';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
-
+import { ColorScheme } from '../stores';
 
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = 'Login';
+const INITIAL_ROUTE_NAME = 'Profile';
 
 export default function BottomTabNavigator({ navigation, route }) {
+  const colorScheme = new ColorScheme();
+  let themeTabBar =
+    colorScheme.theme === 'light' ? Colors.tabBarLight : Colors.tabBarDark;
   // Set the header title on the parent stack navigator depending on the
   // currently active tab. Learn more in the documentation:
   // https://reactnavigation.org/docs/en/screen-options-resolution.html
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME} tabBarOptions={{
+        activeBackgroundColor: themeTabBar, inactiveBackgroundColor: themeTabBar 
+      }} >
       <BottomTab.Screen
         name="Tickets"
         component={TicketScreen}

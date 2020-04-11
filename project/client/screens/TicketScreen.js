@@ -23,7 +23,7 @@ export default function TicketScreen() {
   let themeBodyText =
     colorScheme.theme === 'light' ? styles.lightBodyText : styles.darkBodyText;
   let themeItem =
-    colorScheme.theme === 'light' ? '#FFF' : '#000';
+    colorScheme.theme === 'light' ? '#FFF' : '#1C1C1E';
 
 
   const [selected, setSelected] = React.useState(new Map());
@@ -102,9 +102,9 @@ const styles = StyleSheet.create({
     textAlign: 'left',
  },
   item: {
-    padding: 20,
-    borderBottomColor: '#c8c7cc',
-    borderBottomWidth: 1,
+    padding: 15,
+    borderBottomColor: '#C8C7CC',
+    borderBottomWidth: 0.5,
   },
   iosLightContainer: {
     flex: 1,
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   iosDarkContainer: {
     flex: 1,
-    backgroundColor: '#1C1C1E',
+    backgroundColor: '#000',
   },
   iosDarkThemeText: {
     color: '#F2F2F7'

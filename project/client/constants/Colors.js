@@ -2,13 +2,14 @@ const tintColor = '#2f95dc';
 
 export default {
   tintColor,
-  tabIconDefault: '#ccc',
+  tabIconDefault: '#CCC',
   tabIconSelected: tintColor,
-  tabBar: '#000',
+  tabBarLight: '#FFF',
+  tabBarDark: '#000',
   errorBackground: 'red',
-  errorText: '#fff',
+  errorText: '#FFF',
   warningBackground: '#EAEB5E',
   warningText: '#666804',
   noticeBackground: tintColor,
-  noticeText: '#fff',
+  noticeText: '#FFF',
 };
