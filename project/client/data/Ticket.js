@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, CheckBox, Picker, Button, Text } from 'react-native';
+import { View, CheckBox, Button, Text } from 'react-native';
+import {Picker} from '@react-native-community/picker';
 import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
 import { TextInput } from 'react-native-gesture-handler';
@@ -82,6 +83,10 @@ export default class Ticket extends React.Component{
 
         <Text testID="status">
           Ticket Status: {this.state.status}
+        </Text>
+
+        <Text testID="timestamp">
+          Location: {this.state.timestamp}
         </Text>
 
         <Text testID="location">
