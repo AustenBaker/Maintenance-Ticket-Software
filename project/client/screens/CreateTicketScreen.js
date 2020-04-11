@@ -68,7 +68,6 @@ class CreateTicketScreen extends React.Component {
         />
 
         <Text style={{ color: themeBodyText }}>Emergency</Text>
-        <PrioritySelection />
 
         <Text style={{fontSize:20, padding: 10, color: radioColor }}>Ticket Importance Level</Text>
         <RadioForm
