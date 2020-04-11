@@ -6,10 +6,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
-
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import Login from './screens/LoginPage'
 import useLinking from './navigation/useLinking';
+import Colors from './constants/Colors';
 
 import { observer } from 'mobx-react';
 import { UserStore, TicketStore, ColorScheme } from './stores';
@@ -40,11 +40,13 @@ function App(props) {
   let themeTextStyle =
     colorScheme.theme === 'light' ? styles.iosLightThemeText : styles.iosDarkThemeText;
   let themeContainerStyle =
-    colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
+    colorScheme.theme === 'light' ? styles.iosLightSafeArea : styles.iosDarkSafeArea;
   let headerBackgroundColor =
-    colorScheme.theme === 'light' ? '#fff' : '#000';
+    colorScheme.theme === 'light' ? Colors.iosLightBar : Colors.iosDarkBar;
+  let headerBorderColor =
+    colorScheme.theme === 'light' ? Colors.iosLightBorder : Colors.iosDarkBorder;
   let headerTextColor =
-    colorScheme.theme === 'light' ? '#000' : '#fff';
+    colorScheme.theme === 'light' ? Colors.black : Colors.white;
 
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
@@ -80,8 +82,10 @@ function App(props) {
         <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
           <Stack.Navigator
           screenOptions={{
+              gestureEnabled: true,
               headerStyle: {
-                backgroundColor: headerBackgroundColor
+                backgroundColor: headerBackgroundColor,
+                borderBottomColor: headerBorderColor,
               },
               headerTintColor: headerTextColor,
               headerTitleStyle: { fontSize: 17 },
@@ -100,16 +104,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  iosLightContainer: {
-    backgroundColor: '#FFF',
+  iosLightSafeArea: {
+    backgroundColor: Colors.iosLightBar
   },
   iosLightThemeText: {
-    color: '#000'
+    color: Colors.black
   },
-  iosDarkContainer: {
-    backgroundColor: '#000',
+  iosDarkSafeArea: {
+    backgroundColor: Colors.iosDarkBar
   },
   iosDarkThemeText: {
-    color: '#FFF'
+    color: Colors.white
   }
 });

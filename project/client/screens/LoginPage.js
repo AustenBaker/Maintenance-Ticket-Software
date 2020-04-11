@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import { Appearance, AppearanceProvider } from 'react-native-appearance';
 import { ColorScheme } from '../stores';
+import Colors from '../constants/Colors';
 
 // may need to pass in navigation?
 export default function LoginScreen({ navigation }) {
@@ -145,15 +146,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F7',
     alignItems: 'center'
   },
-  iosLightThemeText: {
-    color: '#000'
-  },
   iosDarkContainer: {
     flex: 1,
     backgroundColor: '#000',
     alignItems: 'center'
   },
-  iosDarkThemeText: {
-    color: '#F2F2F7'
-  }
 });

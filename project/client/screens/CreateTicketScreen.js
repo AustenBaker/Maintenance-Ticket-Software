@@ -5,6 +5,7 @@ import * as WebBrowser from 'expo-web-browser';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { ColorScheme } from '../stores';
+import Colors from '../constants/Colors';
 
 const colorScheme = new ColorScheme();
 
@@ -49,20 +50,20 @@ class CreateTicketScreen extends React.Component {
     let themeTextBox =
       colorScheme.theme === 'light' ? styles.lightTextInput : styles.darkTextInput;
     let themeBodyText =
-      colorScheme.theme === 'light' ? styles.iosLightThemeText : styles.iosDarkThemeText;
+      colorScheme.theme === 'light' ? Colors.black : Colors.white;
     let themeKeyboard =
       colorScheme.theme === 'light' ? 'light' : 'dark';
     let radioColor =
-      colorScheme.theme === 'light' ? '#000' : '#FFF';
+      colorScheme.theme === 'light' ? Colors.black : Colors.white;
     let radioLabel =
-      colorScheme.theme === 'light' ? '#000' : '#FFF';
+      colorScheme.theme === 'light' ? Colors.black : Colors.white;
 
     return (
       <View style={styles.container, themeContainer}>
 
         <TextInput
           placeholder="Apartment Complex"
-          placeholderTextColor='#8E8E93'
+          placeholderTextColor={Colors.iosSystemGray}
           keyboardAppearance={themeKeyboard}
           style={themeTextBox}
           onChangeText={text => this.onChangeApt(text)}
@@ -70,7 +71,7 @@ class CreateTicketScreen extends React.Component {
 
         <TextInput
         placeholder="Unit Number"
-        placeholderTextColor='#8E8E93'
+        placeholderTextColor={Colors.iosSystemGray}
         keyboardAppearance={themeKeyboard}
         style={themeTextBox}
         onChangeText={text => this.onChangeUnit(text)}
@@ -90,21 +91,21 @@ class CreateTicketScreen extends React.Component {
 
         <TextInput
           placeholder="Issue"
-          placeholderTextColor='#8E8E93'
+          placeholderTextColor={Colors.iosSystemGray}
           keyboardAppearance={themeKeyboard}
           style={themeTextBox}
           onChangeText={text => this.onChangeIssue(text)}
         />
         <TextInput
           placeholder="Details"
-          placeholderTextColor='#8E8E93'
+          placeholderTextColor={Colors.iosSystemGray}
           keyboardAppearance={themeKeyboard}
           style={themeTextBox}
           onChangeText={text => this.onChangeDetails(text)}
         />
         <TextInput
           placeholder="Other Notes"
-          placeholderTextColor='#8E8E93'
+          placeholderTextColor={Colors.iosSystemGray}
           keyboardAppearance={themeKeyboard}
           style={themeTextBox}
           onChangeText={text => this.onChangeNotes(text)}
@@ -127,46 +128,30 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     height: 40,
     width: '90%',
-    borderColor: '#000',
+    borderColor: Colors.black,
     borderWidth: 2,
     fontSize: 18,
-    color: '#000',
+    color: Colors.black,
 },
   darkTextInput: {
     marginTop: 8,
     marginBottom: 8,
     height: 40,
     width: '90%',
-    borderColor: '#FFF',
+    borderColor: Colors.iosDarkIcon,
     borderWidth: 2,
     fontSize: 18,
-    color: '#FFF',
+    color: Colors.white,
 },
-  largeTextInput: {
-    marginTop: 8,
-    marginBottom: 8,
-    height: 120,
-    width: '90%',
-    borderColor: 'black',
-    borderWidth: 2,
-    fontSize: 18,
-    color: 'black',
-  },
   iosLightContainer: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: Colors.white,
     alignItems: 'center',
-  },
-  iosLightThemeText: {
-    color: '#000'
   },
   iosDarkContainer: {
     flex: 1,
-    backgroundColor: '#1C1C1E',
+    backgroundColor: Colors.black,
     alignItems: 'center',
-  },
-  iosDarkThemeText: {
-    color: '#F2F2F7'
   },
 });
 
