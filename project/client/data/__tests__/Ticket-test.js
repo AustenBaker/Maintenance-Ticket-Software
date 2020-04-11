@@ -20,3 +20,9 @@ test('renders ticket edit screen correctly', () => {
     const tree = renderer.create(<Ticket ticket_edit_mode />).toJSON();
     expect(tree).toMatchSnapshot();
 });
+
+//describe(`placeholder tests, defaults`)
+let testedElement = getByPlaceholderText('99999')
+test('has the placeholder ticket_number', () => {
+    expect(testedElement).toBeEnabled;
+});
