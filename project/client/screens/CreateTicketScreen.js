@@ -4,12 +4,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
+//import { PrioritySelection } from '../components/PrioritySelection'
 import { ColorScheme } from '../stores';
 import Colors from '../constants/Colors';
-//import request from 'request';
-//const express = require('express')
-//const app = express();
 const colorScheme = new ColorScheme();
+
+
+const PATH = 'http://127.0.0.1:3000/'
 
 var radio_props = [
   {label: 'low',       value: 2},
@@ -21,18 +22,29 @@ class CreateTicketScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 1,
+      email: "",
+      aptComplex: "",
+      unit: "",
+      issue: "",
+      details: "",
+      emergency: 1,
     };
   }
-/*
-  submitTicket() {
-    request(app)
-        .post('/ticket/create')
-        .send({issue: this.state, emergency: false, resolvedTime: 0, progress: "VIEWED",closed: false })
-        .expect(200, done)
-    done()
+
+  submitTicket = () => {
+    console.log(this.state)
   }
-*/
+  /*async submitTicket(){
+    const res = await fetch(PATH + '/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      //body: JSON.stringify({ prop1: 'val1', prop2: 'val2' })
+      body: this.state
+    });
+    const data = await res.json();
+    console.log(data); // response data as an Object
+  }*/
+
   render(){
 
     let themeContainer =
@@ -56,7 +68,7 @@ class CreateTicketScreen extends React.Component {
           placeholderTextColor={Colors.iosSystemGray}
           keyboardAppearance={themeKeyboard}
           style={themeTextBox}
-          onChangeText={text => this.setState({ apt: text })}
+          onChangeText={text => this.setState({ aptComplex: text })}
         />
 
         <TextInput
@@ -68,6 +80,7 @@ class CreateTicketScreen extends React.Component {
         />
 
         <Text style={{ color: themeBodyText }}>Emergency</Text>
+        
 
         <Text style={{fontSize:20, padding: 10, color: radioColor }}>Ticket Importance Level</Text>
         <RadioForm
@@ -105,7 +118,7 @@ class CreateTicketScreen extends React.Component {
         <Button
           title="Create Ticket Request"
           accessibilityLabel="Create Ticket Request Button"
-          //onPress = {this.submitTicket}
+          onPress = {this.submitTicket} 
         />
       </View>
     );
