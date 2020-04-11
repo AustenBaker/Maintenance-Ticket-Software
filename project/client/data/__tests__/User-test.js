@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormInput, Text } from 'react-native';
 import renderer from 'react-test-renderer';
-import { fireEvent, render, wait, getByPlaceholderText, getByDisplayValue } from '@testing-library/react-native';
+import { fireEvent, render, wait, getByPlaceholderText, getByDisplayValue, getByRole, getByLabelText, getByTestId, getByText } from '@testing-library/react-native';
 import * as JestNative from '@testing-library/jest-native';
 import * as CONSTANTS from '../../constants/Reference';
 
@@ -39,10 +39,53 @@ describe(`User`, () => {
     });
 
 
+    describe.skip(`created with default values`, () => {
+      const { getByTestId, baseElement } = render(<User />);
+      let testElement = getByTestId(`user-name`);
+      test(`renders User name`, () => {
+        expect(testElement).toBeEnabled();
+      });
+
+      testElement = getByTestId(`user-email`);
+      test(`renders User email`, () => {
+        expect(testElement).toBeEnabled();
+      });
+
+      testElement = getByTestId(`user-phone`);
+      test(`does not render User phone number`, () => {
+        expect(testElement).toBeEnabled();
+      });
+
+      testElement = getByText(`*`);
+      test(`renders User contact preferences`, () => {
+        expect(testElement).not.toBeEnabled();
+      });
+
+      testElement = getByLabelText(``);
+      test(`renders User entry permissions`, () => {
+        expect(testElement).toBeEnabled();
+      });
+
+      testElement = getByTestId(`user-note`);
+      test(`does not render User note`, () => {
+        expect(testElement).not.toBeEnabled();
+      });
+
+      /**
+      test(``, () => {
+        expect(testElement).toBeEnabled();
+      });
+
+      test(``, () => {
+        expect(testElement).toBeEnabled();
+      });
+       */
+    });
+
     // TODO: figure out how to implement query selectors to find
     // relevant properties & values for validation tests
-    describe(`created with default values`, () => {
-      const { getByPlaceholderText, getByTestId, getByDisplayValue, baseElement } = render(<User />);
+    describe(`created with default values in edit_mode`, () => {
+      const { getByPlaceholderText, getByTestId, getByDisplayValue, baseElement } = render(<User edit_mode/>);
       let testElement = getByPlaceholderText(`First Name`);
       test(`has the placeholder first name`, () => {
         expect(testElement).toBeEnabled;
@@ -113,6 +156,7 @@ describe(`User`, () => {
 
     });
 
+    /**
     it(``, () => {
       // TODO: Add more tests
     });
@@ -120,5 +164,5 @@ describe(`User`, () => {
     it(``, () => {
       // TODO: Add more tests
     });
-
+     */
   });
