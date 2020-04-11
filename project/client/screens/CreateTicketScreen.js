@@ -6,7 +6,9 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { ColorScheme } from '../stores';
 import Colors from '../constants/Colors';
-
+import request from 'request';
+const express = require('supertest')
+const app = express();
 const colorScheme = new ColorScheme();
 
 var radio_props = [
@@ -23,24 +25,12 @@ class CreateTicketScreen extends React.Component {
     };
   }
 
-  onChangeApt = (text) => {
-    this.setState({ apt: text })
-  }
-
-  onChangeUnit = (text) => {
-    this.setState({ unit: text })
-  }
-
-  onChangeIssue = (text) => {
-    this.setState({ issue: text })
-  }
-
-  onChangeDetails = (text) => {
-    this.setState({ details: text })
-  }
-
-  onChangeNotes = (text) => {
-    this.setState({ notes: text })
+  submitTicket() {
+    request(app)
+        .post('/ticket/create')
+        .send({issue: "PLEASE WORK", emergency: false, resolvedTime: 0, progress: "VIEWED",closed: false })
+        .expect(200, done)
+    done()
   }
 
   render(){
@@ -66,7 +56,7 @@ class CreateTicketScreen extends React.Component {
           placeholderTextColor={Colors.iosSystemGray}
           keyboardAppearance={themeKeyboard}
           style={themeTextBox}
-          onChangeText={text => this.onChangeApt(text)}
+          onChangeText={text => this.setState({ apt: text })}
         />
 
         <TextInput
@@ -74,7 +64,7 @@ class CreateTicketScreen extends React.Component {
         placeholderTextColor={Colors.iosSystemGray}
         keyboardAppearance={themeKeyboard}
         style={themeTextBox}
-        onChangeText={text => this.onChangeUnit(text)}
+        onChangeText={text => this.setState({ unit: text })}
         />
 
         <Text style={{ color: themeBodyText }}>Emergency</Text>
@@ -97,25 +87,26 @@ class CreateTicketScreen extends React.Component {
           placeholderTextColor={Colors.iosSystemGray}
           keyboardAppearance={themeKeyboard}
           style={themeTextBox}
-          onChangeText={text => this.onChangeIssue(text)}
+          onChangeText={text => this.setState({ issue: text })}
         />
         <TextInput
           placeholder="Details"
           placeholderTextColor={Colors.iosSystemGray}
           keyboardAppearance={themeKeyboard}
           style={themeTextBox}
-          onChangeText={text => this.onChangeDetails(text)}
+          onChangeText={text => this.setState({ details: text })}
         />
         <TextInput
           placeholder="Other Notes"
           placeholderTextColor={Colors.iosSystemGray}
           keyboardAppearance={themeKeyboard}
           style={themeTextBox}
-          onChangeText={text => this.onChangeNotes(text)}
+          onChangeText={text => this.setState({ notes: text })}
         />
         <Button
           title="Create Ticket Request"
           accessibilityLabel="Create Ticket Request Button"
+          onPress = {this.submitTicket}
         />
       </View>
     );

@@ -24,6 +24,14 @@ router.get('/:id', async (req, res) => {
     else res.status(200).json(ticket);
 });
 
+// GET /userEmail
+router.get('/:email', async (req, res) => {
+    const { email } = req.params;
+    const ticket = await Ticket.find({ email });
+    if (!ticket) res.status(404).json({ error: 'NO_SUCH_TICKET' });
+    else res.status(200).json(ticket);
+});
+
 // PUT /update
 router.put('/update', (req, res) => {
 

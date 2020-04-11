@@ -10,6 +10,8 @@ npm-debug.*
 web-build/
 web-report/
 .vscode
+lcov/*
+coverage/*
 
 # macOS
 .DS_Store

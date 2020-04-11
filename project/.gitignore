@@ -4,7 +4,6 @@ npm-debug.log
 .DS_Store
 desktop.ini
 settings.json
-.vscode
 .gradle
 .gradle/*
 gradlew
@@ -16,3 +15,5 @@ gradle-*
 local.properties
 client.iml
 build.gradle
+.vscode
+.vscode/*

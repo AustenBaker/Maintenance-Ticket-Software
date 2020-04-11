@@ -6,7 +6,10 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest --watchAll"
+    "test": "jest --verbose --coverage",
+    "test_update": "jest --verbose --coverage --updateSnapshot",
+    "test_watch": "jest --watchAll",
+    "coverage": "jest --verbose --coverage && open ./coverage/lcov-report/index.html"
   },
   "jest": {
     "preset": "jest-expo"
@@ -14,10 +17,11 @@
   "dependencies": {
     "@expo/vector-icons": "~10.0.0",
     "@react-native-community/masked-view": "0.1.5",
-    "@react-navigation/bottom-tabs": "^5.0.0",
-    "@react-navigation/native": "^5.0.0",
-    "@react-navigation/stack": "^5.0.0",
+    "@react-navigation/bottom-tabs": "^5.2.6",
+    "@react-navigation/native": "^5.1.5",
+    "@react-navigation/stack": "^5.2.10",
     "@react-navigation/web": "~1.0.0-alpha.9",
+    "@react-navigation/core": "^3.0.0-alpha.13",
     "expo": "^36.0.2",
     "expo-asset": "~8.0.0",
     "expo-constants": "~8.0.0",
@@ -25,9 +29,9 @@
     "expo-web-browser": "~8.0.0",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
-    "react": "~16.9.0",
+    "react": "^16.13.1",
     "react-dom": "~16.9.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
+    "react-native": "^0.62.2",
     "react-native-appearance": "~0.3.1",
     "react-native-gesture-handler": "~1.5.0",
     "react-native-safe-area-context": "0.6.0",
@@ -38,8 +42,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
+    "@testing-library/jest-native": "~3.1.0",
+    "@testing-library/react-native": "~5.0.2",
     "babel-preset-expo": "~8.0.0",
-    "jest-expo": "~36.0.1"
+    "jest-expo": "^37.0.0",
+    "react-test-renderer": "~16.13.1"
   },
   "private": true,
   "proxy": "http://127.0.0.1:3001/"
