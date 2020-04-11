@@ -86,7 +86,7 @@ export default class User extends React.Component {
                     </Text>
                 );
             }
-        } else contact.push('');
+        } else contact.push(<Text></Text>);
 
         // create <Text> container for entry permission data
         var entry = (
@@ -96,7 +96,7 @@ export default class User extends React.Component {
                 : "Entry: Accompanied entry only."}
             </Text>
         );
-        
+
         // if note exists, create a <Text> container for it
         var note = "";
         if (this.state.note !== "") {
@@ -106,6 +106,8 @@ export default class User extends React.Component {
                   {this.state.note}
                 </Text>
             );
+        } else {
+          note = (<Text></Text>);
         }
 
         var editButton = (<Button
