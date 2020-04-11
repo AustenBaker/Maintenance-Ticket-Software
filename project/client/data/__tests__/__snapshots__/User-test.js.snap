@@ -1,0 +1,521 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`User renders the user profile editing screen 1`] = `
+<View>
+  <TextInput
+    allowFontScaling={true}
+    autoCompleteType="name"
+    errorMessage="This field is required."
+    keyboardType="default"
+    label="First Name"
+    maxLength={32}
+    onChangeText={[Function]}
+    placeholder="First Name"
+    rejectResponderTermination={true}
+    selectTextOnFocus={true}
+    textContentType="name"
+    underlineColorAndroid="transparent"
+  />
+  <TextInput
+    allowFontScaling={true}
+    autoCompleteType="name"
+    errorMessage="This field is required."
+    keyboardType="default"
+    label="Last Name"
+    maxLength={32}
+    onSubmitEditing={[Function]}
+    placeholder="Last Name"
+    rejectResponderTermination={true}
+    selectTextOnFocus={true}
+    textContentType="familyName"
+    underlineColorAndroid="transparent"
+  />
+  <TextInput
+    allowFontScaling={true}
+    autoCompleteType="email"
+    errorMessage="This field is required.  Please enter valid email address."
+    keyboardType="email-address"
+    label="Email"
+    maxLength={32}
+    onSubmitEditing={[Function]}
+    placeholder="default@CastlebergCommunities.com"
+    rejectResponderTermination={true}
+    selectTextOnFocus={true}
+    textContentType="emailAddress"
+    underlineColorAndroid="transparent"
+  />
+  <TextInput
+    allowFontScaling={true}
+    autoCompleteType="tel"
+    errorMessage="Please enter valid phone number: ###-###-####"
+    keyboardType="phone-pad"
+    label="Phone Number"
+    maxLength={12}
+    onSubmitEditing={[Function]}
+    placeholder="000-000-0000"
+    rejectResponderTermination={true}
+    selectTextOnFocus={true}
+    textContentType="telephoneNumber"
+    underlineColorAndroid="transparent"
+  />
+  <View>
+    <RCTPicker
+      items={
+        Array [
+          Object {
+            "label": "Email",
+            "textColor": undefined,
+            "value": "email",
+          },
+          Object {
+            "label": "Text",
+            "textColor": undefined,
+            "value": "text",
+          },
+        ]
+      }
+      onChange={[Function]}
+      selectedIndex={0}
+      style={
+        Array [
+          Object {
+            "height": 216,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <View>
+    <RCTPicker
+      items={
+        Array [
+          Object {
+            "label": "Allow accompanied entry",
+            "textColor": undefined,
+            "value": "accompanied",
+          },
+          Object {
+            "label": "Notify before entry",
+            "textColor": undefined,
+            "value": "notify",
+          },
+          Object {
+            "label": "Allow entry",
+            "textColor": undefined,
+            "value": "any",
+          },
+        ]
+      }
+      onChange={[Function]}
+      selectedIndex={0}
+      style={
+        Array [
+          Object {
+            "height": 216,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <TextInput
+    allowFontScaling={true}
+    defaultValue=""
+    keyboardType="default"
+    label="Note"
+    maxLength={255}
+    onSubmitEditing={[Function]}
+    rejectResponderTermination={true}
+    selectTextOnFocus={true}
+    testID="note-edit"
+    underlineColorAndroid="transparent"
+  />
+  <View
+    accessibilityLabel="Update Profile Button"
+    accessibilityRole="button"
+    accessibilityState={Object {}}
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "margin": 8,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        Update
+      </Text>
+    </View>
+  </View>
+  <View
+    accessibilityLabel="Reset Profile Button"
+    accessibilityRole="button"
+    accessibilityState={Object {}}
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "margin": 8,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        Reset
+      </Text>
+    </View>
+  </View>
+  <View
+    accessibilityLabel="Cancel Button"
+    accessibilityRole="button"
+    accessibilityState={Object {}}
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "margin": 8,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        Cancel
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`User renders the user screen 1`] = `
+<View>
+  <TextInput
+    allowFontScaling={true}
+    autoCompleteType="name"
+    errorMessage="This field is required."
+    keyboardType="default"
+    label="First Name"
+    maxLength={32}
+    onChangeText={[Function]}
+    placeholder="First Name"
+    rejectResponderTermination={true}
+    selectTextOnFocus={true}
+    textContentType="name"
+    underlineColorAndroid="transparent"
+  />
+  <TextInput
+    allowFontScaling={true}
+    autoCompleteType="name"
+    errorMessage="This field is required."
+    keyboardType="default"
+    label="Last Name"
+    maxLength={32}
+    onSubmitEditing={[Function]}
+    placeholder="Last Name"
+    rejectResponderTermination={true}
+    selectTextOnFocus={true}
+    textContentType="familyName"
+    underlineColorAndroid="transparent"
+  />
+  <TextInput
+    allowFontScaling={true}
+    autoCompleteType="email"
+    errorMessage="This field is required.  Please enter valid email address."
+    keyboardType="email-address"
+    label="Email"
+    maxLength={32}
+    onSubmitEditing={[Function]}
+    placeholder="default@CastlebergCommunities.com"
+    rejectResponderTermination={true}
+    selectTextOnFocus={true}
+    textContentType="emailAddress"
+    underlineColorAndroid="transparent"
+  />
+  <TextInput
+    allowFontScaling={true}
+    autoCompleteType="tel"
+    errorMessage="Please enter valid phone number: ###-###-####"
+    keyboardType="phone-pad"
+    label="Phone Number"
+    maxLength={12}
+    onSubmitEditing={[Function]}
+    placeholder="000-000-0000"
+    rejectResponderTermination={true}
+    selectTextOnFocus={true}
+    textContentType="telephoneNumber"
+    underlineColorAndroid="transparent"
+  />
+  <View>
+    <RCTPicker
+      items={
+        Array [
+          Object {
+            "label": "Email",
+            "textColor": undefined,
+            "value": "email",
+          },
+          Object {
+            "label": "Text",
+            "textColor": undefined,
+            "value": "text",
+          },
+        ]
+      }
+      onChange={[Function]}
+      selectedIndex={0}
+      style={
+        Array [
+          Object {
+            "height": 216,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <View>
+    <RCTPicker
+      items={
+        Array [
+          Object {
+            "label": "Allow accompanied entry",
+            "textColor": undefined,
+            "value": "accompanied",
+          },
+          Object {
+            "label": "Notify before entry",
+            "textColor": undefined,
+            "value": "notify",
+          },
+          Object {
+            "label": "Allow entry",
+            "textColor": undefined,
+            "value": "any",
+          },
+        ]
+      }
+      onChange={[Function]}
+      selectedIndex={0}
+      style={
+        Array [
+          Object {
+            "height": 216,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <TextInput
+    allowFontScaling={true}
+    defaultValue=""
+    keyboardType="default"
+    label="Note"
+    maxLength={255}
+    onSubmitEditing={[Function]}
+    rejectResponderTermination={true}
+    selectTextOnFocus={true}
+    testID="note-edit"
+    underlineColorAndroid="transparent"
+  />
+  <View
+    accessibilityLabel="Create Account Button"
+    accessibilityRole="button"
+    accessibilityState={Object {}}
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "margin": 8,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        Create Account
+      </Text>
+    </View>
+  </View>
+  <View
+    accessibilityLabel="Reset Profile Button"
+    accessibilityRole="button"
+    accessibilityState={Object {}}
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "margin": 8,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        Reset
+      </Text>
+    </View>
+  </View>
+  <View
+    accessibilityLabel="Cancel Button"
+    accessibilityRole="button"
+    accessibilityState={Object {}}
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "margin": 8,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        Cancel
+      </Text>
+    </View>
+  </View>
+</View>
+`;
