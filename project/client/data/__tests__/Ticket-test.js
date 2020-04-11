@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as JestNative from '@testing-library/jest-native';
 import renderer from 'react-test-renderer';
-import Ticket from '../Ticker';
+import Ticket from '../Ticket';
 
 expect.extend({...JestNative})
 
