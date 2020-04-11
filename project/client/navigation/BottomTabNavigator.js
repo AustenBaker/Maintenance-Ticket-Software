@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import LoginScreen from '../screens/LoginScreen';
 import TicketScreen from '../screens/TicketScreen';
-import UserScreen from '../screens/UserScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import CreateTicketScreen from '../screens/CreateTicketScreen';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { ColorScheme } from '../stores';
@@ -53,7 +53,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
         <BottomTab.Screen
           name="Profile"
-          component={UserScreen}
+          component={ProfileScreen}
           options={{
             title: 'Profile',
             tabBarIcon: ({ focused }) => <TabBarIcon focused={focused}
