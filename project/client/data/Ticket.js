@@ -1,18 +1,28 @@
 import * as React from 'react';
-import { View, CheckBox, Picker, FormInput } from 'react-native';
+import { View, CheckBox, Picker, FormInput, Button } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
+import User from './User.js';
+import { TextInput } from 'react-native-gesture-handler';
+import { TicketStore } from '../stores';
 
+/**
+ * TODO: make ticket_number a GUID?
+ * ticket status holds the value which says a ticket is open(0) or closed(1) or deleted(2)
+ * emergency boolean
+ */
+//TODO: make ticket_number a GUID?
+//ticket status holds the value which says a ticket is open(0) or closed(1) or deleted(2)
 export default class Ticket extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
       ticket_number: props.ticket_number,
-      emergency: props.emergency,
-      unit: props.unit,
-      first_name: props.first_name,
-      last_name: props.last_name,
       status: props.status,
-      edit_mode: props.edit_mode,
+      location: props.location,
+      unit_number: props.unit_number,
+      email: props.email,
+      emergency: props.emergency,
+      ticket_edit_mode: props.ticket_edit_mode,
       ticket_updates: [props.ticket_updates]
     }
   }
@@ -22,31 +32,24 @@ export default class Ticket extends React.Component{
    */
   static defaultProps = {
     ticket_number: "99999",
-    emergency: true,
-    unit: "316",
-    first_name: "FirstName",
-    last_name: "LastName",
-    status: "in-progress",
-    edit_mode: "false",
+    status: CONSTANTS.STATUS.OPEN,
+    location: CONSTANTS.PROPERTY.WSP,
+    unit_number: "316",
+    email: "email@email.com",
+    emergency: false,
+    ticket_edit_mode: false,
     ticket_updates: []
   }
-
-  //method to create ticket
-  createTicket = () => {
-	  
-  }
-  
-  
-  
   
   /**
-   * This method displays tickets
+   * This method displays ticket details like an expanded view
    * emergency level, ticket number, unit number, status
    * display list of tickets
    * this should be called when a ticket from the list is pressed
    */
   displayTicketDetails = () => {
     var content;
+    var editButton;
 
     // create <Text> container for emergency data
     var emergency = "";
@@ -60,25 +63,39 @@ export default class Ticket extends React.Component{
       emergency = NULL;
     }
 
-    //prepare content
+    //ticket details content
     content = (
       <View>
         <Text>
-          Ticket Number:
-          {this.state.ticket_number}
-          Unit Number:
-          {this.state.unit}
-          Status:
-          {this.state.status}
+          Ticket Number: {this.state.ticket_number}
+        </Text>
+
+        <Text>
+          Unit Number: {this.state.unit_number}
+        </Text>
+
+        <Text>
+          Ticket Status is {this.state.status}
         </Text>
         {emergency}
-		//TODO add edit button
+
+        <Button
+          title="Edit Ticket"
+          onPress={() => {       
+            this.setState(ticket_edit_mode, true);
+          }}
+          accessibilityLabel="Edit Ticket Button"
+        />
+
       </View>
     );
     return content;
   }
   
-  //display ticket list using flatlist
+  //generate ticket list using flatlist
+  generateTicketList = () => {
+
+  }
 
   /**
    * This method updates ticket information
@@ -95,111 +112,155 @@ export default class Ticket extends React.Component{
     var checked = [];
     if('ticket_number' in props){
       checked.push({['ticket_number']: props.ticket_number});
-	}
+    }
+    if('status' in props && props.status in CONSTANTS.STATUS){
+	    checked.push({['status']: props.status});
+    }
+    if('location' in props && props.location in CONSTANTS.PROPERTY){
+      checked.push({['location']: props.location});
+    }
     if('emergency' in props){
-	  checked.push({['emergency']: props.emergency});
+	    checked.push({['emergency']: props.emergency});
     }
-    if('unit' in props){
-	  checked.push({['unit']: props.unit});
+    if('unit_number' in props){
+	    checked.push({['unit_number']: props.unit_number});
     }
-    if('status' in props){
-	  checked.push({['status']: props.status});
-    }
-
     //TODO: update server state and this.setState
     return updated;
   }
 
   /**
    * TODO: UPDATE
+   *       add emergency warning
+   * 
    * Generates form to display when editing a ticket
-   * so far includes:
-   * Ticket Number, Unit Number, Emergency/Ticket Level Checkbox,
-   * Ticket Status Checkbox,  
+   * 
+   * includes the following fields:
+   * Unit Number(text input), 
+   * Emergency(Picker YES NO)
+   * Ticket Status(Picker Open Closed)
    */
   editTicket = () => {
+    //content for return
     var content;
+
+    const ticket = this.getTicket();
+    
+    let editable = this.state.ticket_edit_mode;
+    var submitButton;
+    if(editable = true) {
+      submitButton = (<Button
+        title="submit ticket update"
+      />)
+    }
+
+    //the content that will be returned
     content = (
-      <form name = "editTicket">
-        <FormLabel>Ticket Number</FormLabel>
-        <FormInput>
-          onSubmitEditing={new_ticket_number => this.setState(ticket_number, new_ticket_number)}
-          defaultValue={this.state.ticket_number}
-        </FormInput>
-        <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
+      <View>
 
-        <FormLabel>Unit Number</FormLabel>
-        <FormInput>
-          onSubmitEditing={newUnit => this.setState(unit, newUnit)}
-          defaultValue={this.state.unit}
-        </FormInput>
-        <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
+        <TextInput 
+          label="Unit Number"
+          placeholder={this.unit_number}
+          maxLength={4}
+          selectTextOnFocus={true}
+          errorMessage="Unit Number is required"
+          onChangeText={unitn => this.setState(unit_number, unitn)}
+        />
 
-        <FormLabel>Ticket Importance Level:</FormLabel>
-        <Picker>
-          <Picker
-            title='Emergency'
-            checkedIcon='dot-circle-o'
-            uncheckedIcon='circle-o'
-            checked={emergency === true}
-            onIconPress={emergency = true}
+        <Picker
+          label="Is this an emergency ticket?"
+          selectedValue={this.state.emergency}
+          onValueChange={(itemValue, itemIndex) => this.setState(emergency, itemValue)}
+        >
+          <Picker.Item
+            label='NO'
+            value={CONSTANTS.EMERGENCY.NO}
           />
           <Picker.Item
-            label='Normal'
-            checkedIcon='dot-circle-o'
-            uncheckedIcon='circle-o'
-            checked={emergency === false}
-            onIconPress={emergency = false}
-          />
-          <P
-            label='Low'
-            checkedIcon='dot-circle-o'
-            uncheckedIcon='circle-o'
-            checked={emergency === false}
-            onIconPress={emergency = false}
+            label='YES'
+            value={CONSTANTS.EMERGENCY.YES}
           />
         </Picker>
-        <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
 
-        <FormLabel>Ticket Status:</FormLabel>
-        <Picker>
+        <Picker
+          label="Ticket Status(Open/Closed): "
+          selectedValue={this.state.status}
+        >
           <Picker.Item
-            title='Open'
-            checkedIcon='dot-circle-o'
-            uncheckedIcon='circle-o'
-            checked={status === 'open'}
-            onIconPress={status = 'open'}
+            label='Open'
+            value={CONSTANTS.STATUS.OPEN}
           />
           <Picker.Item
-            title='In-Progress'
-            checkedIcon='dot-circle-o'
-            uncheckedIcon='circle-o'
-            checked={status === 'in-progress'}
-            onIconPress={status = 'in-progress'}
-          />
-          <Picker.Item
-            title='Closed'
-            checkedIcon='dot-circle-o'
-            uncheckedIcon='circle-o'
-            checked={status === 'closed'}
-            onIconPress={status = 'closed'}
+            label='Closed'
+            value={CONSTANTS.STATUS.CLOSED}
           />
         </Picker>
-        <FormValidationMessage>{'This field is required.'}</FormValidationMessage>
 
-      </form>
+      </View>
     );
+
+
     return content;
   }
+
+
+  /**
+   * Create ticket method
+   * User selects which unit (Picker)
+   * Checkbox with common problems & other textbox
+   * emergency level (radio button)
+   * If switched to emergency, display warning
+   */
+  createTicket = () => {
+	  
+  }
   
-  //create a close ticket method
+  /**
+   * boolean change ticket status
+   */
+  closeTicket = (props) => {
+    let success = false;
+    this.setState({status: CONSTANTS.STATUS.CLOSED});
+    if(this.state.status === CONSTANTS.STATUS.CLOSED){
+      success = true;
+    }
+    return success; 
+  }
+
+  /**
+   * Delete ticket method
+   */
+  deleteTicket = () => {
+
+  }
+  
+  //returns a ticket
+  getTicket = () => {
+    let ticket = {
+      ticket_number: this.state.ticket_number,
+      status: this.state.status,
+      location: this.state.location,
+      unit_number: this.state.unit_number,
+      email: this.state.email,
+      emergency: this.state.emergency,
+      ticket_edit_mode: this.state.ticket_edit_mode,
+      ticket_updates: [...this.state.ticket_updates]
+    }
+    return ticket;
+  }
+
+
   //method to delete tickets for management
 
   render = () => {
     var content;
-    if(this.state.editMode === false){
+
+    //normal view
+    if (this.state.ticket_edit_mode === false) {
       content = this.displayTicket();
-    }else{
+    }
+    //ticket edit mode view
+    else {
       content = this.editUser();
     }
     return (content);

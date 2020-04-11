@@ -50,4 +50,10 @@ export const PROPERTY = {
     SA: 'Stoughton Arms',
     LAA: 'Lincoln Avenue Apartments',
     TAW: 'Tuc-A-Way Apartments'
+};
+
+// Ticket status
+export const STATUS = {
+    OPEN: 'Open ticket',
+    CLOSED: 'Closed ticket'
 }
