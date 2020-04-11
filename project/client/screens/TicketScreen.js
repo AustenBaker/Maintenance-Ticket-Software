@@ -73,6 +73,7 @@ function Item({ id, title, selected, onSelect, itemTheme, bodyTheme }) {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
