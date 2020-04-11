@@ -37,13 +37,12 @@ describe(`The following are enabled from user perspective: `, () => {
     expect(getByTestId(`status`)).toBeEnabled();
   });
 
-  test('location', () => {
-    expect(getByTestId(`location`)).toBeEnabled();
-  });
-
   test('timestamp', () => {
     expect(getByTestId(`timestamp`)).toBeEnabled();
   });
 
-
+  test('location', () => {
+    expect(getByTestId(`location`)).toBeEnabled();
+  });
+  
 });
