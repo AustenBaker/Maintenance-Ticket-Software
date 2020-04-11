@@ -10,7 +10,7 @@ import User from '../data/User';
 
 const colorScheme = new ColorScheme();
 
-export default function UserScreen() {
+export default function ProfileScreen() {
 
   let themeContainer =
     colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
@@ -39,7 +39,7 @@ export default function UserScreen() {
   );
 }
 
-UserScreen.navigationOptions = {
+ProfileScreen.navigationOptions = {
   header: null,
 };
 

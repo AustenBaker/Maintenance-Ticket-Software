@@ -8,10 +8,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import Login from './screens/LoginPage'
-import DetailedView from './screens/DetailedTicketPage'
 import useLinking from './navigation/useLinking';
 import Colors from './constants/Colors';
-
 import { observer } from 'mobx-react';
 import { UserStore, TicketStore, ColorScheme } from './stores';
 const userStore = new UserStore();
@@ -94,7 +92,6 @@ function App(props) {
           >
             <Stack.Screen name="Root" component={Login} options={{headerShown: false}} />
             <Stack.Screen name="Tabs" component={BottomTabNavigator} />
-            <Stack.Screen name="DetailedView" component={DetailedView} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>

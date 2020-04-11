@@ -22,6 +22,13 @@ export class UserStore {
 export class TicketStore {
     constructor() {
         extendObservable(this, {
+          ticket_number: '',
+          timestamp: '',
+          status: '',
+          location: '',
+          unit_number: '',
+          emergency: '',
+          ticket_updates: [],
             /* Add new global states here */
         });
     }
