@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, SafeAreaView } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
@@ -62,6 +62,26 @@ class CreateTicketScreen extends React.Component {
 
     return (
       <View style={styles.container, themeContainer}>
+      <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
+        <View style={{alignItems: 'center'}}>
+
+        <Text style={{fontSize: 20, padding: 15, color: radioColor }}>Ticket Importance Level</Text>
+      <RadioForm
+        labelColor={radioLabel}
+        radio_props={radio_props}
+        formHorizontal={true}
+        labelHorizontal={false}
+        labelStyle={{
+          fontSize: 20,
+          paddingTop: 5,
+          paddingRight: 8,
+          paddingLeft: 8,
+          paddingBottom: 5,
+          color: radioLabel }}
+        buttonSize={20}
+        buttonColor={radioColor}
+        onPress={value => this.setState({value:value})}
+      />
 
         <TextInput
           placeholder="Apartment Complex"
@@ -77,21 +97,6 @@ class CreateTicketScreen extends React.Component {
         keyboardAppearance={themeKeyboard}
         style={themeTextBox}
         onChangeText={text => this.setState({ unit: text })}
-        />
-
-        <Text style={{ color: themeBodyText }}>Emergency</Text>
-        
-
-        <Text style={{fontSize:20, padding: 10, color: radioColor }}>Ticket Importance Level</Text>
-        <RadioForm
-          labelColor={radioLabel}
-          radio_props={radio_props}
-          formHorizontal={true}
-          labelHorizontal={false}
-          labelStyle={{fontSize: 20, paddingRight: 8, paddingLeft: 8, paddingBottom: 5, color: radioLabel }}
-          buttonSize={20}
-          buttonColor={radioColor}
-          onPress={value => this.setState({value:value})}
         />
 
         <TextInput
@@ -118,8 +123,10 @@ class CreateTicketScreen extends React.Component {
         <Button
           title="Create Ticket Request"
           accessibilityLabel="Create Ticket Request Button"
-          onPress = {this.submitTicket} 
+          onPress = {this.submitTicket}
         />
+        </View>
+      </ScrollView>
       </View>
     );
   }
@@ -135,7 +142,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: '90%',
     borderColor: Colors.black,
-    borderWidth: 2,
+    borderBottomWidth: 2,
     fontSize: 18,
     color: Colors.black,
 },
@@ -145,19 +152,17 @@ const styles = StyleSheet.create({
     height: 40,
     width: '90%',
     borderColor: Colors.iosDarkIcon,
-    borderWidth: 2,
+    borderBottomWidth: 2,
     fontSize: 18,
     color: Colors.white,
 },
   iosLightContainer: {
     flex: 1,
     backgroundColor: Colors.white,
-    alignItems: 'center',
   },
   iosDarkContainer: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: Colors.black,
-    alignItems: 'center',
   },
 });
 
