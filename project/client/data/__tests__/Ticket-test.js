@@ -23,7 +23,7 @@ test('renders ticket edit screen correctly', () => {
 });
 
 //describe(`placeholder tests, defaults`)
-let testedElement = getByPlaceholderText('99999')
+let testedElement = getByPlaceholderText('99999');
 test('has the placeholder ticket_number', () => {
     expect(testedElement).toBeEnabled;
 });
