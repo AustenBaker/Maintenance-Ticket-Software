@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
+import { PrioritySelection } from '../components/PrioritySelection'
 import { ColorScheme } from '../stores';
 import Colors from '../constants/Colors';
 
@@ -76,6 +77,9 @@ class CreateTicketScreen extends React.Component {
         style={themeTextBox}
         onChangeText={text => this.onChangeUnit(text)}
         />
+
+        <Text style={{ color: themeBodyText }}>Emergency</Text>
+        
 
         <Text style={{fontSize:20, padding: 10, color: radioColor }}>Ticket Importance Level</Text>
         <RadioForm

@@ -37,15 +37,17 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={TicketScreen}
         options={{
           title: 'Tickets',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-filing" />,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused}
+          name={Platform.OS === 'ios' ? "ios-filing" : "md-filing" } />,
         }}
       />
       <BottomTab.Screen
         name="CreateTicket"
         component={CreateTicketScreen}
         options={{
-          title: 'Create Ticket',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-add-circle" />,
+          title: 'New Ticket',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused}
+          name={Platform.OS === 'ios' ? "ios-add-circle" : "md-add-circle"} />,
         }}
       />
         <BottomTab.Screen
@@ -53,7 +55,8 @@ export default function BottomTabNavigator({ navigation, route }) {
           component={UserScreen}
           options={{
             title: 'Profile',
-            tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-person" />,
+            tabBarIcon: ({ focused }) => <TabBarIcon focused={focused}
+            name={Platform.OS === 'ios' ? "ios-person" : "md-person"} />,
           }}
           />
     </BottomTab.Navigator>
@@ -67,7 +70,7 @@ function getHeaderTitle(route) {
     case 'Tickets':
       return 'Tickets';
     case 'CreateTicket':
-      return 'Create Ticket';
+      return 'New Ticket';
     case 'Profile':
       return 'My Profile';
     case 'Login':

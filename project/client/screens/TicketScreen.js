@@ -16,7 +16,7 @@ const TICKETS = [
   { id: '4', title: 'Kachow', description: 'Gotta go fast' }
 ];
 
-export default function TicketScreen() {
+export default function TicketScreen({ navigation }) {
   let themeContainer =
     colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
   let themeLargeTitle =
@@ -64,7 +64,7 @@ export default function TicketScreen() {
 function Item({ id, title, selected, onSelect, itemTheme, bodyTheme }) {
   return (
     <TouchableOpacity
-      onPress={() => onSelect(id)}
+      onPress={() => navigation.navigate('DetailedView')}
       style={[
         styles.item,
         { backgroundColor: selected ? Colors.iosSystemGray : itemTheme },

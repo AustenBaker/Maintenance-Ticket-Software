@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import Login from './screens/LoginPage'
+import DetailedView from './screens/DetailedTicketPage'
 import useLinking from './navigation/useLinking';
 import Colors from './constants/Colors';
 
@@ -85,7 +86,7 @@ function App(props) {
               gestureEnabled: true,
               headerStyle: {
                 backgroundColor: headerBackgroundColor,
-                borderBottomColor: headerBorderColor,
+                shadowColor: headerBorderColor,
               },
               headerTintColor: headerTextColor,
               headerTitleStyle: { fontSize: 17 },
@@ -93,6 +94,7 @@ function App(props) {
           >
             <Stack.Screen name="Root" component={Login} options={{headerShown: false}} />
             <Stack.Screen name="Tabs" component={BottomTabNavigator} />
+            <Stack.Screen name="DetailedView" component={DetailedView} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
