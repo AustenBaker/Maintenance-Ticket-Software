@@ -39,19 +39,10 @@ export default function BottomTabNavigator({ navigation, route }) {
           name="Profile"
           component={UserScreen}
           options={{
-            title: 'Change This?',
+            title: 'Profile',
             tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-person" />,
           }}
           />
-      <BottomTab.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{
-          title: 'Login',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-person" />,
-        }}
-        />
-
     </BottomTab.Navigator>
   );
 }

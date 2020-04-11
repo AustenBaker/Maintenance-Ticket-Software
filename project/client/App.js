@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 
 import BottomTabNavigator from './navigation/BottomTabNavigator';
+import Login from './screens/LoginPage'
 import useLinking from './navigation/useLinking';
 
 import { observer } from 'mobx-react';
@@ -33,8 +34,6 @@ function App(props) {
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
-
-  console.log("ColorScheme " + colorScheme.theme);
 
   let themeStatusBarStyle =
     colorScheme.theme === 'light' ? 'dark-content' : 'light-content';
@@ -88,7 +87,8 @@ function App(props) {
               headerTitleStyle: { fontSize: 17 },
               }}
           >
-            <Stack.Screen name="Root" component={BottomTabNavigator} />
+            <Stack.Screen name="Root" component={Login} options={{headerShown: false}} />
+            <Stack.Screen name="Tabs" component={BottomTabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>

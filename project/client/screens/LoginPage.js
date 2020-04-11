@@ -5,10 +5,10 @@ import * as WebBrowser from 'expo-web-browser';
 import { Appearance, AppearanceProvider } from 'react-native-appearance';
 import { ColorScheme } from '../stores';
 
-export default function LoginScreen() {
+// may need to pass in navigation?
+export default function LoginScreen({ navigation }) {
     const [user, onChangeUser] = React.useState('');
     const [pass, onChangePass] = React.useState('');
-
     const colorScheme = new ColorScheme();
 
     let themeContainerStyle =
@@ -53,6 +53,13 @@ export default function LoginScreen() {
             style={themeLargeTitle}
             title="Sign In"
             accessibilityLabel="Sign In Button"
+          />
+
+          <Button
+            onPress={() => navigation.replace('Tabs') }
+            style={themeLargeTitle}
+            title="Skip Sign In"
+            accessibilityLabel="Secret Dev Button to Skip Sign In"
           />
 
     </View>
