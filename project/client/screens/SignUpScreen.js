@@ -2,25 +2,27 @@ import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, TextInput, Button } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
-import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
+import { ColorScheme } from '../stores';
+import { AppearanceProvider } from 'react-native-appearance';
 
+const colorScheme = new ColorScheme();
 
 export default function SignUpScreen() {
-    const [user, onChangeUser] = React.useState('');
+    const [email, onChangeEmail] = React.useState('');
     const [pass, onChangePass] = React.useState('');
-    
-    let colorScheme = Appearance.getColorScheme();
-    let subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      this.setState({ colorScheme: Appearance.getColorScheme() });
-    });
+    const [fname, onChangeFname] = React.useState('');
+    const [lname, onChangeLname] = React.useState('');
+    const [address, onChangeAddr] = React.useState('');
+    const [unit, onChangeUnit] = React.useState('');
+
     const themeContainerStyle =
-      colorScheme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
+      colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
     const themeTextBoxStyle =
-      colorScheme === 'light' ? styles.lightTextInput : styles.darkTextInput;
+      colorScheme.theme === 'light' ? styles.lightTextInput : styles.darkTextInput;
     const themeLargeTitle =
-      colorScheme === 'light' ? styles.lightLargeTitle : styles.darkLargeTitle;
+      colorScheme.theme === 'light' ? styles.lightLargeTitle : styles.darkLargeTitle;
     const themeKeyboard =
-        colorScheme === 'light' ? 'light' : 'dark';
+      colorScheme.theme === 'light' ? 'light' : 'dark';
 
   return (
     <AppearanceProvider>
@@ -36,8 +38,8 @@ export default function SignUpScreen() {
             autoCapitalize="none"
             keyboardAppearance={themeKeyboard}
             style={themeTextBoxStyle}
-            onChangeText={text => onChangeUser(text)}
-            value={user}
+            onChangeText={text => onChangeEmail(text)}
+            value={email}
           />
           <TextInput
             secureTextEntry
@@ -57,9 +59,9 @@ export default function SignUpScreen() {
             autoCapitalize="none"
             keyboardAppearance={themeKeyboard}
             style={themeTextBoxStyle}
-            onChangeText={text => onChangePass(text)}
-            value={pass}
-          />          
+            onChangeText={text => onChangeFname(text)}
+            value={fname}
+          />
           <TextInput
             secureTextEntry
             placeholder="Last Name"
@@ -67,8 +69,8 @@ export default function SignUpScreen() {
             autoCapitalize="none"
             keyboardAppearance={themeKeyboard}
             style={themeTextBoxStyle}
-            onChangeText={text => onChangePass(text)}
-            value={pass}
+            onChangeText={text => onChangeLname(text)}
+            value={lname}
           />
           <TextInput
             secureTextEntry
@@ -77,8 +79,8 @@ export default function SignUpScreen() {
             autoCapitalize="none"
             keyboardAppearance={themeKeyboard}
             style={themeTextBoxStyle}
-            onChangeText={text => onChangePass(text)}
-            value={pass}
+            onChangeText={text => onChangeAddr(text)}
+            value={address}
           />
           <TextInput
             secureTextEntry
@@ -87,8 +89,8 @@ export default function SignUpScreen() {
             autoCapitalize="none"
             keyboardAppearance={themeKeyboard}
             style={themeTextBoxStyle}
-            onChangeText={text => onChangePass(text)}
-            value={pass}
+            onChangeText={text => onChangeUnit(text)}
+            value={unit}
           />
           <Button
             onPress={() => handleLogin(user, pass) }

@@ -5,7 +5,6 @@ import LoginScreen from '../screens/LoginScreen';
 import TicketScreen from '../screens/TicketScreen';
 import UserScreen from '../screens/UserScreen';
 import CreateTicketScreen from '../screens/CreateTicketScreen';
-import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import SignUpScreen from '../screens/SignUpScreen';
 
 const BottomTab = createBottomTabNavigator();

@@ -4,6 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
+import { ColorScheme } from '../stores';
+
+const colorScheme = new ColorScheme();
 
 const TICKETS = [
   { id: '1', title: 'Test Ticket', description: 'Yeet', },
@@ -13,18 +16,14 @@ const TICKETS = [
 ];
 
 export default function TicketScreen() {
-  let colorScheme = Appearance.getColorScheme();
-  let subscription = Appearance.addChangeListener(({ colorScheme }) => {
-    this.setState({ colorScheme: Appearance.getColorScheme() });
-  });
-  const themeContainer =
-    colorScheme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
-  const themeLargeTitle =
-    colorScheme === 'light' ? styles.lightLargeTitle : styles.darkLargeTitle;
-  const themeBodyText =
-    colorScheme === 'light' ? styles.lightBodyText : styles.darkBodyText;
-  const themeItem =
-    colorScheme === 'light' ? '#FFF' : '#000';
+  let themeContainer =
+    colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
+  let themeLargeTitle =
+    colorScheme.theme === 'light' ? styles.lightLargeTitle : styles.darkLargeTitle;
+  let themeBodyText =
+    colorScheme.theme === 'light' ? styles.lightBodyText : styles.darkBodyText;
+  let themeItem =
+    colorScheme.theme === 'light' ? '#FFF' : '#000';
 
 
   const [selected, setSelected] = React.useState(new Map());

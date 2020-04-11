@@ -2,24 +2,23 @@ import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, TextInput, Button } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
-import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
+import { Appearance, AppearanceProvider } from 'react-native-appearance';
+import { ColorScheme } from '../stores';
 
 export default function LoginScreen() {
     const [user, onChangeUser] = React.useState('');
     const [pass, onChangePass] = React.useState('');
 
-    let colorScheme = Appearance.getColorScheme();
-    let subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      this.setState({ colorScheme: Appearance.getColorScheme() });
-    });
+    const colorScheme = new ColorScheme();
+
     const themeContainerStyle =
-      colorScheme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
+      colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
     const themeTextBox =
-      colorScheme === 'light' ? styles.lightTextInput : styles.darkTextInput;
+      colorScheme.theme === 'light' ? styles.lightTextInput : styles.darkTextInput;
     const themeLargeTitle =
-      colorScheme === 'light' ? styles.lightLargeTitle : styles.darkLargeTitle;
+      colorScheme.theme === 'light' ? styles.lightLargeTitle : styles.darkLargeTitle;
     const themeKeyboard =
-      colorScheme === 'light' ? 'light' : 'dark';
+      colorScheme.theme === 'light' ? 'light' : 'dark';
 
   return (
     <AppearanceProvider>
