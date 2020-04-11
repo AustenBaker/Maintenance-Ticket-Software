@@ -20,9 +20,9 @@ export default class User extends React.Component {
             phone: props.phone,
             contact: props.contact,
             entry_permission: props.entry_permission,
-            user_type: props.user_type,
-            note: props.note,
-            edit_mode: props.edit_mode,
+            user_type: ('user_type' in props ? props.user_type : CONSTANTS.USER_TYPE.RES),
+            note: ('note' in props ? props.note : ""),
+            edit_mode: ('edit_mode' in props ? props.edit_mode : false),
             tickets: []
         }
     }
@@ -53,42 +53,50 @@ export default class User extends React.Component {
      */
     displayUser = () => {
         var content;
+        let phoneCheck = this.state.phone !== User.defaultProps.phone;
 
         // if phone number exists, create text output
         // and add star to user's preferred contact type
-        var contact = this.state.email;
-        if (this.state.phone !== this.defaultProps.phone) {
-            if (this.state.contact === 'email') {
-                contact += "* Phone: ";
-                contact += this.state.phone;
-            } else {
-                contact += " Phone: ";
-                contact += this.state.phone;
-                contact += "*";
-            }
-            contact += "\n* = Preferred contact method."
+        // if multiple methods available
+        var contact = [];
+        if (this.state.contact === CONSTANTS.PREFERRED_CONTACT.EMAIL && phoneCheck) {
+            contact.push(
+            <Text testID="user-name">
+            Email: {this.state.email + "* "}
+            </Text>
+            );
+        } else {
+            contact.push(
+            <Text testID="user-name">
+            Email: {this.state.email}
+            </Text>
+            );
         }
+        if (phoneCheck) {
+            if (this.state.contact === CONSTANTS.PREFERRED_CONTACT.TXT) {
+                contact.push(
+                    <Text testID="user-phone">Phone: {this.state.phone + "*\n"}
+                    * = Preferred contact method.
+                    </Text>
+                );
+            } else {
+                contact.push(
+                    <Text testID="user-phone">Phone: {this.state.phone + "\n"}
+                    * = Preferred contact method.
+                    </Text>
+                );
+            }
+        } else contact.push('');
 
         // create <Text> container for entry permission data
-        var entry = "";
-        if (this.state.entry_permission === "any") {
-            entry = (
-                <Text>
-                    Entry: Allowed
-                </Text>
-            );
-        } else if (this.state.entry_permission === "notify") {
-            entry = (
-                <Text>
-                    Entry: Notify before entry.
-                </Text>
-            );
-        } else entry = (
-            <Text>
-                Entry: Accompanied entry only.
+        var entry = (
+            <Text testID="user-entry">
+                {(this.state.entry_permission === CONSTANTS.ENTRY_PERMISSION.ANY) ? "Entry: Allowed."
+                : (this.state.entry_permission === CONSTANTS.ENTRY_PERMISSION.NOT) ? "Entry: Notify before entry."
+                : "Entry: Accompanied entry only."}
             </Text>
         );
-
+        
         // if note exists, create a <Text> container for it
         var note = "";
         if (this.state.note !== "") {
@@ -100,19 +108,21 @@ export default class User extends React.Component {
             );
         }
 
+        var editButton = (<Button
+            title="Edit Profile"
+            onPress={() => this.update(this)}
+            accessibilityLabel="Update Profile Button"
+        />);
+
         // label & put user info into a <View><Text> wrapper
         // for display
         content = (
             <View>
               <Text>
-                Name:
-                {this.state.first_name}
-                {this.state.last_name}
+                Name: {this.state.first_name} {this.state.last_name}
               </Text>
-              <Text>
-                Email:
-                {contact}
-              </Text>
+              {contact[0]}
+              {contact[1]}
               {entry}
               {note}
             </View>
@@ -444,14 +454,14 @@ export default class User extends React.Component {
      * @returns React Native encoding for User element display.
      */
     render = () => {
-        var content;
-        // TODO: Currently always rendering editMode version, fix this!
-        if (this.state.editMode === false){
-            // if not in edit mode, simply display user info
-            content=this.displayUser();
-        } else {
+        var content = null;
+        // TODO: Implement tests for Create Account display
+        if (this.state.edit_mode){
             // if in edit mode, display form for user profile update
             content=this.editUser();
+        } else {
+            // if not in edit mode, simply display user info
+            content=this.displayUser();
         }
         return (content);
     }
