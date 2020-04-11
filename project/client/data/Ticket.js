@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, CheckBox, Picker, FormInput, Button } from 'react-native';
+import { View, CheckBox, Picker, Button } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
 import { TextInput } from 'react-native-gesture-handler';
@@ -158,42 +158,56 @@ export default class Ticket extends React.Component{
     content = (
       <View>
 
+
+        <Text>Property</Text>
+        <Picker
+          selectedValue={this.state.location}
+          style={{ hieght: 50, width: 200}}
+          onValueChange={
+            (itemValue, itemIndex) => this.setState({location: itemValue}) 
+          }
+        >
+          <Picker.Item label={CONSTANTS.PROPERTY[0]} value={CONSTANTS.PROPERTY[0]} />
+          <Picker.Item label={CONSTANTS.PROPERTY[1]} value={CONSTANTS.PROPERTY[1]} />
+          <Picker.Item label={CONSTANTS.PROPERTY[2]} value={CONSTANTS.PROPERTY[2]} />
+          <Picker.Item label={CONSTANTS.PROPERTY[3]} value={CONSTANTS.PROPERTY[3]} />
+          <Picker.Item label={CONSTANTS.PROPERTY[4]} value={CONSTANTS.PROPERTY[4]} />
+          <Picker.Item label={CONSTANTS.PROPERTY[5]} value={CONSTANTS.PROPERTY[5]} />
+        </Picker>
+
         <TextInput 
           label="Unit Number"
-          placeholder={this.unit_number}
+          placeholder={this.state.unit_number}
           maxLength={4}
           selectTextOnFocus={true}
           errorMessage="Unit Number is required"
           onChangeText={unitn => this.setState(unit_number, unitn)}
         />
 
-        <Picker
-          label="Is this an emergency ticket?"
+
+        <Text>Is this an emergency?</Text>
+        <Picker 
           selectedValue={this.state.emergency}
-          onValueChange={(itemValue, itemIndex) => this.setState(emergency, itemValue)}
+          style={{ height: 50, width: 50 }}
+          onValueChange={
+            (itemValue, itemIndex) => this.setState({emergency: itemValue}) 
+          }
         >
-          <Picker.Item
-            label='NO'
-            value={CONSTANTS.EMERGENCY.NO}
-          />
-          <Picker.Item
-            label='YES'
-            value={CONSTANTS.EMERGENCY.YES}
-          />
+          <Picker.Item label='NO'  value={CONSTANTS.EMERGENCY.NO}  />
+          <Picker.Item label='YES' value={CONSTANTS.EMERGENCY.YES} />
         </Picker>
 
-        <Picker
-          label="Ticket Status(Open/Closed): "
+
+        <Text>Ticket Status (Open/Closed):</Text>
+        <Picker 
           selectedValue={this.state.status}
+          style={{ height: 50, width: 150 }}
+          onValueChange={
+            (itemValue, itemIndex) => this.setState({status: itemValue}) 
+          }
         >
-          <Picker.Item
-            label='Open'
-            value={CONSTANTS.STATUS.OPEN}
-          />
-          <Picker.Item
-            label='Closed'
-            value={CONSTANTS.STATUS.CLOSED}
-          />
+          <Picker.Item label='Open'  value={CONSTANTS.STATUS.OPEN}   />
+          <Picker.Item label='Closed'value={CONSTANTS.STATUS.CLOSED} />
         </Picker>
 
       </View>
