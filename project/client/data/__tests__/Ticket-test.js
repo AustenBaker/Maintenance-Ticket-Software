@@ -24,21 +24,26 @@ test('renders ticket edit view correctly', () => {
 });
 
 describe(`The following are enabled from user perspective: `, () => {
+  const { getByTestId } = render(<Ticket />);
+  test('ticket_number', () => {
+    expect(getByTestId(`ticket_number`)).toBeEnabled();
+  });
 
-    const { getByTestId } = render(<Ticket />);
-    test('ticket_number', () => {
-        expect(getByTestId(`ticket_number`)).toBeEnabled();
-    });
+  test('unit_number', () => {
+    expect(getByTestId(`unit_number`)).toBeEnabled();
+  });
 
-    test('unit_number', () => {
-        expect(getByTestId(`unit_number`)).toBeEnabled();
-    });
+  test('status', () => {
+    expect(getByTestId(`status`)).toBeEnabled();
+  });
 
-    test('status', () => {
-        expect(getByTestId(`status`)).toBeEnabled();
-    });
+  test('location', () => {
+    expect(getByTestId(`location`)).toBeEnabled();
+  });
 
-    test('location', () => {
-        expect(getByTestId(`location`)).toBeEnabled();
-    });
+  test('timestamp', () => {
+    expect(getByTestId(`timestamp`)).toBeEnabled();
+  });
+
+
 });
