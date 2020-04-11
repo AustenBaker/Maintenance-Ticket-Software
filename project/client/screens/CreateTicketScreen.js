@@ -113,37 +113,6 @@ class CreateTicketScreen extends React.Component {
   }
 }
 
-function PrioritySelection() {
-  Platform.select({
-    ios: {
-      <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
-    },
-    android: {
-      let radioColor =
-        colorScheme.theme === 'light' ? Colors.black : Colors.white;
-      let radioLabel =
-        colorScheme.theme === 'light' ? Colors.black : Colors.white;
-      return (
-        <RadioForm
-          labelColor={radioLabel}
-          radio_props={radio_props}
-          formHorizontal={true}
-          labelHorizontal={false}
-          labelStyle={{fontSize: 20, paddingRight: 8, paddingLeft: 8, paddingBottom: 5, color: radioLabel }}
-          buttonSize={20}
-          buttonColor={radioColor}
-          onPress={value => this.setState({value:value})}
-        />
-    }
-  })
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
