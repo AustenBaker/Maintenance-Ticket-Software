@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { TextInput, Text, Picker, Button, View, StyleSheet } from 'react-native';
+import { TextInput, Text, Button, View, StyleSheet } from 'react-native';
+import {Picker} from '@react-native-community/picker';
 import * as CONSTANTS from '../constants/Reference';
 import Ticket from './Ticket.js';
 import Colors from '../constants/Colors'
