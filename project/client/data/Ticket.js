@@ -38,7 +38,7 @@ export default class Ticket extends React.Component{
     location: CONSTANTS.PROPERTY.WSP,
     unit_number: "316",
     email: "email@email.com",
-    emergency: false,
+    emergency: false, 
     ticket_edit_mode: false,
     ticket_updates: []
   }
@@ -49,15 +49,14 @@ export default class Ticket extends React.Component{
    * display list of tickets
    * this should be called when a ticket from the list is pressed
    */
-  displayTicketDetails = () => {
+  displayTicketDetails = (props) => {
     var content;
-    var editButton;
 
     // create <Text> container for emergency data
     var emergency = "";
     if (this.emergency === true){
       emergency = (
-        <Text>
+        <Text testID="emergency">
           URGENT: This is an emergency level ticket!
         </Text>
       );
@@ -70,19 +69,25 @@ export default class Ticket extends React.Component{
     }
 
     //ticket details content
+    //TODO make edit button open up edit view
     content = (
       <View>
-        <Text>
+        <Text testID="ticket_number">
           Ticket Number: {this.state.ticket_number}
         </Text>
 
-        <Text>
+        <Text testID="unit_number">
           Unit Number: {this.state.unit_number}
         </Text>
 
-        <Text>
-          Ticket Status is {this.state.status}
+        <Text testID="status">
+          Ticket Status: {this.state.status}
         </Text>
+
+        <Text testID="location">
+          Location: {this.state.location}
+        </Text>
+        
         {emergency}
 
         <Button

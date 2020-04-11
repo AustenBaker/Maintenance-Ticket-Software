@@ -19,8 +19,12 @@ exports.User = mongoose.model('User', {
 
 exports.Ticket = mongoose.model('Ticket', {
     id: Number,
+    email: String,
+    aptComplex: String,
+    unit: String,
     issue: String,
-    emergency: Boolean,
+    details: String,
+    emergency: Number,
     resolvedTime: Number,
     progress: String,
     closed: Boolean
