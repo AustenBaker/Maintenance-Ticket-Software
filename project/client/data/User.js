@@ -18,7 +18,7 @@ export default class User extends React.Component {
             entry_permission: props.entry_permission,
             user_type: props.user_type,
             note: props.note,
-            edit_mode: (props.edit_mode === true),
+            edit_mode: props.edit_mode,
             tickets: []
         }
     }
@@ -28,14 +28,14 @@ export default class User extends React.Component {
      * are not all passed into the constructor.
      */
     static defaultProps = {
-        first_name: "FirstName",
-        last_name: "LastName",
+        first_name: "First Name",
+        last_name: "Last Name",
         units: ["1703"],
         email: "default@CastlebergCommunities.com",
         phone: "000-000-0000",
-        contact: "email",
-        entry_permission: "accompanied",
-        user_type: "resident",
+        contact: CONSTANTS.PREFERRED_CONTACT.EMAIL,
+        entry_permission: CONSTANTS.ENTRY_PERMISSION.ACC,
+        user_type: CONSTANTS.USER_TYPE.RES,
         note: "",
         edit_mode: false,
         tickets: []
@@ -292,7 +292,7 @@ export default class User extends React.Component {
             <View>
               <TextInput
                 label="First Name"
-                defaultValue={this.state.first_name}
+                placeholder={this.state.first_name}
                 keyboardType="default"
                 maxLength={32}
                 selectTextOnFocus={true}
@@ -303,7 +303,7 @@ export default class User extends React.Component {
               />
               <TextInput
                 label="Last Name"
-                defaultValue={this.state.last_name}
+                placeholder={this.state.last_name}
                 keyboardType="default"
                 maxLength={32}
                 selectTextOnFocus={true}
@@ -314,7 +314,7 @@ export default class User extends React.Component {
               />
               <TextInput
                 label="Email"
-                defaultValue={this.state.email}
+                placeholder={this.state.email}
                 keyboardType="email-address"
                 maxLength={32}
                 selectTextOnFocus={true}
@@ -325,7 +325,7 @@ export default class User extends React.Component {
               />
               <TextInput
                 label="Phone Number"
-                defaultValue={this.state.phone}
+                placeholder={this.state.phone}
                 keyboardType="phone-pad"
                 maxLength={12}
                 selectTextOnFocus={true}
@@ -370,8 +370,9 @@ export default class User extends React.Component {
                   label="Note"
                   defaultValue={this.state.note}
                   keyboardType="default"
-                  maxLength={256}
+                  maxLength={255}
                   selectTextOnFocus={true}
+                  testID={"note-edit"}
                   onSubmitEditing={someNote => this.setState(note, someNote)}
               />
               {submitButton}
@@ -428,6 +429,7 @@ export default class User extends React.Component {
         // TODO: add session validation check
         if (props.pwd !== undefined && CONSTANTS.REGEX.PASSWORD.exec(props.pwd)) {
             // TODO: process password update
+            // fire off email reset or handle email message link
         }
         return updated;
     }
