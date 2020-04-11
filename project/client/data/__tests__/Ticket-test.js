@@ -23,7 +23,18 @@ test('renders ticket edit screen correctly', () => {
 });
 
 //describe(`placeholder tests, defaults`)
+const { getByPlaceholderText } = render(<Ticket />);
 let testedElement = getByPlaceholderText('99999');
 test('has the placeholder ticket_number', () => {
+    expect(testedElement).toBeEnabled;
+});
+
+testedElement = getByPlaceholderText(CONSTANTS.STATUS.OPEN);
+test('has the placeholder status', () => {
+    expect(testedElement).toBeEnabled;
+});
+
+testedElement = getByPlaceholderText(CONSTANTS.PROPERTY.WSP);
+test('has the placeholder location', () => {
     expect(testedElement).toBeEnabled;
 });
