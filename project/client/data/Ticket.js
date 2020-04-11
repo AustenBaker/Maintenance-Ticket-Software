@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, CheckBox, Picker, Button } from 'react-native';
+import { View, CheckBox, Picker, Button, Text } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
 import { TextInput } from 'react-native-gesture-handler';
@@ -17,6 +17,7 @@ export default class Ticket extends React.Component{
     super(props);
     this.state = {
       ticket_number: props.ticket_number,
+      timestamp: props.timestamp,
       status: props.status,
       location: props.location,
       unit_number: props.unit_number,
@@ -32,6 +33,7 @@ export default class Ticket extends React.Component{
    */
   static defaultProps = {
     ticket_number: "99999",
+    timestamp: "",
     status: CONSTANTS.STATUS.OPEN,
     location: CONSTANTS.PROPERTY.WSP,
     unit_number: "316",
@@ -60,7 +62,11 @@ export default class Ticket extends React.Component{
         </Text>
       );
     }else{
-      emergency = NULL;
+      emergency = (
+        <Text>
+          This is a normal level ticket
+        </Text>
+      );
     }
 
     //ticket details content
@@ -252,6 +258,7 @@ export default class Ticket extends React.Component{
   getTicket = () => {
     let ticket = {
       ticket_number: this.state.ticket_number,
+      timestamp: this.state.timestamp,
       status: this.state.status,
       location: this.state.location,
       unit_number: this.state.unit_number,
@@ -271,11 +278,11 @@ export default class Ticket extends React.Component{
 
     //normal view
     if (this.state.ticket_edit_mode === false) {
-      content = this.displayTicket();
+      content = this.displayTicketDetails();
     }
     //ticket edit mode view
     else {
-      content = this.editUser();
+      content = this.editTicket();
     }
     return (content);
   }
