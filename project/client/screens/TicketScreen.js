@@ -5,16 +5,11 @@ import * as WebBrowser from 'expo-web-browser';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { ColorScheme } from '../stores';
-import Colors from '../constants/Colors'
+import Colors from '../constants/Colors';
+
+import Ticket from '../data/Ticket';
 
 const colorScheme = new ColorScheme();
-
-const TICKETS = [
-  { id: '1', title: 'Test Ticket', description: 'Yeet', },
-  { id: '2', title: 'Anotha One', description: 'DJ Khaled' },
-  { id: '3', title: 'Do Not Click', description: 'Click me' },
-  { id: '4', title: 'Kachow', description: 'Gotta go fast' }
-];
 
 export default function TicketScreen({ navigation }) {
   let themeContainer =
@@ -39,27 +34,18 @@ export default function TicketScreen({ navigation }) {
     },
     [selected],
   );
-
+  var properties = {};
   return (
-    <SafeAreaView style={styles.container, themeContainer}>
-      <FlatList data={TICKETS}
-      renderItem={({ item }) => (
-        <Item
-          id={item.id}
-          title={item.title}
-          description={item.description}
-          selected={!!selected.get(item.id)}
-          onSelect={onSelect}
-          itemTheme={themeItem}
-          bodyTheme={themeBodyText}
-        />
-      )}
-      keyExtractor={item => item.id}
-      extraData={selected}
-    />
-    </SafeAreaView>
+    <View style={styles.container, themeContainer}>
+      <ScrollView>
+        <View>
+          <Ticket {...properties}/>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
+
 
 function Item({ id, title, selected, onSelect, itemTheme, bodyTheme }) {
   return (
