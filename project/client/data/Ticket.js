@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View,  Button, Text, Picker, StyleSheet, TouchableWithoutFeedbackBase } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
-import { TextInput } from 'react-native-gesture-handler';
+import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import { TicketStore } from '../stores';
 
 /**
@@ -41,6 +41,8 @@ export default class Ticket extends React.Component{
     unit_number: "316",
     email: "email@email.com",
     emergency: false,
+    ticket_issue_title: "Pipe Burst",
+    ticket_issue: "A pipe burst open in my bathroom",
     ticket_view_mode: 0,
     ticket_updates: []
   }
@@ -91,50 +93,74 @@ export default class Ticket extends React.Component{
         Ticket ID #{this.state.ticket_number}
       </Text>
     );
+  
+    
+    //<view> for ticket
+    var ticket = "";
+    ticket = (
+      <View testID="ticketContainer" style={styles.ticketContainer}>
+          <Text style={styles.ticketHeader}>
+            <View testID = "unit_number">
+              <Text style={styles.ticketHeader}>Location: Apt. {this.state.unit_number}, </Text>
+            </View>
+            <View testID = "location">
+              {this.state.location} {"\n"}
+            </View>
+          </Text>
 
+          <Text style={styles.ticketBody}>
+            {status}  {"\n"}
+          </Text>
+
+          <View testID="emergency">
+            {emergency} {"\n"}
+          </View>
+
+          <View>
+            {ticket_number}  {"\n"}  
+          </View>
+
+          <View testID="timestamp">
+            Timestamp: {this.state.timestamp}
+          </View>
+
+          <View>
+            {this.ticket_issue_title}
+            {this.ticket_issue}  
+          </View>
+
+        </View>
+    );
+
+
+    //<view> for buttons
+    var buttons = "";
+    buttons = (
+      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={styles.editTicketButton}>
+            <Button
+              title="Edit Ticket"
+              onPress={() => {
+                this.setState({ticket_view_mode: 1});
+              }}
+              accessibilityLabel="Edit Ticket Button"
+            />
+          </View>
+        
+          <View style={styles.showTicketListButton}>
+            <Button
+              title="Show Ticket List"
+              onPress={() => {
+                this.setState({ticket_view_mode: 2});
+              }}
+              accessibilityLabel="Edit Ticket Button"
+            />
+          </View>
+        </View>
+    );
     //ticket details content
     content = (
-      <View>
-
-        <View testID="ticketContainer" style={styles.ticketContainer}>
-          <Text style={styles.ticketLine1}>
-            Location: Apt. {this.state.unit_number}, {this.state.location} {"\n"}
-          </Text>
-
-          <Text style={styles.ticketLine2}>
-            {status}  |  {emergency}  |{"\n"}
-          </Text>
-
-          <Text style={styles.ticketLine3}>
-            {ticket_number}     
-          </Text>
-
-          <Text style={styles.ticketLine4}>
-            Timestamp: {this.state.timestamp} 
-          </Text>
-        </View>
-
-        <View style={styles.editTicketButton}>
-          <Button
-            title="Edit Ticket"
-            onPress={() => {
-              this.setState({ticket_view_mode: 1});
-            }}
-            accessibilityLabel="Edit Ticket Button"
-          />
-        </View>
-
-        <View style={styles.generateTicketListButton}>
-          <Button
-            title="Show Ticket List"
-            onPress={() => {
-              this.setState({ticket_view_mode: 2});
-            }}
-            accessibilityLabel="Edit Ticket Button"
-          />
-        </View>
-
-      </View>
+      <View>{ticket}{buttons}</View>
     );
     return content;
   }
@@ -142,32 +168,32 @@ export default class Ticket extends React.Component{
   //generate ticket list using flatlist
   generateTicketList = () => {
     var content;
+    var temp = this.displayTicketDetails();
 
     content = (
-      <View style={styles.ticketListContainer}>
+      <View>
+        <ScrollView>
+          <Text style={{backgroundColor: 'white', height: 400, margin: 20}}>
+            in progress
+          </Text>
+          <Text style={{backgroundColor: 'white', height: 300, margin: 20}}>
+            in progress
+          </Text>
+          <Text style={{backgroundColor: 'white', height: 200, margin: 20}}>
+            in progress
+          </Text>
+          <Text style={{backgroundColor: 'white', height: 100, margin: 20}}>
+            in progress
+          </Text>
 
-        <View style={styles.ticketListItem1}>
-          ticket 1
-        </View>
-        <View style={styles.ticketListItem2}>
-          ticket 2
-        </View>
-        <View style={styles.ticketListItem3}>
-          ticket 3
-        </View>
-        <View style={styles.ticketListItem4}>
-          ticket 4
-        </View>
-
-        <View style={styles.submitTicketUpdateButton}>
           <Button
-            title="Go back to detail view"
-            onPress={() => {
-              this.setState({ticket_view_mode: 0});
-            }}
-
-          />
-        </View>
+              title="Back"
+              onPress={() => {
+                this.setState({ticket_view_mode: 0});
+              }}
+              accessibilityLabel="Edit Ticket Button"
+            />
+        </ScrollView>
       </View>
     );
     return content;
@@ -195,7 +221,7 @@ export default class Ticket extends React.Component{
     if('location' in props && props.location in CONSTANTS.PROPERTY){
       checked.push({['location']: props.location});
     }
-    if('emergency' in props){
+    if('emergency' in props && props.emergency in CONSTANTS.EMERGENCY){
 	    checked.push({['emergency']: props.emergency});
     }
     if('unit_number' in props){
@@ -288,19 +314,7 @@ export default class Ticket extends React.Component{
     return content;
   }
 
-
-  /**
-   * Create ticket method
-   * User selects which unit (Picker)
-   * Checkbox with common problems & other textbox
-   * emergency level (radio button)
-   * If switched to emergency, display warning
-   */
-  createTicket = () => {
-
-  }
-
-  //returns a ticket
+  //returns a ticket object
   getTicket = () => {
     let ticket = {
       ticket_number: this.state.ticket_number,
@@ -334,9 +348,7 @@ export default class Ticket extends React.Component{
    * Delete ticket method
    * for management and maint accounts
    */
-  deleteTicket = () => {
-
-  }
+  deleteTicket = () => {}
 
   render = () => {
     var content;
@@ -362,7 +374,7 @@ export default class Ticket extends React.Component{
 const styles = StyleSheet.create({
   //ticket view screen styles
   ticketContainer: {
-    height: 120, 
+    height: 200, 
     width: '80%',
     marginLeft: '10%',
     marginBottom: 20,
@@ -372,73 +384,43 @@ const styles = StyleSheet.create({
     borderRadius: 12,
 
   },
-  ticketLine1: {
+  ticketHeader: {
     fontWeight: 'bold',
     fontSize: 20,
   },
-  ticketLine2: {
+
+  ticketBody: {
     fontSize: 18,
   },
-  ticketLine3: {
-    fontSize: 14,
-    textAlign: 'right',
-  },
-  ticketLine4: {
-    fontSize: 14,
-    textAlign: 'right',
-  },
+
   editTicketButton: {
-    width: 400,
-    alignSelf: 'right',
+    width: '30%',
   },
-  generateTicketListButton: {
-    width: 400,
-    alignSelf: 'left'
+  showTicketListButton: {
+    width: '30%',
   },
 
   //edit view screen styles
   editTicketPicker: {
     height: 50,
-    width: '90%',
+    width: '80%',
     fontSize: 20,
-    margin: 10,
+    margin: 20,
     alignSelf: 'center',
   },
   editTicketTextInput: {
-    marginLeft: '5%',
-    marginRight: '5%',
     height: 50,
+    width: '80%',
+    marginLeft: '10%',
     fontSize: 20,
-    placeholderTextColor: 'grey',
     color: 'black',
     backgroundColor: 'white',
   },
   submitTicketUpdateButton: {
-    width: 400,
+    width: '30%',
     alignSelf: 'center',
-
   },
 
   //ticket list styles
-  ticketListContainer: {
-    flex: 1,
-  },
-  ticketListItem1: {
-    flex: 1,
-    color: 'red',
-  },
-  ticketListItem2: {
-    flex: 1,
-    color: 'blue',
-  },
-  ticketListItem3: {
-    flex: 1,
-    color: 'red',
-  },
-  ticketListItem4: {
-    flex: 1,
-    color: 'blue',
-  },
-
 
 });
