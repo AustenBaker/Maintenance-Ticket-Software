@@ -83,11 +83,11 @@ export default class Ticket extends React.Component{
 
         {ticket_number[0]}
 
-        <Text testID="unit_number">
+        <Text testID="unit_number" style={{height: 50, width: 200, backgroundColor: 'white', fontSize: 20}}>
           Unit Number: {this.state.unit_number}
         </Text>
 
-        <Text testID="status">
+        <Text testID="status" style={{}}>
           Ticket Status: {this.state.status}
         </Text>
 
@@ -104,7 +104,7 @@ export default class Ticket extends React.Component{
         <Button
           title="Edit Ticket"
           onPress={() => {
-            this.setState(ticket_edit_mode, true);
+            this.setState({ticket_edit_mode: true});
           }}
           accessibilityLabel="Edit Ticket Button"
         />
@@ -235,7 +235,7 @@ export default class Ticket extends React.Component{
         <Button
           title="Submit Ticket Update"
           onPress={() => {
-            this.setState(ticket_edit_mode, true);
+            this.setState({ticket_edit_mode: false});
           }}
           accessibilityLabel="Submit Ticket Update Button"
         />
@@ -302,7 +302,7 @@ export default class Ticket extends React.Component{
 
     //normal view
     if (this.state.ticket_edit_mode === false) {
-      content = this.editTicket();
+      content = this.displayTicketDetails();
     }
     //ticket edit mode view
     else {
