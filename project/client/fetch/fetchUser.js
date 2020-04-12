@@ -6,44 +6,43 @@ const PATH = 'http://127.0.0.1:3001'
  * @param user username of client
  * @param pass password of client
  */
-function handleLogin(user, pass) {
+async function handleLogin(user, pass) {
     fetch(PATH + '/account/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: user, password: pass })
     }).then(res => res.json()).then(data => {
-        // This is successful login, data = { first, last, username . . .}
+        console.log("Login Successful")
     }).catch(err => {
-        // Error login, error code is err.error
+        console.log("Error during loggin: " + err)
     })
 }
 
-//TODO: Unsure what needs to be sent, is it a session itself?
 
-async function logout(session){ 
+async function logout(){
     fetch(PATH + '/account/logout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: session
+        body: ""
     }).then(res => res.json()).then(data => {
-        // This is successful login, data = { first, last, username . . .}
+        console.log("Logout Successful")
     }).catch(err => {
-        // Error login, error code is err.error
+        console.log("ERROR during logout: " + err)
     })
 }
 /**
  * 
  * @param body = {username, password, first, last, usernmae, email, type}
  */
-async function register(body){ 
+async function register(username, password, first, last, username, email, type) {
     fetch(PATH + '/account/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: body
+        body: JSON.stringify({ username: username, password: password, first: first, last: last, username: username, email: email, type: type })
     }).then(res => res.json()).then(data => {
-        // This is successful login, data = { first, last, username . . .}
+        console.log("Register Successful")
     }).catch(err => {
-        // Error login, error code is err.error
+        console.log("ERROR during registration: " + err)
     })
 }
 
@@ -54,9 +53,9 @@ async function deleteAccount(username){
         headers: { 'Content-Type': 'application/json' },
         body: username
     }).then(res => res.json()).then(data => {
-        // This is successful login, data = { first, last, username . . .}
+        console.log("Delete Account Successful")
     }).catch(err => {
-        // Error login, error code is err.error
+        console.log("ERROR deleting account: " + err)
     })
 }
 
@@ -66,8 +65,24 @@ async function getUserFromUsername(username){
         headers: { 'Content-Type': 'application/json' },
         body: username
     }).then(res => res.json()).then(data => {
-        // This is successful login, data = { first, last, username . . .}
+        console.log("User Found from Username Successful")
     }).catch(err => {
-        // Error login, error code is err.error
+        console.log("ERROR getting user from username: " + err)
+    })
+}
+
+/**
+ * @param body = {username, password, first, last, usernmae, email, type}
+ */
+
+async function update(username, password, first, last, username, email, type) {
+    fetch(PATH + '/account/update', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username, password: password, first: first, last: last, username: username, email: email, type: type })
+    }).then(res => res.json()).then(data => {
+        console.log("Update Successful")
+    }).catch(err => {
+        console.log("Error during update: " + err)
     })
 }

@@ -61,7 +61,7 @@ class CreateTicketScreen extends React.Component {
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={ this.emergency ? "#f5dd4b" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
+        onValueChange={this.toggleSwitch}
         value={this.emergency}
       />
 
@@ -123,7 +123,7 @@ class CreateTicketScreen extends React.Component {
         <Button
           title="Create Ticket Request"
           accessibilityLabel="Create Ticket Request Button"
-          onPress = {this.submitTicket(this.state)}
+         // onPress = {this.submitTicket(this.state)}
         />
         </View>
       </ScrollView>

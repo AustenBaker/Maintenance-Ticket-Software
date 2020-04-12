@@ -4,9 +4,8 @@ const app = require('../index')
 describe("TESTING CATAGORIES", function() {
     this.timeout(15000)
     describe('1. Accounts',function() { 
-        it.skip("testing this")
         //register
-        it('POST /register', function(done){
+        it('fetch /register', async function(done){
                // .send({username: 'testing', password: 'isThisWorking?!'})
                
         })

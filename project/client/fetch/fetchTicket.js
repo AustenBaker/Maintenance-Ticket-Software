@@ -1,20 +1,20 @@
 
 const PATH = 'http://127.0.0.1:3001'
 
-async function submitTicket(ticketAttributes){ // note ticketAttributes must be in JSON.stringify Object
-    console.log(ticketAttributes)
+
+
+async function submitTicket(email, apt, unit, issue, details, emerg, resolveTime, prog, closed){     
     fetch(PATH + '/ticket/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      //body: JSON.stringify({ prop1: 'val1', prop2: 'val2' })
-      body: ticketAttributes
+      body: JSON.stringify({ email: email, aptComplex: apt, unit: unit, issue: issue, details: details, emergency: emerg, resolveTime: resolveTime, progress: prog, closed: closed})
     }).then(res => res.json()).then(data => {
-      console.log(res)
+      console.log("Ticket submition successful")
     }). catch(err => {
-      
+      console.log("ERROR submitting ticket: " + err)
     })
-    const data = await res.json();
-    console.log(data); // response data as an Object
+    //const data = await res.json();
+    //console.log(data); // response data as an Object
 };
 
 async function deleteTicket(id){
@@ -28,28 +28,23 @@ async function deleteTicket(id){
     }). catch(err => {
       
     })
-    const data = await res.json();
-    console.log(data); // response data as an Object
 };
 
-// TODO: not created in backend yet
-// TODO: add body to request!!!
 /**
  * This method updates information in mongodb for ticket
  *
  * @returns true if updated correctly
  */
-async function updateTicket(ticketAttributes){ // note ticketAttributes must be in JSON.stringify Object
+async function updateTicket(email, apt, unit, issue, details, emerg, resolveTime, prog, closed){
     console.log(ticketAttributes)
     fetch(PATH + '/ticket/create', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        //body: JSON.stringify({ prop1: 'val1', prop2: 'val2' })
-        body: ticketAttributes
+        body: JSON.stringify({ email: email, aptComplex: apt, unit: unit, issue: issue, details: details, emergency: emerg, resolveTime: resolveTime, progress: prog, closed: closed})
     }).then(res => res.json()).then(data => {
-        console.log(res)
+        console.log("Ticket Update Successful")
     }). catch(err => {
-        
+        console.log("ERROR updating ticket: " + err)
     })
 }
 
@@ -60,21 +55,21 @@ async function getTicketsFromEmail(email){
         headers: { 'Content-Type': 'application/json' },
         body: email
     }).then(res => res.json()).then(data => {
-        console.log(res)
+        console.log("Get tickets from email Successful")
     }). catch(err => {
-        
+        console.log("ERROR getting tickets from email: " + err)
     })
 }
 
-async function getTicketsFromId(id){ 
+async function getTicketFromId(id){ 
     console.log(ticketAttributes)
     fetch(PATH + '/:id', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         body: id
     }).then(res => res.json()).then(data => {
-        console.log(res)
+        console.log("Get ticket from id Successful")
     }). catch(err => {
-        
+        console.log("ERROR getting ticket from id")
     })
 }
