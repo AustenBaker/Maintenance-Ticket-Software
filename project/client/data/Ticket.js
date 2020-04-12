@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View,  Button, Text, Picker } from 'react-native';
+import { View,  Button, Text, Picker, StyleSheet, TouchableWithoutFeedbackBase } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
 import { TextInput } from 'react-native-gesture-handler';
@@ -54,60 +54,64 @@ export default class Ticket extends React.Component{
 
     // create <Text> container for emergency data
     var emergency = "";
-    if (this.emergency === true){
+    if (this.state.emergency === CONSTANTS.EMERGENCY.YES){
       emergency = (
         <Text testID="emergency">
-          URGENT: This is an emergency level ticket!
+          Level: EMERGENCY
         </Text>
       );
     }else{
       emergency = (
         <Text testID="emergency">
-          This is a normal level ticket
+          Level: Normal
         </Text>
       );
     }
 
+    // create <Text> container for status
+    var status = "";
+    if (this.state.status === CONSTANTS.STATUS.OPEN){
+      status = ( 
+        <Text testID="status">Status: Open</Text>
+      );
+    } else { 
+      status = ( 
+        <Text testID="status">Status: Closed</Text>
+      );
+    }
+
     //<text> for ticket_number
-    var ticket_number = (
+    var ticket_number = "";
+    ticket_number = (
       <Text testID="ticket_number">
-        {ticket_number}
+        Ticket ID #{this.state.ticket_number}
       </Text>
-    )
+    );
 
     //ticket details content
     //TODO make edit button open up edit view
     content = (
       <View>
 
+        <View testID="ticketContainer" style={styles.ticketContainer}>
+          <Text style={styles.ticketLine1}>
+            Location: Apt. {this.state.unit_number}, {this.state.location} {"\n"}
+          </Text>
 
-        {ticket_number[0]}
+          <Text style={styles.ticketLine2}>{status}  |  {emergency}  |{"\n"}          </Text>
+          <Text style={styles.ticketLine3}>{ticket_number}     </Text>
+          <Text style={styles.ticketLine4}>Timestamp: {this.state.timestamp} </Text>
+        </View>
 
-        <Text testID="unit_number" style={{height: 50, width: 200, backgroundColor: 'white', fontSize: 20}}>
-          Unit Number: {this.state.unit_number}
-        </Text>
-
-        <Text testID="status" style={{}}>
-          Ticket Status: {this.state.status}
-        </Text>
-
-        <Text testID="timestamp">
-          Location: {this.state.timestamp}
-        </Text>
-
-        <Text testID="location">
-          Location: {this.state.location}
-        </Text>
-
-        {emergency}
-
-        <Button
-          title="Edit Ticket"
-          onPress={() => {
-            this.setState({ticket_edit_mode: true});
-          }}
-          accessibilityLabel="Edit Ticket Button"
-        />
+        <View style={styles.editTicketButton}>
+          <Button
+            title="Edit Ticket"
+            onPress={() => {
+              this.setState({ticket_edit_mode: true});
+            }}
+            accessibilityLabel="Edit Ticket Button"
+          />
+        </View>
 
       </View>
     );
@@ -166,7 +170,7 @@ export default class Ticket extends React.Component{
     //content for return
     var content;
 
-    const ticket = this.getTicket();
+    var ticket = this.getTicket();
 
     let editable = this.state.ticket_edit_mode;
     var submitButton;
@@ -180,50 +184,35 @@ export default class Ticket extends React.Component{
     content = (
       <View>
 
-
-        <Text>Property</Text>
-        <Picker
-          selectedValue={this.state.location}
-          style={{ hieght: 50, width: 200}}
-          onValueChange={
-            (itemValue, itemIndex) => this.setState({location: itemValue})
-          }
-        >
-          <Picker.Item label={CONSTANTS.PROPERTY.WSP} value={CONSTANTS.PROPERTY.WSP} />
-          <Picker.Item label={CONSTANTS.PROPERTY.RH} value={CONSTANTS.PROPERTY.RH} />
-          <Picker.Item label={CONSTANTS.PROPERTY.SA} value={CONSTANTS.PROPERTY.SA} />
-          <Picker.Item label={CONSTANTS.PROPERTY.LAA} value={CONSTANTS.PROPERTY.LAA} />
-          <Picker.Item label={CONSTANTS.PROPERTY.TAW} value={CONSTANTS.PROPERTY.TAW} />
-        </Picker>
-
+          <Picker
+            mode="dropdown"
+            selectedValue={ticket.location}
+            style={styles.editTicketPicker}
+            onValueChange={
+              (itemValue, itemIndex) => this.setState({location: itemValue})
+            }
+          >
+            <Picker.Item label={CONSTANTS.PROPERTY.WSP} value={CONSTANTS.PROPERTY.WSP} />
+            <Picker.Item label={CONSTANTS.PROPERTY.RH} value={CONSTANTS.PROPERTY.RH} />
+            <Picker.Item label={CONSTANTS.PROPERTY.SA} value={CONSTANTS.PROPERTY.SA} />
+            <Picker.Item label={CONSTANTS.PROPERTY.LAA} value={CONSTANTS.PROPERTY.LAA} />
+            <Picker.Item label={CONSTANTS.PROPERTY.TAW} value={CONSTANTS.PROPERTY.TAW} />
+          </Picker>
+        
         <TextInput
-          label="Unit Number"
-          placeholder="Unit Number"
-          style={{height: 50, width: 200, backgroundColor: 'white', fontSize: 20}}
-          maxLength={4}
-          selectTextOnFocus={true}
+          placeholder="Unit Number (type in box)"
+          style={styles.editTicketTextInput}
+          maxLength={5}
           errorMessage="Unit Number is required"
-          onChangeText={unitn => this.setState(unit_number, unitn)}
+          onChangeText={
+            input => this.setState({unit_number: input})
+          }
         />
 
-
-        <Text style={{color: 'white', fontSize: 20}}>Is this an emergency?</Text>
         <Picker
-          selectedValue={this.state.emergency}
-          style={{ height: 50, width: 200 }}
-          onValueChange={
-            (itemValue, itemIndex) => this.setState({emergency: itemValue})
-          }
-        >
-          <Picker.Item label={CONSTANTS.EMERGENCY.NO}  value={CONSTANTS.EMERGENCY.NO}  />
-          <Picker.Item label={CONSTANTS.EMERGENCY.YES} value={CONSTANTS.EMERGENCY.YES} />
-        </Picker>
-
-
-        <Text style={{color: 'white', fontSize: 20}}>Ticket Status (Open/Closed):</Text>
-        <Picker
-          selectedValue={this.state.status}
-          style={{ height: 50, width: 200 }}
+          mode="dropdown"
+          selectedValue={ticket.status}
+          style={styles.editTicketPicker}
           onValueChange={
             (itemValue, itemIndex) => this.setState({status: itemValue})
           }
@@ -232,14 +221,29 @@ export default class Ticket extends React.Component{
           <Picker.Item label={CONSTANTS.STATUS.CLOSED} value={CONSTANTS.STATUS.CLOSED} />
         </Picker>
 
-        <Button
-          title="Submit Ticket Update"
-          onPress={() => {
-            this.setState({ticket_edit_mode: false});
-          }}
-          accessibilityLabel="Submit Ticket Update Button"
-        />
 
+
+        <Picker
+          mode="dropdown"
+          selectedValue={ticket.emergency}
+          style={styles.editTicketPicker}
+          onValueChange={
+            (itemValue, itemIndex) => this.setState({emergency: itemValue})
+          }
+        >
+          <Picker.Item label={CONSTANTS.EMERGENCY.NO}  value={CONSTANTS.EMERGENCY.NO}  />
+          <Picker.Item label={CONSTANTS.EMERGENCY.YES} value={CONSTANTS.EMERGENCY.YES} />
+        </Picker>
+
+        <View style={styles.submitTicketUpdateButton}>
+          <Button
+            title="Submit Ticket Update"
+            onPress={() => {
+              this.setState({ticket_edit_mode: false});
+            }}
+            accessibilityLabel="Submit Ticket Update Button"
+          />
+        </View>
       </View>
     );
 
@@ -259,25 +263,6 @@ export default class Ticket extends React.Component{
 
   }
 
-  /**
-   * boolean change ticket status
-   */
-  closeTicket = (props) => {
-    let success = false;
-    this.setState({status: CONSTANTS.STATUS.CLOSED});
-    if(this.state.status === CONSTANTS.STATUS.CLOSED){
-      success = true;
-    }
-    return success;
-  }
-
-  /**
-   * Delete ticket method
-   */
-  deleteTicket = () => {
-
-  }
-
   //returns a ticket
   getTicket = () => {
     let ticket = {
@@ -294,8 +279,27 @@ export default class Ticket extends React.Component{
     return ticket;
   }
 
+  /**
+   * boolean change ticket status
+   * note: Do i need this if can change 
+   * with picker in edit ticket view
+   */
+  closeTicket = (props) => {
+    let success = false;
+    this.setState({status: CONSTANTS.STATUS.CLOSED});
+    if(this.state.status === CONSTANTS.STATUS.CLOSED){
+      success = true;
+    }
+    return success;
+  }
 
-  //method to delete tickets for management
+  /**
+   * Delete ticket method
+   * for management and maint accounts
+   */
+  deleteTicket = () => {
+
+  }
 
   render = () => {
     var content;
@@ -312,3 +316,57 @@ export default class Ticket extends React.Component{
   }
 
 }
+
+const styles = StyleSheet.create({
+  //ticket view screen styles
+  ticketContainer: {
+    height: 120, 
+    width: '90%',
+    marginLeft: '5%',
+    marginBottom: 20,
+    marginTop: 20,
+    backgroundColor: 'white', 
+    fontSize: 20,
+    textAlign: 'left',
+  },
+  ticketLine1: {
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  ticketLine2: {
+    fontSize: 18,
+  },
+  ticketLine3: {
+    fontSize: 14,
+  },
+  ticketLine4: {
+    fontSize: 14,
+  },
+  editTicketButton: {
+    width: 400,
+    alignSelf: 'center',
+  },
+
+  //edit view screen styles
+  editTicketPicker: {
+    height: 50,
+    width: '90%',
+    fontSize: 20,
+    margin: 10,
+    alignSelf: 'center',
+  },
+  editTicketTextInput: {
+    marginLeft: '5%',
+    marginRight: '5%',
+    height: 50,
+    fontSize: 20,
+    placeholderTextColor: 'grey',
+    color: 'black',
+    backgroundColor: 'white',
+  },
+  submitTicketUpdateButton: {
+    width: 400,
+    alignSelf: 'center',
+
+  },
+});
