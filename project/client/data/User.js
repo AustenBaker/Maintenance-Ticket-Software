@@ -229,11 +229,11 @@ export default class User extends React.Component {
      * @returns True if the user is authorized to perform the
      * specified activity.
      */
-    isAuthorized(props) {
+    isAuthorized = (props) => {
         let valid = false;
         // TODO: check user type vs. authorized user types for activity
         return valid;
-    }
+    };
 
     /**
      * This method returns object containing current user profile values.
@@ -485,3 +485,4 @@ const styles = StyleSheet.create({
     fontSize: 17
   }
 });
+
