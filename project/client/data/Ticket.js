@@ -23,7 +23,9 @@ export default class Ticket extends React.Component{
       unit_number: props.unit_number,
       email: props.email,
       emergency: props.emergency,
-      ticket_edit_mode: props.ticket_edit_mode,
+      ticket_issue_title: props.ticket_issue_title,
+      ticket_issue: props.ticket_issue,
+      ticket_view_mode: props.ticket_view_mode,
       ticket_updates: [props.ticket_updates]
     }
   }
@@ -39,7 +41,7 @@ export default class Ticket extends React.Component{
     unit_number: "316",
     email: "email@email.com",
     emergency: false,
-    ticket_edit_mode: false,
+    ticket_view_mode: 0,
     ticket_updates: []
   }
 
@@ -89,7 +91,6 @@ export default class Ticket extends React.Component{
     );
 
     //ticket details content
-    //TODO make edit button open up edit view
     content = (
       <View>
 
@@ -98,16 +99,34 @@ export default class Ticket extends React.Component{
             Location: Apt. {this.state.unit_number}, {this.state.location} {"\n"}
           </Text>
 
-          <Text style={styles.ticketLine2}>{status}  |  {emergency}  |{"\n"}          </Text>
-          <Text style={styles.ticketLine3}>{ticket_number}     </Text>
-          <Text style={styles.ticketLine4}>Timestamp: {this.state.timestamp} </Text>
+          <Text style={styles.ticketLine2}>
+            {status}  |  {emergency}  |{"\n"}
+          </Text>
+
+          <Text style={styles.ticketLine3}>
+            {ticket_number}     
+          </Text>
+
+          <Text style={styles.ticketLine4}>
+            Timestamp: {this.state.timestamp} 
+          </Text>
         </View>
 
         <View style={styles.editTicketButton}>
           <Button
             title="Edit Ticket"
             onPress={() => {
-              this.setState({ticket_edit_mode: true});
+              this.setState({ticket_view_mode: 1});
+            }}
+            accessibilityLabel="Edit Ticket Button"
+          />
+        </View>
+
+        <View style={styles.generateTicketListButton}>
+          <Button
+            title="Show Ticket List"
+            onPress={() => {
+              this.setState({ticket_view_mode: 2});
             }}
             accessibilityLabel="Edit Ticket Button"
           />
@@ -120,7 +139,36 @@ export default class Ticket extends React.Component{
 
   //generate ticket list using flatlist
   generateTicketList = () => {
+    var content;
 
+    content = (
+      <View style={styles.ticketListContainer}>
+
+        <View style={styles.ticketListItem1}>
+          ticket 1
+        </View>
+        <View style={styles.ticketListItem2}>
+          ticket 2
+        </View>
+        <View style={styles.ticketListItem3}>
+          ticket 3
+        </View>
+        <View style={styles.ticketListItem4}>
+          ticket 4
+        </View>
+
+        <View style={styles.submitTicketUpdateButton}>
+          <Button
+            title="Go back to detail view"
+            onPress={() => {
+              this.setState({ticket_view_mode: 0});
+            }}
+
+          />
+        </View>
+      </View>
+    );
+    return content;
   }
 
   /**
@@ -172,45 +220,34 @@ export default class Ticket extends React.Component{
 
     var ticket = this.getTicket();
 
-    let editable = this.state.ticket_edit_mode;
-    var submitButton;
-    if(editable = true) {
-      submitButton = (<Button
-        title="submit ticket update"
-      />)
-    }
-
     //the content that will be returned
     content = (
       <View>
 
-          <Picker
-            mode="dropdown"
-            selectedValue={ticket.location}
-            style={styles.editTicketPicker}
-            onValueChange={
-              (itemValue, itemIndex) => this.setState({location: itemValue})
-            }
-          >
-            <Picker.Item label={CONSTANTS.PROPERTY.WSP} value={CONSTANTS.PROPERTY.WSP} />
-            <Picker.Item label={CONSTANTS.PROPERTY.RH} value={CONSTANTS.PROPERTY.RH} />
-            <Picker.Item label={CONSTANTS.PROPERTY.SA} value={CONSTANTS.PROPERTY.SA} />
-            <Picker.Item label={CONSTANTS.PROPERTY.LAA} value={CONSTANTS.PROPERTY.LAA} />
-            <Picker.Item label={CONSTANTS.PROPERTY.TAW} value={CONSTANTS.PROPERTY.TAW} />
-          </Picker>
+        <Picker mode="dropdown"
+          selectedValue={ticket.location}
+          style={styles.editTicketPicker}
+          onValueChange={
+            (itemValue, itemIndex) => this.setState({location: itemValue})
+          }
+        >
+          <Picker.Item label={CONSTANTS.PROPERTY.WSP} value={CONSTANTS.PROPERTY.WSP} />
+          <Picker.Item label={CONSTANTS.PROPERTY.RH}  value={CONSTANTS.PROPERTY.RH} />
+          <Picker.Item label={CONSTANTS.PROPERTY.SA}  value={CONSTANTS.PROPERTY.SA} />
+          <Picker.Item label={CONSTANTS.PROPERTY.LAA} value={CONSTANTS.PROPERTY.LAA} />
+          <Picker.Item label={CONSTANTS.PROPERTY.TAW} value={CONSTANTS.PROPERTY.TAW} />
+        </Picker>
         
         <TextInput
           placeholder="Unit Number (type in box)"
           style={styles.editTicketTextInput}
           maxLength={5}
-          errorMessage="Unit Number is required"
           onChangeText={
             input => this.setState({unit_number: input})
           }
         />
 
-        <Picker
-          mode="dropdown"
+        <Picker mode="dropdown"
           selectedValue={ticket.status}
           style={styles.editTicketPicker}
           onValueChange={
@@ -221,10 +258,7 @@ export default class Ticket extends React.Component{
           <Picker.Item label={CONSTANTS.STATUS.CLOSED} value={CONSTANTS.STATUS.CLOSED} />
         </Picker>
 
-
-
-        <Picker
-          mode="dropdown"
+        <Picker mode="dropdown"
           selectedValue={ticket.emergency}
           style={styles.editTicketPicker}
           onValueChange={
@@ -239,11 +273,12 @@ export default class Ticket extends React.Component{
           <Button
             title="Submit Ticket Update"
             onPress={() => {
-              this.setState({ticket_edit_mode: false});
+              this.setState({ticket_view_mode: 0});
             }}
             accessibilityLabel="Submit Ticket Update Button"
           />
         </View>
+
       </View>
     );
 
@@ -273,7 +308,7 @@ export default class Ticket extends React.Component{
       unit_number: this.state.unit_number,
       email: this.state.email,
       emergency: this.state.emergency,
-      ticket_edit_mode: this.state.ticket_edit_mode,
+      ticket_view_mode: this.state.ticket_view_mode,
       ticket_updates: [...this.state.ticket_updates]
     }
     return ticket;
@@ -304,13 +339,18 @@ export default class Ticket extends React.Component{
   render = () => {
     var content;
 
-    //normal view
-    if (this.state.ticket_edit_mode === false) {
+    //0 == display single ticket details
+    if (this.state.ticket_view_mode === 0) {
       content = this.displayTicketDetails();
     }
-    //ticket edit mode view
-    else {
+
+    //1 === ticket edit
+    else if (this.state.ticket_view_mode === 1){
       content = this.editTicket();
+    } 
+    //2 === ticketlist
+    else if (this.state.ticket_view_mode === 2){
+      content = this.generateTicketList();
     }
     return (content);
   }
@@ -321,13 +361,14 @@ const styles = StyleSheet.create({
   //ticket view screen styles
   ticketContainer: {
     height: 120, 
-    width: '90%',
-    marginLeft: '5%',
+    width: '80%',
+    marginLeft: '10%',
     marginBottom: 20,
     marginTop: 20,
     backgroundColor: 'white', 
-    fontSize: 20,
     textAlign: 'left',
+    borderRadius: 12,
+
   },
   ticketLine1: {
     fontWeight: 'bold',
@@ -338,13 +379,19 @@ const styles = StyleSheet.create({
   },
   ticketLine3: {
     fontSize: 14,
+    textAlign: 'right',
   },
   ticketLine4: {
     fontSize: 14,
+    textAlign: 'right',
   },
   editTicketButton: {
     width: 400,
-    alignSelf: 'center',
+    alignSelf: 'right',
+  },
+  generateTicketListButton: {
+    width: 400,
+    alignSelf: 'left'
   },
 
   //edit view screen styles
@@ -369,4 +416,27 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
 
   },
+
+  //ticket list styles
+  ticketListContainer: {
+    flex: 1,
+  },
+  ticketListItem1: {
+    flex: 1,
+    color: 'red',
+  },
+  ticketListItem2: {
+    flex: 1,
+    color: 'blue',
+  },
+  ticketListItem3: {
+    flex: 1,
+    color: 'red',
+  },
+  ticketListItem4: {
+    flex: 1,
+    color: 'blue',
+  },
+
+
 });
