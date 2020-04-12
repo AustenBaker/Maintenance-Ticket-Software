@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { View, CheckBox, Button, Text } from 'react-native';
-import {Picker} from '@react-native-community/picker';
+import { View, CheckBox, Button, Text, Picker } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
 import { TextInput } from 'react-native-gesture-handler';
@@ -39,7 +38,7 @@ export default class Ticket extends React.Component{
     location: CONSTANTS.PROPERTY.WSP,
     unit_number: "316",
     email: "email@email.com",
-    emergency: false, 
+    emergency: false,
     ticket_edit_mode: false,
     ticket_updates: []
   }
@@ -92,7 +91,7 @@ export default class Ticket extends React.Component{
         <Text testID="location">
           Location: {this.state.location}
         </Text>
-        
+
         {emergency}
 
         <Button

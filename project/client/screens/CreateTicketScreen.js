@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, SafeAreaView } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, SafeAreaView, Switch } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
@@ -27,9 +27,16 @@ class CreateTicketScreen extends React.Component {
       unit: "",
       issue: "",
       details: "",
-      emergency: 1,
+      emergency: false,
     };
   }
+
+  toggleSwitch = (value) => {
+      //onValueChange of the switch this function will be called
+      this.setState({emergency: value})
+      //state changes according to switch
+      //which will result in re-render the text
+   }
 
   submitTicket = () => {
     console.log(this.state)
@@ -64,6 +71,15 @@ class CreateTicketScreen extends React.Component {
       <View style={styles.container, themeContainer}>
       <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
         <View style={{alignItems: 'center'}}>
+
+        <Text style={{fontSize: 20, padding: 15, color: radioColor }}>Emergency</Text>
+        <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={ this.emergency ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitch}
+        value={this.emergency}
+      />
 
         <Text style={{fontSize: 20, padding: 15, color: radioColor }}>Ticket Importance Level</Text>
       <RadioForm
