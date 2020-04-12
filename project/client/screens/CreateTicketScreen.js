@@ -37,7 +37,7 @@ class CreateTicketScreen extends React.Component {
       //which will result in re-render the text
    }
 
-  submitTicket(state){
+  async submitTicket(state){
     console.log(state)
     fetch(PATH + '/create', {
       method: 'POST',
