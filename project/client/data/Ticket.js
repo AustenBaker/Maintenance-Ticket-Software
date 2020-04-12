@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, CheckBox, Button, Text, Picker } from 'react-native';
+import { View,  Button, Text, Picker } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
 import { TextInput } from 'react-native-gesture-handler';
@@ -68,13 +68,20 @@ export default class Ticket extends React.Component{
       );
     }
 
+    //<text> for ticket_number
+    var ticket_number = (
+      <Text testID="ticket_number">
+        {ticket_number}
+      </Text>
+    )
+
     //ticket details content
     //TODO make edit button open up edit view
     content = (
       <View>
-        <Text testID="ticket_number">
-          Ticket Number: {this.state.ticket_number}
-        </Text>
+
+
+        {ticket_number[0]}
 
         <Text testID="unit_number">
           Unit Number: {this.state.unit_number}
@@ -182,17 +189,17 @@ export default class Ticket extends React.Component{
             (itemValue, itemIndex) => this.setState({location: itemValue})
           }
         >
-          <Picker.Item label={CONSTANTS.PROPERTY[0]} value={CONSTANTS.PROPERTY[0]} />
-          <Picker.Item label={CONSTANTS.PROPERTY[1]} value={CONSTANTS.PROPERTY[1]} />
-          <Picker.Item label={CONSTANTS.PROPERTY[2]} value={CONSTANTS.PROPERTY[2]} />
-          <Picker.Item label={CONSTANTS.PROPERTY[3]} value={CONSTANTS.PROPERTY[3]} />
-          <Picker.Item label={CONSTANTS.PROPERTY[4]} value={CONSTANTS.PROPERTY[4]} />
-          <Picker.Item label={CONSTANTS.PROPERTY[5]} value={CONSTANTS.PROPERTY[5]} />
+          <Picker.Item label={CONSTANTS.PROPERTY.WSP} value={CONSTANTS.PROPERTY.WSP} />
+          <Picker.Item label={CONSTANTS.PROPERTY.RH} value={CONSTANTS.PROPERTY.RH} />
+          <Picker.Item label={CONSTANTS.PROPERTY.SA} value={CONSTANTS.PROPERTY.SA} />
+          <Picker.Item label={CONSTANTS.PROPERTY.LAA} value={CONSTANTS.PROPERTY.LAA} />
+          <Picker.Item label={CONSTANTS.PROPERTY.TAW} value={CONSTANTS.PROPERTY.TAW} />
         </Picker>
 
         <TextInput
           label="Unit Number"
-          placeholder={this.state.unit_number}
+          placeholder="Unit Number"
+          style={{height: 50, width: 200, backgroundColor: 'white', fontSize: 20}}
           maxLength={4}
           selectTextOnFocus={true}
           errorMessage="Unit Number is required"
@@ -200,30 +207,38 @@ export default class Ticket extends React.Component{
         />
 
 
-        <Text>Is this an emergency?</Text>
+        <Text style={{color: 'white', fontSize: 20}}>Is this an emergency?</Text>
         <Picker
           selectedValue={this.state.emergency}
-          style={{ height: 50, width: 50 }}
+          style={{ height: 50, width: 200 }}
           onValueChange={
             (itemValue, itemIndex) => this.setState({emergency: itemValue})
           }
         >
-          <Picker.Item label='NO'  value={CONSTANTS.EMERGENCY.NO}  />
-          <Picker.Item label='YES' value={CONSTANTS.EMERGENCY.YES} />
+          <Picker.Item label={CONSTANTS.EMERGENCY.NO}  value={CONSTANTS.EMERGENCY.NO}  />
+          <Picker.Item label={CONSTANTS.EMERGENCY.YES} value={CONSTANTS.EMERGENCY.YES} />
         </Picker>
 
 
-        <Text>Ticket Status (Open/Closed):</Text>
+        <Text style={{color: 'white', fontSize: 20}}>Ticket Status (Open/Closed):</Text>
         <Picker
           selectedValue={this.state.status}
-          style={{ height: 50, width: 150 }}
+          style={{ height: 50, width: 200 }}
           onValueChange={
             (itemValue, itemIndex) => this.setState({status: itemValue})
           }
         >
-          <Picker.Item label='Open'  value={CONSTANTS.STATUS.OPEN}   />
-          <Picker.Item label='Closed'value={CONSTANTS.STATUS.CLOSED} />
+          <Picker.Item label={CONSTANTS.STATUS.OPEN}   value={CONSTANTS.STATUS.OPEN}   />
+          <Picker.Item label={CONSTANTS.STATUS.CLOSED} value={CONSTANTS.STATUS.CLOSED} />
         </Picker>
+
+        <Button
+          title="Submit Ticket Update"
+          onPress={() => {
+            this.setState(ticket_edit_mode, true);
+          }}
+          accessibilityLabel="Submit Ticket Update Button"
+        />
 
       </View>
     );
@@ -287,7 +302,7 @@ export default class Ticket extends React.Component{
 
     //normal view
     if (this.state.ticket_edit_mode === false) {
-      content = this.displayTicketDetails();
+      content = this.editTicket();
     }
     //ticket edit mode view
     else {
