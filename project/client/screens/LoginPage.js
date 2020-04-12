@@ -6,8 +6,97 @@ import { Appearance, AppearanceProvider } from 'react-native-appearance';
 import { ColorScheme } from '../stores';
 import Colors from '../constants/Colors';
 
+//
+// // Un-comment the following to port LoginPage to a class component
+//
+// class LoginPage extends React.PureComponent {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       username: undefined,
+//       password: undefined
+//     }
+//   }
+
+//   // Checks for login status once app loads (to login page)
+//   async componentDidMount() {
+//     const res = await fetch('http://127.0.0.1:3001/account/status', {
+//         method: 'POST'
+//     });
+//     const data = await res.json();
+//     // Do stuff here
+//     this.props.UserStore.loggedIn = true;
+//     this.props.navigation.navigate('Profile'); // Or something else
+//   }
+
+//   async handleLogin() {
+//     const res = await fetch('http://127.0.0.1:3001/account/login', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ username: this.state.username, password: this.state.password })
+//     });
+//     const data = await res.json();
+//     // Do stuff here
+//     this.props.UserStore.loggedIn = true;
+//     this.props.navigation.navigate('Profile'); // Or something else
+//   }
+
+//   render() {
+//     return (
+//       <SafeAreaView style={styles.container, themeContainerStyle}>
+//             <Image source={require('../assets/images/uwcrest.png')}
+//               style={styles.smallImage}/>
+  
+//             <Text style={themeLargeTitle}>Welcome Back</Text>
+  
+//             <TextInput
+//               placeholder="Username"
+//               placeholderTextColor='#8E8E93'
+//               autoCapitalize="none"
+//               keyboardAppearance={themeKeyboard}
+//               style={themeTextBox}
+//               onChangeText={username => this.setState({ username })}
+//               value={user}
+//             />
+//             <TextInput
+//               secureTextEntry
+//               placeholder="Password"
+//               placeholderTextColor='#8E8E93'
+//               autoCapitalize="none"
+//               keyboardAppearance={themeKeyboard}
+//               style={themeTextBox}
+//               onChangeText={password => this.setState({ password })}
+//               value={pass}
+//             />
+  
+//             <Button
+//               onPress={ this.handleLogin }
+//               style={themeLargeTitle}
+//               title="Sign In"
+//               accessibilityLabel="Sign In Button"
+//             />
+  
+//             <Button
+//               onPress={() => this.props.navigation.replace('SignUp') }
+//               style={themeBodyText}
+//               title="Don’t have an account?"
+//               accessibilityLabel="Go to Sign Up page"
+//             />
+  
+//             <Button
+//               onPress={() => this.props.navigation.replace('Tabs') }
+//               style={themeBodyText}
+//               title="Skip Sign In"
+//               accessibilityLabel="Secret Dev Button to Skip Sign In"
+//             />
+  
+//       </SafeAreaView>
+//     );
+//   }
+// }
+
 // may need to pass in navigation?
-export default function LoginScreen({ navigation }) {
+export function LoginScreen({ navigation }) {
     const [user, onChangeUser] = React.useState('');
     const [pass, onChangePass] = React.useState('');
     const colorScheme = new ColorScheme();
