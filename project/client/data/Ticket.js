@@ -173,26 +173,6 @@ export default class Ticket extends React.Component{
     return content;
   }
 
-  // TODO: not created in backend yet
-  // TODO: add body to request!!!
-  /**
-   * This method updates information in mongodb for ticket
-   *
-   * @returns true if updated correctly
-   */
-  updateTicket(state){
-    console.log(state)
-    fetch(PATH + '/create', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      //body: JSON.stringify({ prop1: 'val1', prop2: 'val2' })
-    }).then(res => res.json()).then(data => {
-      console.log(res)
-    }). catch(err => {
-      
-    })
-  }
-
   /**
    * This method updates ticket information
    *

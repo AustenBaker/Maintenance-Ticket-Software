@@ -9,7 +9,6 @@ import { ColorScheme } from '../stores';
 import Colors from '../constants/Colors';
 const colorScheme = new ColorScheme();
 
-const PATH = 'http://127.0.0.1:3001'
 
 var radio_props = [
   {label: 'low',       value: 2},
@@ -36,22 +35,6 @@ class CreateTicketScreen extends React.Component {
       //state changes according to switch
       //which will result in re-render the text
    }
-
-  async submitTicket(state){
-    console.log(state)
-    fetch(PATH + '/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      //body: JSON.stringify({ prop1: 'val1', prop2: 'val2' })
-      body: state
-    }).then(res => res.json()).then(data => {
-      console.log(res)
-    }). catch(err => {
-      
-    })
-    const data = await res.json();
-    console.log(data); // response data as an Object
-  }
 
   render(){
 
