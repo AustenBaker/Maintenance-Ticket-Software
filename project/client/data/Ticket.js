@@ -63,7 +63,7 @@ export default class Ticket extends React.Component{
       );
     }else{
       emergency = (
-        <Text>
+        <Text testID="emergency">
           This is a normal level ticket
         </Text>
       );
