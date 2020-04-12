@@ -6,6 +6,7 @@ import LoginScreen from '../screens/LoginScreen';
 import TicketScreen from '../screens/TicketScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import CreateTicketScreen from '../screens/CreateTicketScreen';
+import PropertyScreen from '../screens/PropertyScreen';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { ColorScheme } from '../stores';
 import Colors from '../constants/Colors';
@@ -60,6 +61,15 @@ export default function BottomTabNavigator({ navigation, route }) {
             name={Platform.OS === 'ios' ? "ios-person" : "md-person"} />,
           }}
           />
+          <BottomTab.Screen
+          name="Property"
+          component={PropertyScreen}
+          options={{
+            title: 'Property',
+            tabBarIcon: ({ focused }) => <TabBarIcon focused={focused}
+            name={Platform.OS === 'ios' ? "ios-person" : "md-person"} />,
+          }}
+          />
     </BottomTab.Navigator>
   );
 }
@@ -76,5 +86,7 @@ function getHeaderTitle(route) {
       return 'My Profile';
     case 'Login':
       return 'Login';
+    case 'Property':
+      return 'Property';
   }
 }
