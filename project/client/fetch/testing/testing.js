@@ -9,17 +9,17 @@ describe("TESTING CATAGORIES", function() {
     this.timeout(15000)
     describe('1. Accounts',function() { 
        //register
-        it.skip('fetch /register', async function(done){
-            const res = await userFetch.register("kyle","schn",["parkway","hill crest"],"golfkid",
+        it('fetch /register', async function(){
+            const res = await userFetch.createAccount("kyle","schn",["parkway","hill crest"],"golfkid",
                                                 "topSecret","kyle2@gmail.com",2624739108,2,"Go for it","res","I swear I am nice",
                                                 [],false)
             expect(res.username).equal("golfkid")
         })
 
         //login
-        it.skip('POST /login', async function(){
+        it('POST /login', async function(){
             const res = await userFetch.handleLogin("golfkid","topSecret")
-            console.log("Logging on")
+            console.log(res)
             expect(res.status).equal(200)
         })
 
@@ -30,19 +30,18 @@ describe("TESTING CATAGORIES", function() {
         })
 
         //delete account
-        it.skip('Delete', async function(){
+        it('Delete', async function(){
             const res = await userFetch.deleteAccount("golfkid")
-            console.log(res)
             expect(res.status).equal(200)
         })
-        
+
         //Check if account is still there
         it.skip('POST /login w/ no account', function(done){
                 //.send({username: 'testing', password: 'isThisWorking?!'})
                 //.expect(403, done)
         })
 
-        it('Get user from username', async function(){
+        it.skip('Get user from username', async function(){
             const res = await userFetch.getUserFromUsername("golfkid")
             expect(res.first).equal('kyle')
         })
@@ -54,29 +53,29 @@ describe("TESTING CATAGORIES", function() {
     })
 
     describe('3. Ticket', async function() {
-
-        it.skip('Create /ticket/', async function(){
+        let newTicketID = ""
+        it('Create /ticket/', async function(){
             const res = await ticketFetch.submitTicket("a@a.com","parker way apt","213","Door wont open","jammed some how",false,5,"No progress",false)
-            console.log("CREATE TICKET")
-            console.log(res)
-            expect(res.id).equal("")
+            newTicketID = res.id
+            expect(res.id).to.be.a('number')
         })
         
-        it.skip('Create /ticket/', async function(){
-            const res = await ticketFetch.submitTicket("a@a.com","parker way apt","213","I SWITCHED THIS","jammed some how",true,5,"No progress",false)
+        // TODO: needs to be implemented in backend
+        it.skip('update /ticket/', async function(){
+            const res = await ticketFetch.updateTicket("a@a.com","parker way apt","213","I SWITCHED THIS","jammed some how",true,5,"No progress",false)
             console.log("CHANGING TICKET")
             console.log(res)
-            expect(res.id).equal("")
+            expect(res.id).to.be.a('number')
         })
 
-        it.skip("Delete /ticket/", async function(){
-            const res = await ticketFetch.deleteTicket(1586790128216)
+        it('GET /ticket/:id', async function(){
+            const res = await ticketFetch.getTicketFromId(newTicketID)
+            expect(res.issue).equal("Door wont open")
+        })
+
+        it("Delete /ticket/", async function(){
+            const res = await ticketFetch.deleteTicket(newTicketID)
             expect(res.status).equal(200)
-        })
-
-        it.skip('GET /ticket/:id', async function(){
-            const res = await ticketFetch.getTicketFromId("1585938940652")
-            expect(res.issue).equal("testing")
         })
 
 

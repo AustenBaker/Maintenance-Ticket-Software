@@ -28,15 +28,10 @@ export async function submitTicket(email, aptComplex, unit, issue, details, emer
                             progress: progress, 
                             closed: closed})
     }).then(res => res).then(data => {
-      console.log("TICKET SUBMITTED")
-      console.log(data)
       return data
     }). catch(err => {
-        console.log("TICKET ERROR")
-        console.log(err)
       return err
     })
-    console.log(response)
     return await response.json()
 };
 /**
@@ -47,10 +42,8 @@ export async function deleteTicket(id){
     const response = fetch(PATH + '/ticket/delete', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(id)
+      body: JSON.stringify({id:id})
     }).then(res => res).then(data => {
-      console.log("delete done")
-      console.log(data)
       return data
     }). catch(err => {
       return err

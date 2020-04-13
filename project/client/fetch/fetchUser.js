@@ -56,7 +56,7 @@ export async function logout(){
  * @param {Array} tickets 
  * @param {Boolean} activate 
  */
-export async function register(first, last, units, username, password, email, phone, contactPreference, entryPermission, type, note, tickets, activate) {
+export async function createAccount(first, last, units, username, password, email, phone, contactPreference, entryPermission, type, note, tickets, activate) {
     const response = await fetch(PATH + '/account/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -74,12 +74,12 @@ export async function register(first, last, units, username, password, email, ph
                                 tickets:tickets, 
                                 activate:activate
                             })
-    }).then(res => res.json()).then(data => {
+    }).then(res => res).then(data => {
         return data
     }).catch(err => {
         return err
     })
-    return await response
+    return await response.json()
 }
 
 
@@ -87,15 +87,12 @@ export async function deleteAccount(username){
     const response = await fetch(PATH + '/account/delete', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(username)
-    }).then(res => res.json()).then(data => {
-        console.log("Delete Account Successful")
+        body: JSON.stringify({username:username})
+    }).then(res => res).then(data => {
         return data
     }).catch(err => {
-        console.log("ERROR deleting account: " + err)
         return err
     })
-    console.log(response)
     return await response
 }
 

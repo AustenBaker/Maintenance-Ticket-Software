@@ -60,10 +60,23 @@ router.post('/register', async (req, res) => {
         const body = { ...req.body, password: hashedPswd };
         const newUser = new User(body);
         newUser.save().then(data => {
-            const { first, last, username, email, type } = data;
+            const { first, last, units, username, password, email, phone, contactPreference, entryPermission, type, note, tickets, activate } = data;
             return res
                 .status(200)
-                .json({ first, last, username, email, type })
+                .json({ first:first, 
+                    last:last, 
+                    units:units, 
+                    username:username, 
+                    password:password, 
+                    email:email, 
+                    phone:phone, 
+                    contactPreference:contactPreference, 
+                    entryPermission:entryPermission, 
+                    type:type, 
+                    note:note, 
+                    tickets:tickets, 
+                    activate:activate
+                })
                 .end('Success - register');
         }).catch(err => res.status(400).json({ error: err }));
     }
@@ -81,12 +94,12 @@ router.post('/deactivate', (req, res) => {
 
 // Delete user
 router.delete('/delete', async (req, res) => {
-    console.log(`Trying to delete user with username=${req.body.username}`);
-    console.log(req.body.username)
+    //console.log(`Trying to delete user with username=${req.body.username}`);
+    //console.log(req.body.username)
     // Checks if user already exists
     const userDeleted = await User.findOneAndDelete({ username: req.body.username });
     if (userDeleted) return res.status(200).json({ success: "USER_DELETED" });
-    else return res.status(404).json({ error: 'NO_SUCH_USER'} );
+    else return res.sendStatus(404).json({ error: 'NO_SUCH_USER'} ).end();
 });
 
 // Get user info TODO: JWT signed Bearer token for security
