@@ -8,11 +8,15 @@ class UserStore {
             loading: true,
             loggedIn: false,
             username: '',
-            pwdHash: '',
             firstName: '',
             lastName: '',
+            email: '',
+            phone: '',
+            contact: CONSTANTS.PREFERRED_CONTACT.EMAIL,
+            entry: CONSTANTS.ENTRY_PERMISSION.ACC,
             userType: CONSTANTS.USER_TYPE.RES,
-            contact: { pref: CONSTANTS.PREFERRED_CONTACT.EMAIL, value: ''},
+            note: '',
+            units: [],
             ticketList: []
             /* Add new global states here */
         });
