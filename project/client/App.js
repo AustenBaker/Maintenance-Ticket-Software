@@ -93,7 +93,7 @@ function App(props) {
               }}
           >
             <Stack.Screen name="Root" component={Login} options={{ headerShown: false }}/>
-            <Stack.Screen name="Tabs" component={BottomTabNavigator} />
+            <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
             <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>
           </Stack.Navigator>
         </NavigationContainer>
