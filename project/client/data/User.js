@@ -5,23 +5,29 @@ import Ticket from './Ticket.js';
 import Colors from '../constants/Colors'
 import { colorScheme } from '../stores';
 
-// TODO: Add an 'active|inactive' flag
 // TODO: Update unit to include property indicator
 export default class User extends React.Component {
+
+    /**
+     * 
+     * @param {*} props 
+     */
     constructor(props) {
         super(props);
         this.state = {
-            first_name: props.first_name,
-            last_name: props.last_name,
+            username: props.username,
+            first: props.first,
+            last: props.last,
             units: [...props.units],
             email: props.email,
             phone: props.phone,
-            contact: props.contact,
-            entry_permission: props.entry_permission,
-            user_type: ('user_type' in props ? props.user_type : CONSTANTS.USER_TYPE.RES),
+            contactPreference: props.contactPreference,
+            entryPermission: props.entryPermission,
+            type: ('type' in props ? props.type : CONSTANTS.USER_TYPE.RES),
             note: ('note' in props ? props.note : ""),
             edit_mode: ('edit_mode' in props ? props.edit_mode : false),
-            tickets: []
+            tickets: [],
+            activate: props.activate
         }
     }
 
@@ -30,17 +36,34 @@ export default class User extends React.Component {
      * are not all passed into the constructor.
      */
     static defaultProps = {
-        first_name: "First Name",
-        last_name: "Last Name",
+        username: "",
+        first: "First Name",
+        last: "Last Name",
         units: ["1703"],
         email: "default@CastlebergCommunities.com",
         phone: "000-000-0000",
-        contact: CONSTANTS.PREFERRED_CONTACT.EMAIL,
-        entry_permission: CONSTANTS.ENTRY_PERMISSION.ACC,
-        user_type: CONSTANTS.USER_TYPE.RES,
+        contactPreference: CONSTANTS.PREFERRED_CONTACT.EMAIL,
+        entryPermission: CONSTANTS.ENTRY_PERMISSION.ACC,
+        type: CONSTANTS.USER_TYPE.RES,
         note: "",
-        edit_mode: false,
-        tickets: []
+        tickets: [],
+        activate: false,
+        edit_mode: false
+    }
+
+    toggleUserActivation = (props) => {
+        let isActivated = false;
+        if (!(props.username === undefined ||
+          props.username === this.state.username || 
+          this.state.type !== CONSTANTS.USER_TYPE.MGMT)) {
+              if (props.activate) {
+                  // TODO: deactivate target user account
+              } else {
+                  // TODO: fetch user account data & post update to activate
+                  isActivated = true;
+              }
+          }
+        return isActivated;
     }
 
     /**
@@ -57,7 +80,7 @@ export default class User extends React.Component {
         
         let name = (
             <Text testId="user-name">
-                Name: {this.state.first_name}{this.state.last_name}
+                Name: {this.state.first}{this.state.last}
             </Text>
         );
 
@@ -74,7 +97,7 @@ export default class User extends React.Component {
         let email = "";
         // Only star email if it is the preferred contact method and
         // a phone number is also available.
-        if (this.state.contact === CONSTANTS.PREFERRED_CONTACT.EMAIL && phoneCheck) {
+        if (this.state.contactPreference === CONSTANTS.PREFERRED_CONTACT.EMAIL && phoneCheck) {
             email = (
             <Text testId="user-email" style={themeBodyText}>
             Email: {this.state.email + "* "}
@@ -93,7 +116,7 @@ export default class User extends React.Component {
         // Print out both phone number and contact preference note if user
         // phone number is available.
         if (phoneCheck) {
-            if (this.state.contact === CONSTANTS.PREFERRED_CONTACT.TXT) {
+            if (this.state.contactPreference === CONSTANTS.PREFERRED_CONTACT.TXT) {
                 phone = (
                     <Text testId="user-phone" style={themeBodyText}>Phone: {this.state.phone + "*\n"}
                     * = Preferred contact method.
@@ -111,8 +134,8 @@ export default class User extends React.Component {
         // Embed entry permission data in a <Text> container.
         let entry = (
             <Text testId="user-entry" style={themeBodyText}>
-                {(this.state.entry_permission === CONSTANTS.ENTRY_PERMISSION.ANY) ? "Entry: Allowed."
-                : (this.state.entry_permission === CONSTANTS.ENTRY_PERMISSION.NOT) ? "Entry: Notify before entry."
+                {(this.state.entryPermission === CONSTANTS.ENTRY_PERMISSION.ANY) ? "Entry: Allowed."
+                : (this.state.entryPermission === CONSTANTS.ENTRY_PERMISSION.NOT) ? "Entry: Notify before entry."
                 : "Entry: Accompanied entry only."}
             </Text>
         );
@@ -180,12 +203,12 @@ export default class User extends React.Component {
      * This method posts updated user information to server.
      * Allows update for all user profile data except password.
      *
-     * @param first_name User first name
-     * @param last_name User last name
+     * @param first User first name
+     * @param last User last name
      * @param email User email address
      * @param phone User phone number (optional)
-     * @param contact User preferred contact method (email/text)
-     * @param entry_permission User entry preference
+     * @param contactPreference User preferred contact method (email/text)
+     * @param entryPermission User entry preference
      * @param note Note from user regarding special circumstances
      *
      * @returns true if updated successfully
@@ -194,11 +217,11 @@ export default class User extends React.Component {
         var updated = false;
         var checked = [];
         // check and store valid values in an array
-        if ('first_name' in props && CONSTANTS.REGEX.NAME.exec(props.first_name)) {
-            checked.push({['first_name']: props.first_name});
+        if ('first' in props && CONSTANTS.REGEX.NAME.exec(props.first)) {
+            checked.push({['first']: props.first});
         }
-        if ('last_name' in props && CONSTANTS.REGEX.NAME.exec(props.last_name)) {
-            checked.push({['last_name']: props.last_name});
+        if ('last' in props && CONSTANTS.REGEX.NAME.exec(props.last)) {
+            checked.push({['last']: props.last});
         }
         if ('email' in props && CONSTANTS.REGEX.EMAIL.exec(props.email)) {
             checked.push({['email']: props.email});
@@ -206,11 +229,11 @@ export default class User extends React.Component {
         if ('phone' in props && CONSTANTS.REGEX.PHONE.exec(props.phone)) {
             checked.push({['phone']: props.phone});
         }
-        if ('contact' in props && props.contact in CONSTANTS.PREFERRED_CONTACT) {
-            checked.push({['contact']: props.contact});
+        if ('contactPreference' in props && props.contactPreference in CONSTANTS.PREFERRED_CONTACT) {
+            checked.push({['contactPreference']: props.contactPreference});
         }
-        if ('entry_permission' in props &&
-          props.entry_permission in  CONSTANTS.ENTRY_PERMISSION){
+        if ('entryPermission' in props &&
+          props.entryPermission in  CONSTANTS.ENTRY_PERMISSION){
             checked.push({['entry']: props.entry});
         }
         if ('note' in props && CONSTANTS.REGEX.MEMO.exec(props.note)) {
@@ -234,7 +257,7 @@ export default class User extends React.Component {
      */
     setUserType = (props) => {
         let success = false;
-        if (this.state.user_type === CONSTANTS.USER_TYPE.MGMT) {
+        if (this.state.type === CONSTANTS.USER_TYPE.MGMT) {
             // TODO: implement this!
             // access server in order to
             // verify userName is a valid user and then update
@@ -267,10 +290,10 @@ export default class User extends React.Component {
         // and assign value to active
         if (active) {
             // Check if User is MGMT
-            isMgmt = this.state.user_type === CONSTANTS.USER_TYPE.MGMT;
+            isMgmt = this.state.type === CONSTANTS.USER_TYPE.MGMT;
 
             // Check if User is MNT
-            isMnt = this.state.user_type === CONSTANTS.USER_TYPE.MNT;
+            isMnt = this.state.type === CONSTANTS.USER_TYPE.MNT;
         } else {
             // User is not authenticated or does not have an active account
             return valid;
@@ -323,14 +346,14 @@ export default class User extends React.Component {
      */
     getProfile = () => {
         let profile = {
-            first_name: this.state.first_name,
-            last_name: this.state.last_name,
+            first: this.state.first,
+            last: this.state.last,
             units: [...this.state.units],
             email: this.state.email,
             phone: this.state.phone,
-            contact: this.state.contact,
-            entry_permission: this.state.entry_permission,
-            user_type: this.state.user_type,
+            contactPreference: this.state.contactPreference,
+            entryPermission: this.state.entryPermission,
+            type: this.state.type,
             note: this.state.note,
             edit_mode: this.state.edit_mode,
             tickets: [...this.state.tickets]
@@ -392,25 +415,25 @@ export default class User extends React.Component {
             <View>
               <TextInput
                 label="First Name"
-                placeholder={this.state.first_name}
+                placeholder={this.state.first}
                 keyboardType="default"
                 maxLength={32}
                 selectTextOnFocus={true}
                 textContentType="name"
                 autoCompleteType="name"
                 errorMessage="This field is required."
-                onChangeText={fname => this.setState(first_name, fname)}
+                onChangeText={fname => this.setState(first, fname)}
               />
               <TextInput
                 label="Last Name"
-                placeholder={this.state.last_name}
+                placeholder={this.state.last}
                 keyboardType="default"
                 maxLength={32}
                 selectTextOnFocus={true}
                 textContentType="familyName"
                 autoCompleteType="name"
                 errorMessage="This field is required."
-                onSubmitEditing={lname => this.setState(last_name, lname)}
+                onSubmitEditing={lname => this.setState(last, lname)}
               />
               <TextInput
                 label="Email"
@@ -436,8 +459,8 @@ export default class User extends React.Component {
               />
               <Picker
                 label="Preferred Contact Method:"
-                selectedValue={this.state.contact}
-                onValueChange={(itemValue, itemIndex) => this.setState(contact, itemValue)}
+                selectedValue={this.state.contactPreference}
+                onValueChange={(itemValue, itemIndex) => this.setState(contactPreference, itemValue)}
                 >
                 <Picker.Item
                     label='Email'
@@ -450,8 +473,8 @@ export default class User extends React.Component {
               </Picker>
               <Picker
                 label="Entry Permission:"
-                selectedValue={this.state.entry_permission}
-                onValueChange={(itemValue, itemIndex) => this.setState(entry_permission, itemValue)}
+                selectedValue={this.state.entryPermission}
+                onValueChange={(itemValue, itemIndex) => this.setState(entryPermission, itemValue)}
                 >
                 <Picker.Item
                     label='Allow accompanied entry'
