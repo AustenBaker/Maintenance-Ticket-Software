@@ -2,11 +2,9 @@ import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, TextInput, Button } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
-import { ColorScheme } from '../stores';
+import { userStore, colorScheme } from '../stores';
 import Colors from '../constants/Colors';
 import { AppearanceProvider } from 'react-native-appearance';
-
-const colorScheme = new ColorScheme();
 
 export default function SignUpScreen({ navigation }) {
     const [email, onChangeEmail] = React.useState('');

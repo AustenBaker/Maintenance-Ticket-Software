@@ -2,24 +2,28 @@ import { extendObservable } from 'mobx';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import * as CONSTANTS from '../constants/Reference';
 
-export class UserStore {
+class UserStore {
     constructor() {
         extendObservable(this, {
             loading: true,
             loggedIn: false,
             username: '',
-            pwdHash: '',
             firstName: '',
             lastName: '',
+            email: '',
+            phone: '',
+            contact: CONSTANTS.PREFERRED_CONTACT.EMAIL,
+            entry: CONSTANTS.ENTRY_PERMISSION.ACC,
             userType: CONSTANTS.USER_TYPE.RES,
-            contact: { pref: CONSTANTS.PREFERRED_CONTACT.EMAIL, value: ''},
+            note: '',
+            units: [],
             ticketList: []
             /* Add new global states here */
         });
     }
 }
 
-export class TicketStore {
+class TicketStore {
     constructor() {
         extendObservable(this, {
           ticket_number: '',
@@ -34,10 +38,18 @@ export class TicketStore {
     }
 }
 
-export class ColorScheme {
+class ColorScheme {
   constructor() {
     extendObservable(this, {
       theme: Appearance.getColorScheme(),
     });
   }
+}
+
+const userStore = new UserStore();
+const ticketStore = new TicketStore();
+const colorScheme = new ColorScheme();
+
+export {
+  userStore, ticketStore, colorScheme
 }

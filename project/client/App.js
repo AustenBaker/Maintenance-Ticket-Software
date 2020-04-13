@@ -12,17 +12,15 @@ import SignUp from './screens/SignUpPage'
 import useLinking from './navigation/useLinking';
 import Colors from './constants/Colors';
 import { observer } from 'mobx-react';
-import { UserStore, TicketStore, ColorScheme } from './stores';
-const userStore = new UserStore();
-const ticketStore = new TicketStore();
-const colorScheme = new ColorScheme();
+import { userStore, ticketStore, colorScheme } from './stores';
+const store = { user: userStore, ticket: ticketStore, color: colorScheme };
 
 const Stack = createStackNavigator();
 
 function AppContainer() {
   return (
     <AppearanceProvider>
-      <App userStore={userStore} ticketStore={ticketStore} colorScheme={colorScheme}/>
+      <App store={store}/>
     </AppearanceProvider>
   )
 }
@@ -94,9 +92,9 @@ function App(props) {
               headerTitleStyle: { fontSize: 17 },
               }}
           >
-            <Stack.Screen name="Root" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="Root" component={Login} options={{ headerShown: false }}/>
             <Stack.Screen name="Tabs" component={BottomTabNavigator} />
-            <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+            <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>

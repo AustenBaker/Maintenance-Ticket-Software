@@ -4,10 +4,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
-import { ColorScheme } from '../stores';
+import { colorScheme } from '../stores';
 import Colors from '../constants/Colors';
-
-const colorScheme = new ColorScheme();
 
 export default function DetailedTicketPage() {
 
