@@ -11,8 +11,10 @@ router.post('/create', (req, res) => {
     const body = { id: Date.now(), ...req.body };
     const newTicket = new Ticket(body);
     newTicket.save().then(() => res
+        .json({ id })
         .writeHead(200, body)
-        .end('Success - create ticket')
+        //.end(JSON.stringify({ id }))
+        .end('Successful ticket creation')
     ).catch(err => res.status(400).json({ error: err }));
 });
 

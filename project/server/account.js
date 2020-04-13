@@ -62,7 +62,8 @@ router.post('/register', async (req, res) => {
         newUser.save().then(data => {
             const { first, last, username, email, type } = data;
             return res
-                .writeHead(200, { first, last, username, email, type })
+                .status(200)
+                .json({ first, last, username, email, type })
                 .end('Success - register');
         }).catch(err => res.status(400).json({ error: err }));
     }
