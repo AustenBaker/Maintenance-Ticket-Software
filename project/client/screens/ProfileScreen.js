@@ -2,13 +2,11 @@ import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
-import { ColorScheme } from '../stores';
+import { colorScheme } from '../stores';
 import Colors from '../constants/Colors'
 
 import { MonoText } from '../components/StyledText';
 import User from '../data/User';
-
-const colorScheme = new ColorScheme();
 
 export default function ProfileScreen(properties) {
 

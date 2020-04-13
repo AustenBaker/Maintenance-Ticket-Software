@@ -3,7 +3,7 @@ import { View,  Button, Text, Picker, StyleSheet, TouchableWithoutFeedbackBase }
 import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
-import { TicketStore } from '../stores';
+import { userStore, ticketStore } from '../stores';
 
 /**
  * TODO: make ticket_number a GUID?
