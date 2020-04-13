@@ -31,7 +31,7 @@ exports.Ticket = mongoose.model('Ticket', new Schema({
     aptComplex: { type: String },
     unit: { type: String },
     issue: { type: String },
-    emergency: { type: Number, default: 0, max: 2 },
+    emergency: { type: Boolean, default: false },
     resolvedTime: { type: Number },
     progress: { type: String },
     closed: { type: Boolean, default: false }
