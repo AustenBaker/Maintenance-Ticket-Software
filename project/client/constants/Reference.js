@@ -15,7 +15,13 @@ export const REGEX = {
     // password pattern: a-zA-Z0-9_-!@#$%^&*+=
     // requires at least one each: uppercase letter, number, punctuation
     // length of 8-32 characters
-    PASSWORD: /^[[\w]*[A-Z]+[\d]+[\-!@#$%\^\*\+=]+]{8,32}$/,
+    // password must pass all REGEX.PASSWORD.exec(password)
+    // pattern matcher tests to be valid
+    PASSWORD: [/^[[\w]*[A-Z]*[\d]*[\-!@#$%\^\*\+=]*]{8,32}$/,
+        /[A-Z]+/,
+        /[\d]+/,
+        /[\-!@#$%\^\*\+=]+/
+    ],
 
     // memo pattern: a-zA-Z0-9_-+=!?.,;:()&
     // allows any combination of letters, digits and select punctuation
