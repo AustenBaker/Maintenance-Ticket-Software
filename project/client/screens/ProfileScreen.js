@@ -24,7 +24,7 @@ export default function ProfileScreen(properties) {
   // TODO: Check for valid session and then load user values
   // from UserStore if it exists and if session is valid
   // otherwise redirect to login page
-  let properties = {
+  let testUser = {
     first: "Mary",
     last: "Sue",
     email: "someday@somepl.ace",
@@ -37,7 +37,7 @@ export default function ProfileScreen(properties) {
     <View style={styles.container, themeContainer}>
       <ScrollView>
         <View>
-          <User {...properties}/>
+          <User {...testUser}/>
         </View>
       </ScrollView>
     </View>
