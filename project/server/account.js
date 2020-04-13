@@ -23,18 +23,32 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) return res.status(403).json({ error: 'ERR_NO_SUCH_USER' });
     else {
-        const match = await bcrypt.compare(password, user.password);
-        if (match) {
-            ssn.loggedIn = true;
-            const { first, last, username, email, type } = user;
-            //console.log(`User: ${username} logged in!`);
-            ssn.username = username;
-            return res
-                .status(200)
-                .writeHead(200, { first, last, username, email, type })
-                .end('Sucess - login');
-        }
-        else return res.status(401).json({ error: 'ERR_WRONG_PSWD' });
+        bcrypt.compare(password, user.password).then( match => {
+            if (match) {
+                ssn.loggedIn = true;
+                const { first, last, units, username, password, email, phone, contactPreference, entryPermission, type, note, tickets, activate } = user;
+                ssn.username = username;
+                return res
+                    .status(200)
+                    .json({ first:first, 
+                        last:last, 
+                        units:units, 
+                        username:username, 
+                        password:password, 
+                        email:email, 
+                        phone:phone, 
+                        contactPreference:contactPreference, 
+                        entryPermission:entryPermission, 
+                        type:type, 
+                        note:note, 
+                        tickets:tickets, 
+                        activate:activate
+                    })
+                    //.writeHead(200, { first, last, username, email, type })
+                    .end('Sucess - login');
+            }
+            else return res.status(401).json({ error: 'ERR_WRONG_PSWD' });
+        }).catch(err => res.status(400).json({ error: err }));
     }
 });
 

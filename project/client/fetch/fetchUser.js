@@ -13,31 +13,25 @@ export async function handleLogin(user, pass) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: user, password: pass })
-    }).then(res => res.json()).then(data => {
-        console.log("Login Successful")
+    }).then(res => res).then(data => {
         return data
     }).catch(err => {
-        console.log("Error during loggin: " + err)
         return err
     })
-    console.log(response)
     return await response
 }
-
 
 export async function logout(){
     const response = await fetch(PATH + '/account/logout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: ""
-    }).then(res => res.json()).then(data => {
-        console.log("Logout Successful")
+    }).then(res => res).then(data => {
         return data
     }).catch(err => {
-        console.log("ERROR during logout: " + err)
         return err
     })
-    return await response.json()
+    return await response
 }
 
 /**
@@ -82,7 +76,6 @@ export async function createAccount(first, last, units, username, password, emai
     return await response.json()
 }
 
-
 export async function deleteAccount(username){ 
     const response = await fetch(PATH + '/account/delete', {
         method: 'DELETE',
@@ -99,19 +92,13 @@ export async function deleteAccount(username){
 export async function getUserFromUsername(username){ 
     const response = await fetch(PATH + '/account/' + username, {
         method: 'GET',
-    }).then(res => res.json()).then(data => {
-        console.log("User Found from Username Successful")
+    }).then(res => res).then(data => {
         return data
     }).catch(err => {
-        console.log("ERROR getting user from username: " + err)
         return err
     })
-    return await response
+    return await response.json()
 }
-
-/**
- * @param body = {username, password, first, last, email, type}
- */
 
 export async function update(username, password, first, last, email, type) {
     const response = await fetch(PATH + '/account/update', {
