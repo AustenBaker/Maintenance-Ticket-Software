@@ -6,7 +6,7 @@ import { Appearance, AppearanceProvider } from 'react-native-appearance';
 import { userStore, colorScheme } from '../stores';
 import Colors from '../constants/Colors';
 
-const colorScheme = new ColorScheme();
+//const colorScheme = new ColorScheme();
 
 class LoginPage extends React.PureComponent {
   constructor(props) {
@@ -66,7 +66,7 @@ class LoginPage extends React.PureComponent {
               keyboardAppearance={themeKeyboard}
               style={themeTextBox}
               onChangeText={username => this.setState({ username })}
-              value={user}
+              value={this.state.username}
             />
             <TextInput
               secureTextEntry
@@ -76,7 +76,7 @@ class LoginPage extends React.PureComponent {
               keyboardAppearance={themeKeyboard}
               style={themeTextBox}
               onChangeText={password => this.setState({ password })}
-              value={pass}
+              value={this.state.password}
             />
 
             <Button
