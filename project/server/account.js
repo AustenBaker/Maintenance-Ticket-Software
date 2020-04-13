@@ -23,18 +23,32 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) return res.status(403).json({ error: 'ERR_NO_SUCH_USER' });
     else {
-        const match = await bcrypt.compare(password, user.password);
-        if (match) {
-            ssn.loggedIn = true;
-            const { first, last, username, email, type } = user;
-            //console.log(`User: ${username} logged in!`);
-            ssn.username = username;
-            return res
-                .status(200)
-                .writeHead(200, { first, last, username, email, type })
-                .end('Sucess - login');
-        }
-        else return res.status(401).json({ error: 'ERR_WRONG_PSWD' });
+        bcrypt.compare(password, user.password).then( match => {
+            if (match) {
+                ssn.loggedIn = true;
+                const { first, last, units, username, password, email, phone, contactPreference, entryPermission, type, note, tickets, activate } = user;
+                ssn.username = username;
+                return res
+                    .status(200)
+                    .json({ first:first, 
+                        last:last, 
+                        units:units, 
+                        username:username, 
+                        password:password, 
+                        email:email, 
+                        phone:phone, 
+                        contactPreference:contactPreference, 
+                        entryPermission:entryPermission, 
+                        type:type, 
+                        note:note, 
+                        tickets:tickets, 
+                        activate:activate
+                    })
+                    //.writeHead(200, { first, last, username, email, type })
+                    .end('Sucess - login');
+            }
+            else return res.status(401).json({ error: 'ERR_WRONG_PSWD' });
+        }).catch(err => res.status(400).json({ error: err }));
     }
 });
 
@@ -60,10 +74,23 @@ router.post('/register', async (req, res) => {
         const body = { ...req.body, password: hashedPswd };
         const newUser = new User(body);
         newUser.save().then(data => {
-            const { first, last, username, email, type } = data;
+            const { first, last, units, username, password, email, phone, contactPreference, entryPermission, type, note, tickets, activate } = data;
             return res
                 .status(200)
-                .json({ first, last, username, email, type })
+                .json({ first:first, 
+                    last:last, 
+                    units:units, 
+                    username:username, 
+                    password:password, 
+                    email:email, 
+                    phone:phone, 
+                    contactPreference:contactPreference, 
+                    entryPermission:entryPermission, 
+                    type:type, 
+                    note:note, 
+                    tickets:tickets, 
+                    activate:activate
+                })
                 .end('Success - register');
         }).catch(err => res.status(400).json({ error: err }));
     }
@@ -82,11 +109,11 @@ router.post('/deactivate', (req, res) => {
 // Delete user
 router.delete('/delete', async (req, res) => {
     //console.log(`Trying to delete user with username=${req.body.username}`);
-
+    //console.log(req.body.username)
     // Checks if user already exists
     const userDeleted = await User.findOneAndDelete({ username: req.body.username });
     if (userDeleted) return res.status(200).json({ success: "USER_DELETED" });
-    else return res.status(404).json({ error: 'NO_SUCH_USER'} );
+    else return res.sendStatus(404).json({ error: 'NO_SUCH_USER'} ).end();
 });
 
 // Get user info TODO: JWT signed Bearer token for security
@@ -95,7 +122,7 @@ router.get('/:username', async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) res.status(400).json({ error: 'NO_SUCH_USER' });
     else {
-        const { first, last, username, email, type } = user;
+        const { first, last, units, username, email, phone, contactPreference, entryPermissions, type, note, tickets, activate } = user;
         res.status(200).json({ first, last, username, email, type });
     }
 });
