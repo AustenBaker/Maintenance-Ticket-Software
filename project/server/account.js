@@ -6,17 +6,29 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const { User } = require('./database');
 
+// Login status
+router.post('/status', (req, res) => {
+    const ssn = req.session;
+    if (!ssn.loggedIn) res.json({ loggedIn: false });
+    else {
+        const { first, last, username, email, type } = ssn; const loggedIn = true;
+        res.json({ loggedIn, first, last, username, email, type });
+    }
+});
+
 // Login
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
+    const ssn = req.session;
     const user = await User.findOne({ username });
     if (!user) return res.status(403).json({ error: 'ERR_NO_SUCH_USER' });
     else {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
-            req.session.loggedIn = true;
+            ssn.loggedIn = true;
             const { first, last, username, email, type } = user;
             //console.log(`User: ${username} logged in!`);
+            ssn.username = username;
             return res
                 .status(200)
                 .writeHead(200, { first, last, username, email, type })
@@ -28,8 +40,10 @@ router.post('/login', async (req, res) => {
 
 // Logout
 router.post('/logout', (req, res) => {
-    req.session.loggedIn = false;
-    res.redirect('/');
+    const ssn = req.session;
+    if (ssn.destroy) ssn.destroy();
+
+    res.json({ loggedIn: false });
 });
 
 // Register account
@@ -69,7 +83,7 @@ router.delete('/delete', async (req, res) => {
     //console.log(`Trying to delete user with username=${req.body.username}`);
 
     // Checks if user already exists
-    const userDeleted = await User.findOneAndDelete( { username: req.body.username });
+    const userDeleted = await User.findOneAndDelete({ username: req.body.username });
     if (userDeleted) return res.status(200).json({ success: "USER_DELETED" });
     else return res.status(404).json({ error: 'NO_SUCH_USER'} );
 });
@@ -85,8 +99,28 @@ router.get('/:username', async (req, res) => {
     }
 });
 
-// PUT /update
-router.put('/update', (req, res) => {
+// POST /update
+router.put('/update', async (req, res) => {
+    const updateObj = {};
+    const { username } = req.session;
+
+    const currentUser = await User.findOne({ username });
+
+    for (let prop in req.body) if (req.body[prop]) updateObj[prop] = req.body[prop];
+
+    // password is updated, check and rehash
+    if (req.body.password) {
+        const { password } = req.body.password;
+        const passwordMatch = await bcrypt.compare(password, currentUser.password);
+        if (!passwordMatch) throw 'WRONG_PASSWORD';
+        const hashedPswd = await bcrypt.hash(password, 10);
+        updateObj.password = hashedPswd;
+    }
+
+    const updated = currentUser.update(updateObj);
+    
+    // Stores updated info in session
+    // Returns updated info as a response
 
 });
 
