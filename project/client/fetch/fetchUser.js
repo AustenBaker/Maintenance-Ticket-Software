@@ -47,8 +47,8 @@ export async function logout(){
  * @param {String} last 
  * @param {Array} units 
  * @param {String} email 
- * @param {Number} phone 
- * @param {Number} contactPreference 
+ * @param {String} phone 
+ * @param {String} contactPreference 
  * @param {String} entryPermission 
  * @param {String} type 
  * @param {String} note 
@@ -137,7 +137,7 @@ export async function update(username, password, first, last, units, email, phon
             tickets: tickets,
             activate: activate
         })
-    }).then(res => res.json()).then(data => {
+    }).then(res => res).then(data => {
         console.log("Update Successful")
         return data
     }).catch(err => {
