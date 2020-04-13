@@ -16,7 +16,7 @@ export const REGEX = {
     // requires at least one each: uppercase letter, number, punctuation
     // length of 8-32 characters
     // password must pass all REGEX.PASSWORD.exec(password)
-    // pattern matcher tests to be valid
+    // pattern matcher tests to be valid (total: 4)
     PASSWORD: [/^[[\w]*[A-Z]*[\d]*[\-!@#$%\^\*\+=]*]{8,32}$/,
         /[A-Z]+/,
         /[\d]+/,
@@ -28,6 +28,22 @@ export const REGEX = {
     // length up to 255 characters
     MEMO: /^[[\w]*[\-\+=!\?.,;:/(/)&]?]{,255}$/
 }
+// User property list
+export const USER_PROPERTIES = [
+    'username', // String, 1-32 char
+    'password', // String, 8-32 char, see constants/Reference.js REGEX.PASSWORD for patterns
+    'first', // String, 0-32 char
+    'last', // String, 0-32 char
+    'units', // Array of units {Property, unitNumber}, see constants/Reference.js PROPERTY for Properties
+    'email', // String, see constants/Reference.js REGEX.EMAIL for pattern
+    'phone', // String, see constants/Reference.js REGEX.PHONE for pattern ###-###-####
+    'contactPreference', // String, see constants/Reference.js PREFERRED_CONTACT
+    'entryPermission', // String, see constants/Reference.js ENTRY_PERMISSION
+    'type', // String, see constants/Reference.js USER_TYPE
+    'note', // String, 0-255 char, see constants/Reference.js REGEX.MEMO for pattern
+    'tickets', // Array of Numbers (Ticket Id Numbers)
+    'activate' // Boolean
+];
 
 // User type options
 export const USER_TYPE = {
