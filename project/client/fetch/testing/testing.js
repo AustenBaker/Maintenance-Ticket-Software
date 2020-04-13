@@ -9,7 +9,7 @@ describe("TESTING CATAGORIES", function() {
     this.timeout(15000)
     describe('1. Accounts',function() { 
        //register
-        it('fetch /register', async function(done){
+        it.skip('fetch /register', async function(done){
             const res = await userFetch.register("kyle","schn",["parkway","hill crest"],"golfkid",
                                                 "topSecret","kyle2@gmail.com",2624739108,2,"Go for it","res","I swear I am nice",
                                                 [],false)
@@ -24,12 +24,13 @@ describe("TESTING CATAGORIES", function() {
         })
 
         //logout
-        it.skip('POST /logout', function(done){
-                //.expect(302, done)
+        it.skip('POST /logout', async function(){
+            const res = await userFetch.logout()
+            expect(res.status).equal(200)
         })
 
         //delete account
-        it('Delete', async function(){
+        it.skip('Delete', async function(){
             const res = await userFetch.deleteAccount("golfkid")
             console.log(res)
             expect(res.status).equal(200)
@@ -39,6 +40,11 @@ describe("TESTING CATAGORIES", function() {
         it.skip('POST /login w/ no account', function(done){
                 //.send({username: 'testing', password: 'isThisWorking?!'})
                 //.expect(403, done)
+        })
+
+        it('Get user from username', async function(){
+            const res = await userFetch.getUserFromUsername("golfkid")
+            expect(res.first).equal('kyle')
         })
     })
 
@@ -51,16 +57,21 @@ describe("TESTING CATAGORIES", function() {
 
         it.skip('Create /ticket/', async function(){
             const res = await ticketFetch.submitTicket("a@a.com","parker way apt","213","Door wont open","jammed some how",false,5,"No progress",false)
-            console.log("CREATE TICKET LOG")
+            console.log("CREATE TICKET")
             console.log(res)
             expect(res.id).equal("")
         })
         
-        it.skip("Update Ticket")
+        it.skip('Create /ticket/', async function(){
+            const res = await ticketFetch.submitTicket("a@a.com","parker way apt","213","I SWITCHED THIS","jammed some how",true,5,"No progress",false)
+            console.log("CHANGING TICKET")
+            console.log(res)
+            expect(res.id).equal("")
+        })
 
         it.skip("Delete /ticket/", async function(){
-            const res = await ticketFetch.deleteTicket("")
-            expect(res.status.equal(200))
+            const res = await ticketFetch.deleteTicket(1586790128216)
+            expect(res.status).equal(200)
         })
 
         it.skip('GET /ticket/:id', async function(){

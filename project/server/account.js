@@ -81,8 +81,8 @@ router.post('/deactivate', (req, res) => {
 
 // Delete user
 router.delete('/delete', async (req, res) => {
-    //console.log(`Trying to delete user with username=${req.body.username}`);
-
+    console.log(`Trying to delete user with username=${req.body.username}`);
+    console.log(req.body.username)
     // Checks if user already exists
     const userDeleted = await User.findOneAndDelete({ username: req.body.username });
     if (userDeleted) return res.status(200).json({ success: "USER_DELETED" });
@@ -95,7 +95,7 @@ router.get('/:username', async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) res.status(400).json({ error: 'NO_SUCH_USER' });
     else {
-        const { first, last, username, email, type } = user;
+        const { first, last, units, username, email, phone, contactPreference, entryPermissions, type, note, tickets, activate } = user;
         res.status(200).json({ first, last, username, email, type });
     }
 });

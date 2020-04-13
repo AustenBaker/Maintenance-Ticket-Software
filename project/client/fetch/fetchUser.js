@@ -87,7 +87,7 @@ export async function deleteAccount(username){
     const response = await fetch(PATH + '/account/delete', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: { username} 
+        body: JSON.stringify(username)
     }).then(res => res.json()).then(data => {
         console.log("Delete Account Successful")
         return data
@@ -100,10 +100,8 @@ export async function deleteAccount(username){
 }
 
 export async function getUserFromUsername(username){ 
-    const response = await fetch(PATH + '/account/:username', {
+    const response = await fetch(PATH + '/account/' + username, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        body: username
     }).then(res => res.json()).then(data => {
         console.log("User Found from Username Successful")
         return data
@@ -111,7 +109,7 @@ export async function getUserFromUsername(username){
         console.log("ERROR getting user from username: " + err)
         return err
     })
-    return await response.json()
+    return await response
 }
 
 /**

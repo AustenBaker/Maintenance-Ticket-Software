@@ -27,15 +27,18 @@ export async function submitTicket(email, aptComplex, unit, issue, details, emer
                             resolveTime: resolveTime, 
                             progress: progress, 
                             closed: closed})
-    }).then(res => res.json()).then(data => {
+    }).then(res => res).then(data => {
+      console.log("TICKET SUBMITTED")
+      console.log(data)
       return data
     }). catch(err => {
+        console.log("TICKET ERROR")
+        console.log(err)
       return err
     })
+    console.log(response)
     return await response.json()
 };
-
-
 /**
  * 
  * @param {number} id 
@@ -44,14 +47,15 @@ export async function deleteTicket(id){
     const response = fetch(PATH + '/ticket/delete', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-      body: id
-    }).then(res => res.json()).then(data => {
-      console.log(res)
+      body: JSON.stringify(id)
+    }).then(res => res).then(data => {
+      console.log("delete done")
+      console.log(data)
       return data
     }). catch(err => {
       return err
     })
-    return await response.json()
+    return await response
 };
 
 /**
@@ -78,14 +82,13 @@ export async function updateTicket(email, aptComplex, unit, issue, details, emer
             resolveTime: resolveTime, 
             progress: progress, 
             closed: closed})
-        }).then(res => res.json()).then(data => {
+        }).then(res => res).then(data => {
         return data
     }). catch(err => {
         return err
     })
-    return await response.json()
+    return await response
 }
-
 /**
  * 
  * @param {string} email 
@@ -93,14 +96,13 @@ export async function updateTicket(email, aptComplex, unit, issue, details, emer
 export async function getTicketsFromEmail(email){ 
     const response = fetch(PATH + '/ticket/' + email, {
         method: 'GET'
-    }).then(res => res.json()).then(data => {
+    }).then(res => res).then(data => {
         return data
     }). catch(err => {
         return err
     })
-    return await response.json()
+    return await response
 }
-
 /**
  * 
  * @param {number} id 
