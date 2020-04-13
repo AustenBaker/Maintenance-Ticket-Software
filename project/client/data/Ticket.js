@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { View,  Button, Text, Picker } from 'react-native';
+import { View,  Button, Text, Picker, StyleSheet, TouchableWithoutFeedbackBase } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
-import { TextInput } from 'react-native-gesture-handler';
+import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import { TicketStore } from '../stores';
 
 /**
@@ -23,7 +23,9 @@ export default class Ticket extends React.Component{
       unit_number: props.unit_number,
       email: props.email,
       emergency: props.emergency,
-      ticket_edit_mode: props.ticket_edit_mode,
+      ticket_issue_title: props.ticket_issue_title,
+      ticket_issue: props.ticket_issue,
+      ticket_view_mode: props.ticket_view_mode,
       ticket_updates: [props.ticket_updates]
     }
   }
@@ -39,9 +41,13 @@ export default class Ticket extends React.Component{
     unit_number: "316",
     email: "email@email.com",
     emergency: false,
-    ticket_edit_mode: false,
+    ticket_issue_title: "Pipe Burst",
+    ticket_issue: "A pipe burst open in my bathroom",
+    ticket_view_mode: 0,
     ticket_updates: []
   }
+
+  
 
   /**
    * This method displays ticket details like an expanded view
@@ -54,69 +60,143 @@ export default class Ticket extends React.Component{
 
     // create <Text> container for emergency data
     var emergency = "";
-    if (this.emergency === true){
+    if (this.state.emergency === CONSTANTS.EMERGENCY.YES){
       emergency = (
         <Text testID="emergency">
-          URGENT: This is an emergency level ticket!
+          Level: EMERGENCY
         </Text>
       );
     }else{
       emergency = (
         <Text testID="emergency">
-          This is a normal level ticket
+          Level: Normal
         </Text>
       );
     }
 
+    // create <Text> container for status
+    var status = "";
+    if (this.state.status === CONSTANTS.STATUS.OPEN){
+      status = ( 
+        <Text testID="status">Status: Open</Text>
+      );
+    } else { 
+      status = ( 
+        <Text testID="status">Status: Closed</Text>
+      );
+    }
+
     //<text> for ticket_number
-    var ticket_number = (
+    var ticket_number = "";
+    ticket_number = (
       <Text testID="ticket_number">
-        {ticket_number}
+        Ticket ID #{this.state.ticket_number}
       </Text>
-    )
+    );
+  
+    
+    //<view> for ticket
+    var ticket = "";
+    ticket = (
+      <View testID="ticketContainer" style={styles.ticketContainer}>
+          <Text style={styles.ticketHeader}>
+            <View testID = "unit_number">
+              <Text style={styles.ticketHeader}>Location: Apt. {this.state.unit_number}, </Text>
+            </View>
+            <View testID = "location">
+              {this.state.location} {"\n"}
+            </View>
+          </Text>
 
+          <Text style={styles.ticketBody}>
+            {status}  {"\n"}
+          </Text>
+
+          <View testID="emergency">
+            {emergency} {"\n"}
+          </View>
+
+          <View>
+            {ticket_number}  {"\n"}  
+          </View>
+
+          <View testID="timestamp">
+            Timestamp: {this.state.timestamp}
+          </View>
+
+          <View>
+            {this.ticket_issue_title}
+            {this.ticket_issue}  
+          </View>
+
+        </View>
+    );
+
+
+    //<view> for buttons
+    var buttons = "";
+    buttons = (
+      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={styles.editTicketButton}>
+            <Button
+              title="Edit Ticket"
+              onPress={() => {
+                this.setState({ticket_view_mode: 1});
+              }}
+              accessibilityLabel="Edit Ticket Button"
+            />
+          </View>
+        
+          <View style={styles.showTicketListButton}>
+            <Button
+              title="Show Ticket List"
+              onPress={() => {
+                this.setState({ticket_view_mode: 2});
+              }}
+              accessibilityLabel="Edit Ticket Button"
+            />
+          </View>
+        </View>
+    );
     //ticket details content
-    //TODO make edit button open up edit view
     content = (
-      <View>
-
-
-        {ticket_number[0]}
-
-        <Text testID="unit_number" style={{height: 50, width: 200, backgroundColor: 'white', fontSize: 20}}>
-          Unit Number: {this.state.unit_number}
-        </Text>
-
-        <Text testID="status" style={{}}>
-          Ticket Status: {this.state.status}
-        </Text>
-
-        <Text testID="timestamp">
-          Location: {this.state.timestamp}
-        </Text>
-
-        <Text testID="location">
-          Location: {this.state.location}
-        </Text>
-
-        {emergency}
-
-        <Button
-          title="Edit Ticket"
-          onPress={() => {
-            this.setState({ticket_edit_mode: true});
-          }}
-          accessibilityLabel="Edit Ticket Button"
-        />
-
-      </View>
+      <View>{ticket}{buttons}</View>
     );
     return content;
   }
 
   //generate ticket list using flatlist
   generateTicketList = () => {
+    var content;
+    var temp = this.displayTicketDetails();
 
+    content = (
+      <View>
+        <ScrollView>
+          <Text style={{backgroundColor: 'white', height: 400, margin: 20}}>
+            in progress
+          </Text>
+          <Text style={{backgroundColor: 'white', height: 300, margin: 20}}>
+            in progress
+          </Text>
+          <Text style={{backgroundColor: 'white', height: 200, margin: 20}}>
+            in progress
+          </Text>
+          <Text style={{backgroundColor: 'white', height: 100, margin: 20}}>
+            in progress
+          </Text>
+
+          <Button
+              title="Back"
+              onPress={() => {
+                this.setState({ticket_view_mode: 0});
+              }}
+              accessibilityLabel="Edit Ticket Button"
+            />
+        </ScrollView>
+      </View>
+    );
+    return content;
   }
 
   /**
@@ -141,7 +221,7 @@ export default class Ticket extends React.Component{
     if('location' in props && props.location in CONSTANTS.PROPERTY){
       checked.push({['location']: props.location});
     }
-    if('emergency' in props){
+    if('emergency' in props && props.emergency in CONSTANTS.EMERGENCY){
 	    checked.push({['emergency']: props.emergency});
     }
     if('unit_number' in props){
@@ -166,64 +246,38 @@ export default class Ticket extends React.Component{
     //content for return
     var content;
 
-    const ticket = this.getTicket();
-
-    let editable = this.state.ticket_edit_mode;
-    var submitButton;
-    if(editable = true) {
-      submitButton = (<Button
-        title="submit ticket update"
-      />)
-    }
+    var ticket = this.getTicket();
 
     //the content that will be returned
     content = (
       <View>
 
-
-        <Text>Property</Text>
-        <Picker
-          selectedValue={this.state.location}
-          style={{ hieght: 50, width: 200}}
+        <Picker mode="dropdown"
+          selectedValue={ticket.location}
+          style={styles.editTicketPicker}
           onValueChange={
             (itemValue, itemIndex) => this.setState({location: itemValue})
           }
         >
           <Picker.Item label={CONSTANTS.PROPERTY.WSP} value={CONSTANTS.PROPERTY.WSP} />
-          <Picker.Item label={CONSTANTS.PROPERTY.RH} value={CONSTANTS.PROPERTY.RH} />
-          <Picker.Item label={CONSTANTS.PROPERTY.SA} value={CONSTANTS.PROPERTY.SA} />
+          <Picker.Item label={CONSTANTS.PROPERTY.RH}  value={CONSTANTS.PROPERTY.RH} />
+          <Picker.Item label={CONSTANTS.PROPERTY.SA}  value={CONSTANTS.PROPERTY.SA} />
           <Picker.Item label={CONSTANTS.PROPERTY.LAA} value={CONSTANTS.PROPERTY.LAA} />
           <Picker.Item label={CONSTANTS.PROPERTY.TAW} value={CONSTANTS.PROPERTY.TAW} />
         </Picker>
-
+        
         <TextInput
-          label="Unit Number"
-          placeholder="Unit Number"
-          style={{height: 50, width: 200, backgroundColor: 'white', fontSize: 20}}
-          maxLength={4}
-          selectTextOnFocus={true}
-          errorMessage="Unit Number is required"
-          onChangeText={unitn => this.setState(unit_number, unitn)}
+          placeholder="Unit Number (type in box)"
+          style={styles.editTicketTextInput}
+          maxLength={5}
+          onChangeText={
+            input => this.setState({unit_number: input})
+          }
         />
 
-
-        <Text style={{color: 'white', fontSize: 20}}>Is this an emergency?</Text>
-        <Picker
-          selectedValue={this.state.emergency}
-          style={{ height: 50, width: 200 }}
-          onValueChange={
-            (itemValue, itemIndex) => this.setState({emergency: itemValue})
-          }
-        >
-          <Picker.Item label={CONSTANTS.EMERGENCY.NO}  value={CONSTANTS.EMERGENCY.NO}  />
-          <Picker.Item label={CONSTANTS.EMERGENCY.YES} value={CONSTANTS.EMERGENCY.YES} />
-        </Picker>
-
-
-        <Text style={{color: 'white', fontSize: 20}}>Ticket Status (Open/Closed):</Text>
-        <Picker
-          selectedValue={this.state.status}
-          style={{ height: 50, width: 200 }}
+        <Picker mode="dropdown"
+          selectedValue={ticket.status}
+          style={styles.editTicketPicker}
           onValueChange={
             (itemValue, itemIndex) => this.setState({status: itemValue})
           }
@@ -232,13 +286,26 @@ export default class Ticket extends React.Component{
           <Picker.Item label={CONSTANTS.STATUS.CLOSED} value={CONSTANTS.STATUS.CLOSED} />
         </Picker>
 
-        <Button
-          title="Submit Ticket Update"
-          onPress={() => {
-            this.setState({ticket_edit_mode: false});
-          }}
-          accessibilityLabel="Submit Ticket Update Button"
-        />
+        <Picker mode="dropdown"
+          selectedValue={ticket.emergency}
+          style={styles.editTicketPicker}
+          onValueChange={
+            (itemValue, itemIndex) => this.setState({emergency: itemValue})
+          }
+        >
+          <Picker.Item label={CONSTANTS.EMERGENCY.NO}  value={CONSTANTS.EMERGENCY.NO}  />
+          <Picker.Item label={CONSTANTS.EMERGENCY.YES} value={CONSTANTS.EMERGENCY.YES} />
+        </Picker>
+
+        <View style={styles.submitTicketUpdateButton}>
+          <Button
+            title="Submit Ticket Update"
+            onPress={() => {
+              this.setState({ticket_view_mode: 0});
+            }}
+            accessibilityLabel="Submit Ticket Update Button"
+          />
+        </View>
 
       </View>
     );
@@ -247,20 +314,26 @@ export default class Ticket extends React.Component{
     return content;
   }
 
-
-  /**
-   * Create ticket method
-   * User selects which unit (Picker)
-   * Checkbox with common problems & other textbox
-   * emergency level (radio button)
-   * If switched to emergency, display warning
-   */
-  createTicket = () => {
-
+  //returns a ticket object
+  getTicket = () => {
+    let ticket = {
+      ticket_number: this.state.ticket_number,
+      timestamp: this.state.timestamp,
+      status: this.state.status,
+      location: this.state.location,
+      unit_number: this.state.unit_number,
+      email: this.state.email,
+      emergency: this.state.emergency,
+      ticket_view_mode: this.state.ticket_view_mode,
+      ticket_updates: [...this.state.ticket_updates]
+    }
+    return ticket;
   }
 
   /**
    * boolean change ticket status
+   * note: Do i need this if can change 
+   * with picker in edit ticket view
    */
   closeTicket = (props) => {
     let success = false;
@@ -273,42 +346,81 @@ export default class Ticket extends React.Component{
 
   /**
    * Delete ticket method
+   * for management and maint accounts
    */
-  deleteTicket = () => {
-
-  }
-
-  //returns a ticket
-  getTicket = () => {
-    let ticket = {
-      ticket_number: this.state.ticket_number,
-      timestamp: this.state.timestamp,
-      status: this.state.status,
-      location: this.state.location,
-      unit_number: this.state.unit_number,
-      email: this.state.email,
-      emergency: this.state.emergency,
-      ticket_edit_mode: this.state.ticket_edit_mode,
-      ticket_updates: [...this.state.ticket_updates]
-    }
-    return ticket;
-  }
-
-
-  //method to delete tickets for management
+  deleteTicket = () => {}
 
   render = () => {
     var content;
 
-    //normal view
-    if (this.state.ticket_edit_mode === false) {
+    //0 == display single ticket details
+    if (this.state.ticket_view_mode === 0) {
       content = this.displayTicketDetails();
     }
-    //ticket edit mode view
-    else {
+
+    //1 === ticket edit
+    else if (this.state.ticket_view_mode === 1){
       content = this.editTicket();
+    } 
+    //2 === ticketlist
+    else if (this.state.ticket_view_mode === 2){
+      content = this.generateTicketList();
     }
     return (content);
   }
 
 }
+
+const styles = StyleSheet.create({
+  //ticket view screen styles
+  ticketContainer: {
+    height: 200, 
+    width: '80%',
+    marginLeft: '10%',
+    marginBottom: 20,
+    marginTop: 20,
+    backgroundColor: 'white', 
+    textAlign: 'left',
+    borderRadius: 12,
+
+  },
+  ticketHeader: {
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+
+  ticketBody: {
+    fontSize: 18,
+  },
+
+  editTicketButton: {
+    width: '30%',
+  },
+  showTicketListButton: {
+    width: '30%',
+  },
+
+  //edit view screen styles
+  editTicketPicker: {
+    height: 50,
+    width: '80%',
+    fontSize: 20,
+    margin: 20,
+    alignSelf: 'center',
+  },
+  editTicketTextInput: {
+    height: 50,
+    width: '80%',
+    marginLeft: '10%',
+    fontSize: 20,
+    color: 'black',
+    backgroundColor: 'white',
+  },
+  submitTicketUpdateButton: {
+    width: '30%',
+    alignSelf: 'center',
+  },
+
+  //ticket list styles
+
+});

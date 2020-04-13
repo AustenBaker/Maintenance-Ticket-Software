@@ -10,8 +10,6 @@ import Colors from '../constants/Colors';
 const colorScheme = new ColorScheme();
 
 
-const PATH = 'http://127.0.0.1:3000/'
-
 var radio_props = [
   {label: 'low',       value: 2},
   {label: 'normal',    value: 0 },
@@ -38,20 +36,6 @@ class CreateTicketScreen extends React.Component {
       //which will result in re-render the text
    }
 
-  submitTicket = () => {
-    console.log(this.state)
-  }
-  /*async submitTicket(){
-    const res = await fetch(PATH + '/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      //body: JSON.stringify({ prop1: 'val1', prop2: 'val2' })
-      body: this.state
-    });
-    const data = await res.json();
-    console.log(data); // response data as an Object
-  }*/
-
   render(){
 
     let themeContainer =
@@ -77,7 +61,7 @@ class CreateTicketScreen extends React.Component {
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={ this.emergency ? "#f5dd4b" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
+        onValueChange={this.toggleSwitch}
         value={this.emergency}
       />
 
@@ -139,7 +123,7 @@ class CreateTicketScreen extends React.Component {
         <Button
           title="Create Ticket Request"
           accessibilityLabel="Create Ticket Request Button"
-          onPress = {this.submitTicket}
+         // onPress = {this.submitTicket(this.state)}
         />
         </View>
       </ScrollView>
