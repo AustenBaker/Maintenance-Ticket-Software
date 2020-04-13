@@ -9,6 +9,10 @@ const PATH = 'http://127.0.0.1:3001'
  * @param {String} pass = Password of user
  */
 export async function handleLogin(user, pass) {
+    // TODO: either here or somewhere else, validate
+    // data form before making post request to server
+    // (see constants/Reference.js REGEX for valid input
+    // patterns)
     const response = await fetch(PATH + '/account/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -17,10 +21,11 @@ export async function handleLogin(user, pass) {
         console.log("Login Successful")
         return data
     }).catch(err => {
-        console.log("Error during loggin: " + err)
-        return err
+        console.log("Error during login: " + err)
+        return err;
     })
     console.log(response)
+    // TODO: Add in response data validation check?
     return await response
 }
 
@@ -42,11 +47,11 @@ export async function logout(){
 
 /**
  * 
+ * @param {String} username 
+ * @param {String} password 
  * @param {String} first 
  * @param {String} last 
  * @param {Array} units 
- * @param {String} username 
- * @param {String} password 
  * @param {String} email 
  * @param {Number} phone 
  * @param {Number} contactPreference 
@@ -56,24 +61,26 @@ export async function logout(){
  * @param {Array} tickets 
  * @param {Boolean} activate 
  */
-export async function register(first, last, units, username, password, email, phone, contactPreference, entryPermission, type, note, tickets, activate) {
+export async function register(username, password, first, last, units, email, phone, contactPreference, entryPermission, type, note, tickets, activate) {
+    // TODO:  Validate data before updating to server/database?
     const response = await fetch(PATH + '/account/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ first:first, 
-                                last:last, 
-                                units:units, 
-                                username:username, 
-                                password:password, 
-                                email:email, 
-                                phone:phone, 
-                                contactPreference:contactPreference, 
-                                entryPermission:entryPermission, 
-                                type:type, 
-                                note:note, 
-                                tickets:tickets, 
-                                activate:activate
-                            })
+        body: JSON.stringify({ 
+            username:username, 
+            password:password, 
+            first:first, 
+            last:last, 
+            units:units, 
+            email:email, 
+            phone:phone, 
+            contactPreference:contactPreference, 
+            entryPermission:entryPermission, 
+            type:type, 
+            note:note, 
+            tickets:tickets, 
+            activate:activate
+        })
     }).then(res => res.json()).then(data => {
         return data
     }).catch(err => {
@@ -82,12 +89,15 @@ export async function register(first, last, units, username, password, email, ph
     return await response
 }
 
-
+/**
+ * 
+ * @param {*} username 
+ */
 export async function deleteAccount(username){ 
     const response = await fetch(PATH + '/account/delete', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: { username} 
+        body:  { username: username }
     }).then(res => res.json()).then(data => {
         console.log("Delete Account Successful")
         return data
@@ -103,7 +113,7 @@ export async function getUserFromUsername(username){
     const response = await fetch(PATH + '/account/:username', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        body: username
+        body: { username: username }
     }).then(res => res.json()).then(data => {
         console.log("User Found from Username Successful")
         return data
@@ -115,14 +125,29 @@ export async function getUserFromUsername(username){
 }
 
 /**
- * @param body = {username, password, first, last, email, type}
+ * @param body = {username, password, first, last, units, email, phone, contactPreference, entryPermission, type, note, tickets, activate}
  */
 
-export async function update(username, password, first, last, email, type) {
+export async function update(username, password, first, last, units, email, phone, contactPreference, entryPermission, type, note, tickets, activate) {
+    // TODO: Validate user update data
     const response = await fetch(PATH + '/account/update', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username, password: password, first: first, last: last, username: username, email: email, type: type })
+        body: JSON.stringify({
+            username: username,
+            password: password,
+            first: first,
+            last: last,
+            units : units,
+            email: email,
+            phone: phone,
+            contactPreference: contactPreference,
+            entryPermission: entryPermission,
+            type: type,
+            note: note,
+            tickets: tickets,
+            activate: activate
+        })
     }).then(res => res.json()).then(data => {
         console.log("Update Successful")
         return data
