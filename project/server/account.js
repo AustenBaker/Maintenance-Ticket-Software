@@ -45,7 +45,7 @@ router.post('/login', async (req, res) => {
                         activate:activate
                     })
                     //.writeHead(200, { first, last, username, email, type })
-                    .end('Sucess - login');
+                    .end('Success - login');
             }
             else return res.status(401).json({ error: 'ERR_WRONG_PSWD' });
         }).catch(err => res.status(400).json({ error: err }));
@@ -123,7 +123,7 @@ router.get('/:username', async (req, res) => {
     if (!user) res.status(400).json({ error: 'NO_SUCH_USER' });
     else {
         const { first, last, units, username, email, phone, contactPreference, entryPermissions, type, note, tickets, activate } = user;
-        res.status(200).json({ first, last, username, email, type });
+        res.status(200).json({ first, last, units, username, email, phone, contactPreference, entryPermissions, type, note, tickets, activate });
     }
 });
 
