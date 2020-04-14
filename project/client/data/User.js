@@ -4,7 +4,9 @@ import * as CONSTANTS from '../constants/Reference';
 import Ticket from './Ticket.js';
 import Colors from '../constants/Colors'
 import { colorScheme } from '../stores';
+import { observe } from 'mobx';
 
+// @observe
 // TODO: Update unit to include property indicator
 export default class User extends React.Component {
 
@@ -14,21 +16,11 @@ export default class User extends React.Component {
      */
     constructor(props) {
         super(props);
-        this.state = {
-            username: props.username,
-            first: props.first,
-            last: props.last,
-            units: [...props.units],
-            email: props.email,
-            phone: props.phone,
-            contactPreference: props.contactPreference,
-            entryPermission: props.entryPermission,
-            type: ('type' in props ? props.type : CONSTANTS.USER_TYPE.RES),
-            note: ('note' in props ? props.note : ""),
-            edit_mode: ('edit_mode' in props ? props.edit_mode : false),
-            tickets: [],
-            activate: props.activate
-        }
+        this.state = User.defaultProps;
+        for (let prop in props) {
+            if (prop in CONSTANTS.USER_PROPERTIES || prop === 'edit_mode')
+              this.state[prop] = props[prop];
+        };
     }
 
     /**
@@ -39,7 +31,7 @@ export default class User extends React.Component {
         username: "",
         first: "First Name",
         last: "Last Name",
-        units: ["1703"],
+        units: [], // ex: {property: CONSTANTS.PROPERTY.WSP, number: '1703'}
         email: "default@CastlebergCommunities.com",
         phone: "000-000-0000",
         contactPreference: CONSTANTS.PREFERRED_CONTACT.EMAIL,
@@ -51,12 +43,12 @@ export default class User extends React.Component {
         edit_mode: false
     }
 
-    toggleUserActivation = (props) => {
+    toggleUserActivation = (username) => {
         let isActivated = false;
-        if (!(props.username === undefined ||
-          props.username === this.state.username || 
+        if (!(username === undefined ||
+          username === this.state.username || 
           this.state.type !== CONSTANTS.USER_TYPE.MGMT)) {
-              if (props.activate) {
+              if (isActivated) {
                   // TODO: deactivate target user account
               } else {
                   // TODO: fetch user account data & post update to activate
@@ -79,8 +71,8 @@ export default class User extends React.Component {
         let content;
         
         let name = (
-            <Text testId="user-name">
-                Name: {this.state.first}{this.state.last}
+            <Text>
+                Name: <Text testID="user-first">{this.state.first}</Text><Text testID="user-last">{this.state.last}</Text>
             </Text>
         );
 
@@ -88,7 +80,8 @@ export default class User extends React.Component {
         // TODO: figure out how to render Unit listing
         if (!this.state.units === undefined) {
             apt = (
-                <Text testId="user-units">
+                <Text testID="user-units">
+                  Units: {this.state.units.toString()}
                 </Text>
             );
         };
@@ -99,13 +92,13 @@ export default class User extends React.Component {
         // a phone number is also available.
         if (this.state.contactPreference === CONSTANTS.PREFERRED_CONTACT.EMAIL && phoneCheck) {
             email = (
-            <Text testId="user-email" style={themeBodyText}>
+            <Text testID="user-email" style={themeBodyText}>
             Email: {this.state.email + "* "}
             </Text>
             );
         } else {
             email = (
-            <Text testId="user-email" style={themeBodyText}>
+            <Text testID="user-email" style={themeBodyText}>
             Email: {this.state.email}
             </Text>
             );
@@ -118,13 +111,13 @@ export default class User extends React.Component {
         if (phoneCheck) {
             if (this.state.contactPreference === CONSTANTS.PREFERRED_CONTACT.TXT) {
                 phone = (
-                    <Text testId="user-phone" style={themeBodyText}>Phone: {this.state.phone + "*\n"}
+                    <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "*\n"}
                     * = Preferred contact method.
                     </Text>
                 );
             } else {
                 phone = (
-                    <Text testId="user-phone" style={themeBodyText}>Phone: {this.state.phone + "\n"}
+                    <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "\n"}
                     * = Preferred contact method.
                     </Text>
                 );
@@ -133,7 +126,7 @@ export default class User extends React.Component {
 
         // Embed entry permission data in a <Text> container.
         let entry = (
-            <Text testId="user-entry" style={themeBodyText}>
+            <Text testID="user-entry" style={themeBodyText}>
                 {(this.state.entryPermission === CONSTANTS.ENTRY_PERMISSION.ANY) ? "Entry: Allowed."
                 : (this.state.entryPermission === CONSTANTS.ENTRY_PERMISSION.NOT) ? "Entry: Notify before entry."
                 : "Entry: Accompanied entry only."}
@@ -144,7 +137,7 @@ export default class User extends React.Component {
         let note = "";
         if (this.state.note !== "") {
             note = (
-                <Text testId="user-note">
+                <Text testID="user-note">
                   {"Note: \n"}
                   {this.state.note}
                 </Text>
@@ -154,10 +147,10 @@ export default class User extends React.Component {
         let editButton = (
             <Button
                 title="Edit Profile"
-                accessibilityLabel="Update Profile Button"
+                accessibilityLabel="Edit Profile Button"
                 onPress={() => this.setState(edit_mode, true)}
             >
-            <Text testId="edit-button">Edit Profile</Text>
+            <Text testID="edit-button">Edit Profile</Text>
             </Button>
         );
 
@@ -181,39 +174,41 @@ export default class User extends React.Component {
      * This method is used to assign a unit to a resident user.
      * No duplicate values will be added to assigned units list.
      *
+     * @param username Username of user to be assigned unit
      * @param unit Unit number of unit to be assigned to user
      * 
      * @return true if unit assignment succeeds, false if it fails.
      */
-    assignUnit = (props) => {
+    assignUnit = (username, unit) => {
         let assigned = false;
         // TODO: check the logic here, do we want to return true if user is already assigned to the unit?
         // The unit addition needs to be statefully executed so sequential additions will all resolve properly
         // despite being asynchronous.
-        if (!(props.unit === undefined) && ((this.state.units === undefined) || !(props.unit in this.state.units))) {
+        if (!(unit === undefined) && ((this.state.units === undefined) || !(unit in this.state.units))) {
             this.setState((state) => {
-                return {units: [...state.units, props.unit]};
+                return {units: [...state.units, unit]};
             });
+            // TODO: fetch user data from username, update unit assignment, post update to database
             assigned = true;
         };
         return assigned;
     };
 
     /**
-     * This method posts updated user information to server.
+     * This method posts updated user profile information to server.
      * Allows update for all user profile data except password.
      *
-     * @param first User first name
-     * @param last User last name
-     * @param email User email address
-     * @param phone User phone number (optional)
-     * @param contactPreference User preferred contact method (email/text)
-     * @param entryPermission User entry preference
-     * @param note Note from user regarding special circumstances
+     * @param {String} first User first name
+     * @param {String} last User last name
+     * @param {String} email User email address
+     * @param {String} phone User phone number (optional)
+     * @param {String} contactPreference User preferred contact method (email/text)
+     * @param {String} entryPermission User entry preference
+     * @param {String} note Note from user regarding special circumstances
      *
      * @returns true if updated successfully
      */
-    update = (props) => {
+    updateProfile = (first, last, email, phone, contactPreference, entryPermission, note) => {
         var updated = false;
         var checked = [];
         // check and store valid values in an array
@@ -250,21 +245,36 @@ export default class User extends React.Component {
      *
      * @requires User to be management user type
      *
-     * @param userName Name of user to be upgraded
-     * @param userType Desired new user type
+     * @param {String} username Name of user to be upgraded
+     * @param {String} type Desired new user type
      *
      * @returns True if user type successfully changed.
      */
-    setUserType = (props) => {
+    setUserType = (username, type) => {
         let success = false;
-        if (this.state.type === CONSTANTS.USER_TYPE.MGMT) {
-            // TODO: implement this!
-            // access server in order to
-            // verify userName is a valid user and then update
-            // their user type to userType
-            // once a response is received from server,
-            // update success & return
-            success = true;
+        if (!(username === undefined || this.state.type !== CONSTANTS.USER_TYPE.MGMT ||
+            username === this.state.username || !(type in CONSTANTS.USER_TYPE))) {
+            try {
+                // TODO:  is there a way to only update the specified properties
+                // rather than pulling all unaltered user properties along with them?
+                let toUpdate = getUserFromUsername(username);
+                toUpdate.type = type;
+                let result = update(...toUpdate);
+                // TODO: verify results or throw error
+                let keys = [];
+                for (let prop in result) {
+                    keys.push(prop);
+                    if (!(prop in CONSTANTS.USER_PROPERTIES) || !(prop in toUpdate) || result[prop] !== toUpdate[prop]) {
+                        throw error('Failed to update');
+                    }
+                }
+                for (let prop in toUpdate) {
+                    if (!(prop in keys)) throw error('Failed to update');
+                }
+                success = true;
+            } catch (err) {
+                // error happened trying to load data from or post data to the database
+            }
         }
         return success;
     }
@@ -273,15 +283,15 @@ export default class User extends React.Component {
      * This method checks to see if the user is authorized to
      * perform the requested activity.
      *
-     * @param activity The activity to be performed
-     * @param targetTicket Ticket number of target Ticket of activity (optional)
-     * @param targetUser Email address of user target of activity (defaults to self)
-     * @param targetUnit Unit number of unit target of activity (optional)
+     * @param {String} activity The activity to be performed
+     * @param {Number} targetTicket Ticket number of target Ticket of activity (optional)
+     * @param {String} targetUser Email address of user target of activity (defaults to self)
+     * @param {{String}, {String}} Unit number of unit target of activity (optional)
      *
      * @returns True if the user is authorized to perform the
      * specified activity.
      */
-    isAuthorized = (props, activity, targetTicket = undefined, targetUser = this.state.email, targetUnit = undefined) => {
+    isAuthorized = (activity, targetTicket = undefined, targetUser = this.state.email, targetUnit = undefined) => {
         // TODO: double check parameter passing rules for class methods.  This may need to be relocated or
         // restructured.
         // Initialize all test values to false so authorization defaults to denial
@@ -345,18 +355,9 @@ export default class User extends React.Component {
      * @returns Object containing properties and values of the user.
      */
     getProfile = () => {
-        let profile = {
-            first: this.state.first,
-            last: this.state.last,
-            units: [...this.state.units],
-            email: this.state.email,
-            phone: this.state.phone,
-            contactPreference: this.state.contactPreference,
-            entryPermission: this.state.entryPermission,
-            type: this.state.type,
-            note: this.state.note,
-            edit_mode: this.state.edit_mode,
-            tickets: [...this.state.tickets]
+        let profile = {};
+        for (let field in this.state) {
+            profile[field] = this.state[field];
         };
         return profile;
     };
@@ -377,14 +378,16 @@ export default class User extends React.Component {
 
         // if edit mode, then update profile
         // if not edit mode, then create user
-        let editable = this.state.edit_mode;
+        let editable = this.state.edit_mode && !this.state.activate;
         var submitButton;
         if (editable) {
             submitButton = (<Button
                 title="Update"
-                onPress={() => this.update(this)}
+                onPress={() => this.updateUser(this.state)}
                 accessibilityLabel="Update Profile Button"
-            />);
+            >
+                <Text testId="update-button">Update</Text>
+            </Button>);
         } else {
             submitButton = (<Button
                 title="Create Account"
@@ -393,28 +396,37 @@ export default class User extends React.Component {
                     // generate 'new account' message for management to flag account for unit assignment
 
                     // calls function to update user profile data in database
-                    this.update(this);
+                    this.updateUser(this.state);
                 }}
                 accessibilityLabel="Create Account Button"
-            />);
+            >
+                <Text testId="create-button">Create Account</Text>
+            </Button>);
         };
         let resetButton = (<Button
             title="Reset"
             onPress={() => {
-                // TODO: return this.state to previous state using profile values
+                for (let field in profile) {
+                    this.setState([field], profile[field]);
+                }
             }}
             accessibilityLabel="Reset Profile Button"
-        />);
+        >
+            <Text testId="reset-button">Reset</Text>
+        </Button>);
         let cancelButton = (<Button
             title="Cancel"
             onPress={() => alert(`TODO: navigate to previous page or home`)}
             accessibilityLabel="Cancel Button"
-        />);
+        >
+            <Text testId="cancel-button">Cancel</Text>
+        </Button>);
 
         content = (
             <View>
               <TextInput
                 label="First Name"
+                testId="edit-first"
                 placeholder={this.state.first}
                 keyboardType="default"
                 maxLength={32}
@@ -426,6 +438,7 @@ export default class User extends React.Component {
               />
               <TextInput
                 label="Last Name"
+                testId="edit-last"
                 placeholder={this.state.last}
                 keyboardType="default"
                 maxLength={32}
@@ -437,6 +450,7 @@ export default class User extends React.Component {
               />
               <TextInput
                 label="Email"
+                testId="edit-email"
                 placeholder={this.state.email}
                 keyboardType="email-address"
                 maxLength={32}
@@ -448,6 +462,7 @@ export default class User extends React.Component {
               />
               <TextInput
                 label="Phone Number"
+                testId='edit-phone'
                 placeholder={this.state.phone}
                 keyboardType="phone-pad"
                 maxLength={12}
@@ -459,43 +474,50 @@ export default class User extends React.Component {
               />
               <Picker
                 label="Preferred Contact Method:"
+                testID='edit-contact'
                 selectedValue={this.state.contactPreference}
                 onValueChange={(itemValue, itemIndex) => this.setState(contactPreference, itemValue)}
                 >
                 <Picker.Item
                     label='Email'
+                    testID='edit-contact-e'
                     value={CONSTANTS.PREFERRED_CONTACT.EMAIL}
                 />
                 <Picker.Item
                     label='Text'
+                    testID='edit-contact-t'
                     value={CONSTANTS.PREFERRED_CONTACT.TXT}
                 />
               </Picker>
               <Picker
                 label="Entry Permission:"
+                testID='edit-entry'
                 selectedValue={this.state.entryPermission}
                 onValueChange={(itemValue, itemIndex) => this.setState(entryPermission, itemValue)}
                 >
                 <Picker.Item
                     label='Allow accompanied entry'
+                    testID='edit-entry-acc'
                     value={CONSTANTS.ENTRY_PERMISSION.ACC}
                 />
                 <Picker.Item
                     label='Notify before entry'
+                    testID='edit-entry-not'
                     value={CONSTANTS.ENTRY_PERMISSION.NOT}
                 />
                 <Picker.Item
                     label='Allow entry'
+                    testID='edit-entry-any'
                     value={CONSTANTS.ENTRY_PERMISSION.ANY}
                 />
               </Picker>
               <TextInput
                   label="Note"
+                  testId="edit-note"
                   defaultValue={this.state.note}
                   keyboardType="default"
                   maxLength={255}
                   selectTextOnFocus={true}
-                  testID={"note-edit"}
                   onSubmitEditing={someNote => this.setState(note, someNote)}
               />
               {submitButton}
@@ -510,9 +532,9 @@ export default class User extends React.Component {
      * This method generates a list of tickets created by this
      * user.
      *
-     * @param filter Filter ticket list by none, open, closed.
+     * @param {String} filter Filter ticket list by none, open, closed.
      *
-     * @returns List of user's tickets.
+     * @returns {Number[]} List of user's tickets.
      */
     listTickets = (props) => {
         let ticketList = [];
@@ -541,7 +563,7 @@ export default class User extends React.Component {
     /**
      * This method allows user to update their password.
      *
-     * @param pwd New password
+     * @param {String} pwd New password
      *
      * @returns True if password change completed successfully.
      */
