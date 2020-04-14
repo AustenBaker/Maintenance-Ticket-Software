@@ -7,6 +7,7 @@ import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { colorScheme } from '../stores';
 import Colors from '../constants/Colors';
+import {Menu, MenuOptions, MenuOption, MenuTrigger, MenuProvider} from "react-native-popup-menu";
 
 export default function PropertyScreen({navigation}) {
   const [addUnit, onChangeAddUnit] = React.useState('');
@@ -15,6 +16,7 @@ export default function PropertyScreen({navigation}) {
   const [addPropertyStreetAddress, onChangeAddPropertyStreetAddress] = React.useState('');
   const [addPropertyZipcode, onChangeAddPropertyZipcode] = React.useState('');
   const [addCity, onChangeAddCity] = React.useState('');
+  const [inputUnit, onChangeInputUnit] = React.useState('');
 
   let themeKeyboard =
     colorScheme.theme === 'light' ? 'light' : 'dark';
@@ -26,7 +28,13 @@ export default function PropertyScreen({navigation}) {
     colorScheme.theme === 'light' ? styles.lightTextInput : styles.darkTextInput;
   let themeSeparator =
     colorScheme.theme === 'light' ? Colors.iosLightSeparator : Colors.iosDarkSeparator;
-
+/**
+ * Need to do: make sure only maintenance and manager can access the appropriate settings
+ * Need to do: tie in backend functionality
+ * Need to do: test
+ * For the menu provider those are dummy values, it should be connected to the backend so it pulls the available residents 
+ * per unit so that the user can choose.
+ */
     return(
       <AppearanceProvider>
           <SafeAreaView style={styles.container, theme}>
@@ -57,7 +65,7 @@ export default function PropertyScreen({navigation}) {
         title="Add"
         accessibilityLabel="Add to Unit"
         />
-        
+
         <Text style={themeTitle}>Add Property</Text>
 
         <TextInput
@@ -99,9 +107,31 @@ export default function PropertyScreen({navigation}) {
         <Button
         onPress={() => navigation.replace('Add') }
         style={themeBodyText}
-        title="Add"
+        title="Add Property"
         accessibilityLabel="Add Property"
         />
+        <TextInput
+          placeholder="Enter the Unit (in all lowercase)"
+          autoCapitalize="none"
+          placeholderTextColor='#8E8E93'
+          keyboardAppearance={themeKeyboard}
+          style={themeBodyText}      
+          onChangeInputUnit={text => onChangeInputUnit(text)}
+          value = {inputUnit}
+        />       
+        <MenuProvider>
+            <MenuOptions>
+            <MenuTrigger>
+                <Text style = {styles.headerText}>to Resident (if there's a new resident make sure you add them first)</Text>
+            </MenuTrigger>
+            <MenuOption value = {"Rachel"}>
+                    <Text style={styles.menuContent}>Rachel</Text>
+                </MenuOption>
+                <MenuOption value = {"Jerry"}>
+                    <Text style={styles.menuContent}>Jerry</Text>
+                </MenuOption>
+            </MenuOptions>
+        </MenuProvider>
           </SafeAreaView>
       </AppearanceProvider>
     );
@@ -129,6 +159,17 @@ const styles = StyleSheet.create({
       fontSize: 34,
       color: Colors.black,
       textAlign: 'center',
+  },
+  headerText: {
+      fontSize : 30,
+      margin: 15,
+      fontWeight: "bold"
+  },
+  menuContent: {
+      color: Colors.black,
+      fontWeight: "bold",
+      padding: 2,
+      fontSize: 30,
   },
     darkLargeTitle: {
      marginTop: 8,
