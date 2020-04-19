@@ -3,7 +3,7 @@ import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, TextInput, B
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import { Appearance, AppearanceProvider } from 'react-native-appearance';
-import { colorScheme } from '../stores';
+import { userStore, colorScheme } from '../stores';
 import Colors from '../constants/Colors';
 
 class LoginPage extends React.PureComponent {
