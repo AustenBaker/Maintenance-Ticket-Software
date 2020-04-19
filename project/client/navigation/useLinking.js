@@ -13,6 +13,7 @@ export default function(containerRef) {
           Profile:  'profile',
           Login:  'login',
           Settings: 'settings',
+          Property: 'property',
         },
       },
     },
