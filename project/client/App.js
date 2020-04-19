@@ -51,8 +51,10 @@ function App(props) {
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
     async function loadResourcesAndDataAsync() {
+      console.log("Outside of try catch");
       try {
         SplashScreen.preventAutoHide();
+        console.log("here");
 
         // Load our initial navigation state
         setInitialNavigationState(await getInitialState());
@@ -62,6 +64,7 @@ function App(props) {
           'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
         });
       } catch (e) {
+        console.log("here1");
         // We might want to provide this error information to an error reporting service
         console.warn(e);
       } finally {
