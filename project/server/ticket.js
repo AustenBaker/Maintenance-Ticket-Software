@@ -16,7 +16,7 @@ router.post('/create', (req, res) => {
     ).catch(err => res.status(400).json({ error: err }));
 });
 
-// GET /id
+// GET /:id
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     const ticket = await Ticket.findOne({ id });
@@ -24,7 +24,7 @@ router.get('/:id', async (req, res) => {
     else res.status(200).json(ticket);
 });
 
-// GET /userEmail
+// GET /:userEmail
 router.get('/:email', async (req, res) => {
     const { email } = req.params;
     const ticket = await Ticket.find({ email });
@@ -32,9 +32,9 @@ router.get('/:email', async (req, res) => {
     else res.status(200).json(ticket);
 });
 
-// PUT /update
+// POST /update
 router.put('/update', (req, res) => {
-
+    // TODO ticket
 });
 
 // DELETE /delete
