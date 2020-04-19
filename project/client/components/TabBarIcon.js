@@ -2,10 +2,9 @@ import * as React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
-import { ColorScheme } from '../stores';
+import { colorScheme } from '../stores';
 
 export default function TabBarIcon(props) {
-  const colorScheme = new ColorScheme();
   let themeInactiveIcon =
     colorScheme.theme === 'light' ? Colors.iosLightIcon : Colors.iosDarkIcon;
   return (

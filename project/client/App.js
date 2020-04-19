@@ -12,10 +12,7 @@ import SignUp from './screens/SignUpPage'
 import useLinking from './navigation/useLinking';
 import Colors from './constants/Colors';
 import { observer } from 'mobx-react';
-import { UserStore, TicketStore, ColorScheme } from './stores';
-const userStore = new UserStore();
-const ticketStore = new TicketStore();
-const colorScheme = new ColorScheme();
+import { userStore, ticketStore, colorScheme } from './stores';
 
 const Stack = createStackNavigator();
 

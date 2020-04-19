@@ -4,12 +4,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
-<<<<<<< HEAD
-import { ColorScheme } from '../stores';
-=======
 //import { PrioritySelection } from '../components/PrioritySelection'
 import { colorScheme } from '../stores';
->>>>>>> d7f15299508cac9cf9bc061287bdaee19b68dd85
 import Colors from '../constants/Colors';
 
 

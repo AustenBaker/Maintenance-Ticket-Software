@@ -8,14 +8,13 @@ import ProfileScreen from '../screens/ProfileScreen';
 import CreateTicketScreen from '../screens/CreateTicketScreen';
 import PropertyScreen from '../screens/PropertyScreen';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
-import { ColorScheme } from '../stores';
+import { colorScheme } from '../stores';
 import Colors from '../constants/Colors';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Tickets';
 
 export default function BottomTabNavigator({ navigation, route }) {
-  const colorScheme = new ColorScheme();
   let themeTabBar =
     colorScheme.theme === 'light' ? Colors.iosLightBar : Colors.iosDarkBar;
   let themeTabBarBorder =
