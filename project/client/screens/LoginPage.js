@@ -6,8 +6,6 @@ import { Appearance, AppearanceProvider } from 'react-native-appearance';
 import { colorScheme } from '../stores';
 import Colors from '../constants/Colors';
 
-//const colorScheme = new ColorScheme();
-//
 // // Un-comment the following to port LoginPage to a class component
 //
 // class LoginPage extends React.PureComponent {
@@ -97,7 +95,7 @@ import Colors from '../constants/Colors';
 // }
 
 // may need to pass in navigation?
-export function LoginScreen({ navigation }) {
+export default function LoginScreen({ navigation }) {
     const [user, onChangeUser] = React.useState('');
     const [pass, onChangePass] = React.useState('');
     const colorScheme = new ColorScheme();
