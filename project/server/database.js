@@ -35,3 +35,21 @@ exports.Property = mongoose.model('Property', {
     name: String,
     location: Object
 });
+
+// exports.Ticket = mongoose.model('Ticket', new Schema({
+//     id: { type: Number, unique: true },
+//     email: { type: String, unique: true },
+//     aptComplex: { type: String },
+//     unit: { type: String },
+//     issue: { type: String },
+//     emergency: { type: Boolean, default: false },
+//     resolvedTime: { type: Number },
+//     progress: { type: String },
+//     closed: { type: Boolean, default: false }
+// }));
+
+// exports.Property = mongoose.model('Property', new Schema({
+//     id: { type: Number, unique: true },
+//     name: { type: String },
+//     location: { type: Object }
+// }));
