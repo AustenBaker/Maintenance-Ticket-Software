@@ -100,6 +100,8 @@ function App(props) {
     );
   }
 }
+// Add following after Stack.Screen name= "Tabs"
+//<Stack.Screen name="DetailedView" component={DetailedView} />
 
 const styles = StyleSheet.create({
   container: {
