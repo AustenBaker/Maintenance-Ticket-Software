@@ -10,7 +10,7 @@ import User from '../data/User';
 
 const colorScheme = new ColorScheme();
 
-export default function ProfileScreen() {
+export default function ProfileScreen(properties) {
 
   let themeContainer =
     colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
@@ -27,7 +27,6 @@ export default function ProfileScreen() {
   // redirects to login if no active session found,
   // attempts to load user data into properties if found,
   // loads account creation page if referred to account creation
-  var properties = {};
   return (
     <View style={styles.container, themeContainer}>
       <ScrollView>
