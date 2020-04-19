@@ -4,12 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
-import { ColorScheme } from '../stores';
+import { colorScheme } from '../stores';
 import Colors from '../constants/Colors';
 
 import Ticket from '../data/Ticket';
-
-const colorScheme = new ColorScheme();
 
 export default function TicketScreen({ navigation }) {
   let themeContainer =

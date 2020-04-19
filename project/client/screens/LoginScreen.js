@@ -3,13 +3,11 @@ import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, TextInput, B
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import { Appearance, AppearanceProvider } from 'react-native-appearance';
-import { ColorScheme } from '../stores';
+import { colorScheme } from '../stores';
 
 export default function LoginScreen() {
     const [user, onChangeUser] = React.useState('');
     const [pass, onChangePass] = React.useState('');
-
-    const colorScheme = new ColorScheme();
 
     let themeContainerStyle =
       colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;

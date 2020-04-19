@@ -3,9 +3,7 @@ import { TextInput, Text, Button, View, StyleSheet, Picker } from 'react-native'
 import * as CONSTANTS from '../constants/Reference';
 import Ticket from './Ticket.js';
 import Colors from '../constants/Colors'
-import { ColorScheme } from '../stores';
-
-const colorScheme = new ColorScheme();
+import { colorScheme } from '../stores';
 
 // TODO: Add an 'active|inactive' flag
 // TODO: Update unit to include property indicator

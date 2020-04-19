@@ -2,8 +2,8 @@ import * as React from 'react';
 import { View,  Button, Text, Picker, StyleSheet, TouchableWithoutFeedbackBase } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
-import { TextInput } from 'react-native-gesture-handler';
-import { TicketStore } from '../stores';
+import { TextInput, ScrollView } from 'react-native-gesture-handler';
+import { userStore, ticketStore } from '../stores';
 
 /**
  * TODO: make ticket_number a GUID?
@@ -45,7 +45,7 @@ export default class Ticket extends React.Component{
     ticket_updates: []
   }
 
-  
+
 
   /**
    * This method displays ticket details like an expanded view
@@ -75,11 +75,11 @@ export default class Ticket extends React.Component{
     // create <Text> container for status
     var status = "";
     if (this.state.status === CONSTANTS.STATUS.OPEN){
-      status = ( 
+      status = (
         <Text testID="status">Status: Open</Text>
       );
-    } else { 
-      status = ( 
+    } else {
+      status = (
         <Text testID="status">Status: Closed</Text>
       );
     }
@@ -106,11 +106,11 @@ export default class Ticket extends React.Component{
           </Text>
 
           <Text style={styles.ticketLine3}>
-            {ticket_number}     
+            {ticket_number}
           </Text>
 
           <Text style={styles.ticketLine4}>
-            Timestamp: {this.state.timestamp} 
+            Timestamp: {this.state.timestamp}
           </Text>
         </View>
 
@@ -239,7 +239,7 @@ export default class Ticket extends React.Component{
           <Picker.Item label={CONSTANTS.PROPERTY.LAA} value={CONSTANTS.PROPERTY.LAA} />
           <Picker.Item label={CONSTANTS.PROPERTY.TAW} value={CONSTANTS.PROPERTY.TAW} />
         </Picker>
-        
+
         <TextInput
           placeholder="Unit Number (type in box)"
           style={styles.editTicketTextInput}
@@ -318,7 +318,7 @@ export default class Ticket extends React.Component{
 
   /**
    * boolean change ticket status
-   * note: Do i need this if can change 
+   * note: Do i need this if can change
    * with picker in edit ticket view
    */
   closeTicket = (props) => {
@@ -349,7 +349,7 @@ export default class Ticket extends React.Component{
     //1 === ticket edit
     else if (this.state.ticket_view_mode === 1){
       content = this.editTicket();
-    } 
+    }
     //2 === ticketlist
     else if (this.state.ticket_view_mode === 2){
       content = this.generateTicketList();
@@ -362,12 +362,12 @@ export default class Ticket extends React.Component{
 const styles = StyleSheet.create({
   //ticket view screen styles
   ticketContainer: {
-    height: 120, 
+    height: 120,
     width: '80%',
     marginLeft: '10%',
     marginBottom: 20,
     marginTop: 20,
-    backgroundColor: 'white', 
+    backgroundColor: 'white',
     textAlign: 'left',
     borderRadius: 12,
 

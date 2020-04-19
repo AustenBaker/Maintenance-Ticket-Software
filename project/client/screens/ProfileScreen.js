@@ -2,13 +2,11 @@ import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
-import { ColorScheme } from '../stores';
+import { colorScheme } from '../stores';
 import Colors from '../constants/Colors'
 
 import { MonoText } from '../components/StyledText';
 import User from '../data/User';
-
-const colorScheme = new ColorScheme();
 
 export default function ProfileScreen(properties) {
 
@@ -27,11 +25,20 @@ export default function ProfileScreen(properties) {
   // redirects to login if no active session found,
   // attempts to load user data into properties if found,
   // loads account creation page if referred to account creation
+  var testUser = {
+    first_name: "Mary",
+    last_name: "Sue",
+    email: "someday@somepl.ace",
+    phone: "123-456-7890",
+    contact: "text",
+    entry: "notify",
+    note: "The dog definitely bites."
+  };
   return (
     <View style={styles.container, themeContainer}>
       <ScrollView>
         <View>
-          <User {...properties}/>
+          <User {...testUser}/>
         </View>
       </ScrollView>
     </View>
