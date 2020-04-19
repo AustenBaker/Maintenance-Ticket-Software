@@ -9,8 +9,7 @@ import { ColorScheme } from '../stores';
 import Colors from '../constants/Colors';
 const colorScheme = new ColorScheme();
 
-
-const PATH = 'http://127.0.0.1:3000/'
+const PATH = 'http://127.0.0.1:3001'
 
 var radio_props = [
   {label: 'low',       value: 2},
@@ -38,19 +37,21 @@ class CreateTicketScreen extends React.Component {
       //which will result in re-render the text
    }
 
-  submitTicket = () => {
-    console.log(this.state)
-  }
-  /*async submitTicket(){
-    const res = await fetch(PATH + '/create', {
+  async submitTicket(state){
+    console.log(state)
+    fetch(PATH + '/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       //body: JSON.stringify({ prop1: 'val1', prop2: 'val2' })
-      body: this.state
-    });
+      body: state
+    }).then(res => res.json()).then(data => {
+      console.log(res)
+    }). catch(err => {
+
+    })
     const data = await res.json();
     console.log(data); // response data as an Object
-  }*/
+  }
 
   render(){
 
@@ -139,7 +140,7 @@ class CreateTicketScreen extends React.Component {
         <Button
           title="Create Ticket Request"
           accessibilityLabel="Create Ticket Request Button"
-          onPress = {this.submitTicket}
+          onPress = {this.submitTicket(this.state)}
         />
         </View>
       </ScrollView>
