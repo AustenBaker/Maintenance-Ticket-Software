@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextInput } from 'react-native';
+import { TextInput, Button } from 'react-native';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList, Header } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
@@ -49,7 +49,13 @@ export default function PropertyScreen(navigation) {
           onChangeAddResident={text => onChangeAddResident(text)}
           value = {addResidentToUnit}
           /> 
- 
+
+        <Button
+        onPress={() => navigation.replace('Add') }
+        style={themeBodyText}
+        title="Add"
+        accessibilityLabel="Add to Unit"
+        />
 
           </SafeAreaView>
       </AppearanceProvider>
@@ -57,6 +63,18 @@ export default function PropertyScreen(navigation) {
     );
 
 
+}
+
+function updateProperty(addUnit, addResidentToUnit) {
+    fetch('http://127.0.0.1:3001/property/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ addUnit: addUnit, addResidentToUnit: addResidentToUnit })
+    }).then(res => res.json()).then(data => {
+        
+    }).catch(err => {
+        // error code is err.error...update not successful
+    })
 }
 
 const styles = StyleSheet.create({
