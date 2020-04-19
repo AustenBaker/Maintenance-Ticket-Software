@@ -1,75 +1,113 @@
+const fetch = require("node-fetch")
 
 const PATH = 'http://127.0.0.1:3001'
 
-
-
-async function submitTicket(email, apt, unit, issue, details, emerg, resolveTime, prog, closed){     
-    fetch(PATH + '/ticket/create', {
+/**
+ * @param {string} email 
+ * @param {string} apt 
+ * @param {string} unit 
+ * @param {string} issue 
+ * @param {string} details 
+ * @param {boolean} emerg 
+ * @param {number} resolveTime 
+ * @param {string} prog 
+ * @param {boolean} closed 
+ */
+export async function submitTicket(email, aptComplex, unit, issue, details, emergency, resolveTime, progress, closed){
+    const response = fetch(PATH + '/ticket/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, aptComplex: apt, unit: unit, issue: issue, details: details, emergency: emerg, resolveTime: resolveTime, progress: prog, closed: closed})
+      body: JSON.stringify({ email: email, 
+                            aptComplex: aptComplex, 
+                            unit: unit, 
+                            issue: issue, 
+                            details: details, 
+                            emergency: emergency, 
+                            resolveTime: resolveTime, 
+                            progress: progress, 
+                            closed: closed})
     }).then(res => res.json()).then(data => {
       console.log("Ticket submition successful")
+      return data
     }). catch(err => {
       console.log("ERROR submitting ticket: " + err)
+      return err
     })
-    //const data = await res.json();
-    //console.log(data); // response data as an Object
+    return await response.json()
 };
 
-async function deleteTicket(id){
-    console.log(id)
-    fetch(PATH + '/ticket/delete', {
+
+export async function deleteTicket(id){
+    const response = fetch(PATH + '/ticket/delete', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: id
     }).then(res => res.json()).then(data => {
       console.log(res)
+      return data
     }). catch(err => {
-      
+      return err
     })
+    return await response.json()
 };
 
 /**
- * This method updates information in mongodb for ticket
- *
- * @returns true if updated correctly
+ * @param {string} email 
+ * @param {string} apt 
+ * @param {string} unit 
+ * @param {string} issue 
+ * @param {string} details 
+ * @param {boolean} emerg 
+ * @param {number} resolveTime 
+ * @param {string} prog 
+ * @param {boolean} closed 
  */
-async function updateTicket(email, apt, unit, issue, details, emerg, resolveTime, prog, closed){
-    console.log(ticketAttributes)
-    fetch(PATH + '/ticket/create', {
+export async function updateTicket(email, aptComplex, unit, issue, details, emergency, resolveTime, progress, closed){
+    const response = fetch(PATH + '/ticket/update', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, aptComplex: apt, unit: unit, issue: issue, details: details, emergency: emerg, resolveTime: resolveTime, progress: prog, closed: closed})
-    }).then(res => res.json()).then(data => {
+        body: JSON.stringify({ email: email, 
+            aptComplex: aptComplex, 
+            unit: unit, 
+            issue: issue, 
+            details: details, 
+            emergency: emergency, 
+            resolveTime: resolveTime, 
+            progress: progress, 
+            closed: closed})
+        }).then(res => res.json()).then(data => {
         console.log("Ticket Update Successful")
+        return data
     }). catch(err => {
         console.log("ERROR updating ticket: " + err)
+        return err
     })
+    return await response.json()
 }
 
-async function getTicketsFromEmail(email){ 
-    console.log(ticketAttributes)
-    fetch(PATH + '/ticket/:email', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        body: email
+export async function getTicketsFromEmail(email){ 
+    const response = fetch(PATH + '/ticket/' + email, {
+        method: 'GET'
     }).then(res => res.json()).then(data => {
         console.log("Get tickets from email Successful")
+        return data
     }). catch(err => {
         console.log("ERROR getting tickets from email: " + err)
+        return err
     })
+    return await response.json()
 }
 
-async function getTicketFromId(id){ 
-    console.log(ticketAttributes)
-    fetch(PATH + '/:id', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        body: id
-    }).then(res => res.json()).then(data => {
+export async function getTicketFromId(id){ 
+    const response = await fetch(PATH + '/ticket/' + id, {
+        method: 'GET'
+    }).then(res => res).then(data => {
         console.log("Get ticket from id Successful")
+        return data;
     }). catch(err => {
-        console.log("ERROR getting ticket from id")
+        console.log("ERROR getting ticket from id: " + err)
+        return err
     })
+    return await response.json();
+
 }

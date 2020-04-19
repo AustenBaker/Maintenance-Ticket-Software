@@ -6,7 +6,7 @@ const PATH = 'http://127.0.0.1:3001'
  * @param user username of client
  * @param pass password of client
  */
-async function handleLogin(user, pass) {
+export async function handleLogin(user, pass) {
     fetch(PATH + '/account/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -19,7 +19,7 @@ async function handleLogin(user, pass) {
 }
 
 
-async function logout(){
+export async function logout(){
     fetch(PATH + '/account/logout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -34,7 +34,7 @@ async function logout(){
  * 
  * @param body = {username, password, first, last, usernmae, email, type}
  */
-async function register(username, password, first, last, username, email, type) {
+export async function register(username, password, first, last, username, email, type) {
     fetch(PATH + '/account/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -47,7 +47,7 @@ async function register(username, password, first, last, username, email, type) 
 }
 
 
-async function deleteAccount(username){ 
+export async function deleteAccount(username){ 
     fetch(PATH + '/account/delete', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
@@ -59,7 +59,7 @@ async function deleteAccount(username){
     })
 }
 
-async function getUserFromUsername(username){ 
+export export async function getUserFromUsername(username){ 
     fetch(PATH + '/account/:username', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -75,7 +75,7 @@ async function getUserFromUsername(username){
  * @param body = {username, password, first, last, usernmae, email, type}
  */
 
-async function update(username, password, first, last, username, email, type) {
+export async function update(username, password, first, last, username, email, type) {
     fetch(PATH + '/account/update', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
