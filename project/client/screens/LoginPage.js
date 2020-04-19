@@ -6,6 +6,7 @@ import { Appearance, AppearanceProvider } from 'react-native-appearance';
 import { colorScheme } from '../stores';
 import Colors from '../constants/Colors';
 
+//
 // // Un-comment the following to port LoginPage to a class component
 //
 // class LoginPage extends React.PureComponent {
