@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
-import LoginScreen from '../screens/LoginScreen';
 import TicketScreen from '../screens/TicketScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import CreateTicketScreen from '../screens/CreateTicketScreen';
