@@ -5,7 +5,7 @@ import { fireEvent, render, wait, getByPlaceholderText, getByDisplayValue, getBy
 import * as JestNative from '@testing-library/jest-native';
 import * as CONSTANTS from '../../constants/Reference';
 
-import User from '../UserTwo';
+import User from '../User';
 import { TextInput } from 'react-native-gesture-handler';
 
 expect.extend({...JestNative});
