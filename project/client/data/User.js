@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { TextInput, Text, Button, View, StyleSheet, Picker } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
-import Ticket from './Ticket.js';
+// import Ticket from './Ticket.js';
 import Colors from '../constants/Colors'
-import { colorScheme } from '../stores';
+import { userStore, colorScheme } from '../stores';
 
 // TODO: Update unit to include property indicator
 export default class User extends React.Component {
@@ -14,20 +14,11 @@ export default class User extends React.Component {
      */
     constructor(props) {
         super(props);
-        this.state = {
-            username: props.username,
-            first: props.first,
-            last: props.last,
-            units: [...props.units],
-            email: props.email,
-            phone: props.phone,
-            contactPreference: props.contactPreference,
-            entryPermission: props.entryPermission,
-            type: ('type' in props ? props.type : CONSTANTS.USER_TYPE.RES),
-            note: ('note' in props ? props.note : ""),
-            edit_mode: ('edit_mode' in props ? props.edit_mode : false),
-            tickets: [],
-            activate: props.activate
+        this.state = {...User.defaultProps};
+        for (let key in props) {
+            if (key in this.state) {
+                this.state[key] = props[key];
+            }
         }
     }
 
@@ -79,8 +70,16 @@ export default class User extends React.Component {
         let content;
 
         let name = (
-            <Text testId="user-name">
-                Name: <Text testId="user-first">{this.state.first}</Text><Text testId="user-last">{this.state.last}</Text>
+            <Text testID="user-name" style={themeBodyText}>
+                Name:
+                {" "}
+                <Text testID="user-first" style={themeBodyText}>
+                {this.state.first}
+                </Text>
+                {" "}
+                <Text testID="user-last" style={themeBodyText}>
+                {this.state.last}
+                </Text>
             </Text>
         );
 
@@ -88,7 +87,9 @@ export default class User extends React.Component {
         // TODO: figure out how to render Unit listing
         if (!this.state.units === undefined) {
             apt = (
-                <Text testId="user-units">
+                <Text testID="user-units" style={themeBodyText}>
+                Units:
+                {" "}
                 </Text>
             );
         };
@@ -99,13 +100,13 @@ export default class User extends React.Component {
         // a phone number is also available.
         if (this.state.contactPreference === CONSTANTS.PREFERRED_CONTACT.EMAIL && phoneCheck) {
             email = (
-            <Text testId="user-email" style={themeBodyText}>
+            <Text testID="user-email" style={themeBodyText}>
             Email: {this.state.email + "* "}
             </Text>
             );
         } else {
             email = (
-            <Text testID="user-name" style={themeBodyText}>
+            <Text testID="user-email" style={themeBodyText}>
             Email: {this.state.email}
             </Text>
             );
@@ -113,7 +114,7 @@ export default class User extends React.Component {
         if (phoneCheck) {
             if (this.state.contactPreference === CONSTANTS.PREFERRED_CONTACT.TXT) {
                 phone = (
-                    <Text testId="user-phone" style={themeBodyText}>Phone: {this.state.phone + "*\n"}
+                    <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "*\n"}
                     * = Preferred contact method.
                     </Text>
                 );
@@ -128,7 +129,7 @@ export default class User extends React.Component {
 
         // Embed entry permission data in a <Text> container.
         let entry = (
-            <Text testId="user-entry" style={themeBodyText}>
+            <Text testID="user-entry" style={themeBodyText}>
                 {(this.state.entryPermission === CONSTANTS.ENTRY_PERMISSION.ANY) ? "Entry: Allowed."
                 : (this.state.entryPermission === CONSTANTS.ENTRY_PERMISSION.NOT) ? "Entry: Notify before entry."
                 : "Entry: Accompanied entry only."}
@@ -139,19 +140,19 @@ export default class User extends React.Component {
         var note = "";
         if (this.state.note !== "") {
             note = (
-                <Text>
+                <Text testID="user-note" style={themeBodyText}>
                   {"Note: \n"}
                   {this.state.note}
                 </Text>
             );
-        } else {
-          note = (<Text></Text>);
         }
 
         var editButton = (<Button
             title="Edit Profile"
-            onPress={() => this.update(this)}
-            accessibilityLabel="Update Profile Button"
+            testID="edit-button"
+            onPress={() => this.setState({'edit_mode': true})}
+            accessibilityLabel="Edit Profile Button"
+            style={themeBodyText}
         />);
 
         // label & put user info into a <View><Text> wrapper
@@ -163,6 +164,7 @@ export default class User extends React.Component {
               {phone}
               {entry}
               {note}
+              {editButton}
             </View>
           ); // TODO: add edit button
         return content;
@@ -197,7 +199,7 @@ export default class User extends React.Component {
      *
      * @returns true if updated successfully
      */
-    update = (props) => {
+    updateUser = (props) => {
         var updated = false;
         var checked = [];
         // check and store valid values in an array
@@ -349,6 +351,9 @@ export default class User extends React.Component {
      * @returns React Native encoding to edit user profile
      */
     editUser = () => {
+        let themeBodyText =
+        colorScheme.theme === 'light' ? styles.iosLightThemeText : styles.iosDarkThemeText;
+
         // store React Native element encoding being generated for return
         let content;
 
@@ -363,59 +368,95 @@ export default class User extends React.Component {
         if (editable) {
             submitButton = (<Button
                 title="Update"
-                onPress={() => this.update(this)}
+                testID="update-button"
+                onPress={() => {
+                    // calls updateUser to update database in setState callback function,
+                    // this forces setState updates to process before pushing the server update
+                    this.setState({'edit_mode' : false}, () => this.updateUser(this));
+                }}
                 accessibilityLabel="Update Profile Button"
+                style={themeBodyText}
             />);
         } else {
             submitButton = (<Button
                 title="Create Account"
+                testID="create-button"
                 onPress={() => {
                     // TODO: generate 'human validation' captcha test, and if passed,
-                    // generate 'new account' message for management to flag account for unit assignment
+                    // generate 'new account' message for management to flag account for
+                    // activation and unit assignment
 
-                    // calls function to update user profile data in database
-                    this.update(this);
+                    // calls updateUser to update database in setState callback function,
+                    // this forces setState updates to process before pushing the server update
+                    this.setState({'edit_mode' : false}, () => this.updateUser(this));
                 }}
                 accessibilityLabel="Create Account Button"
+                style={themeBodyText}
             />);
         };
         let resetButton = (<Button
             title="Reset"
+            testID="reset-button"
             onPress={() => {
-                // TODO: return this.state to previous state using profile values
+                // returns this.state to previous state using profile values
+                for (let key in profile) {
+                    if (key === 'units' || key === 'tickets') {
+                        this.setState({key: [...profile[key]]});
+                    } else {
+                        this.setState({key: profile[key]});
+                        console.log('key: ' + key + ', value: ' + profile[key] + ', ');
+                        console.log('state: ' + this.state[key])
+                    }
+                };
+                // TODO: figure out why this is not re-rendering
             }}
             accessibilityLabel="Reset Profile Button"
+            style={themeBodyText}
         />);
         let cancelButton = (<Button
             title="Cancel"
+            testID="cancel-button"
             onPress={() => alert(`TODO: navigate to previous page or home`)}
             accessibilityLabel="Cancel Button"
+            style={themeBodyText}
         />);
+
+        let name = (
+            <Text style={themeBodyText}>
+                Name:
+                {" "}
+                <TextInput
+                  label="First Name"
+                  placeholder={this.state.first}
+                  value={this.state.first}
+                  keyboardType="default"
+                  maxLength={32}
+                  selectTextOnFocus={true}
+                  textContentType="name"
+                  autoCompleteType="name"
+                  errormessage="This field is required."
+                  onChangeText={fname => this.setState({'first': fname})}
+                  style={themeBodyText}
+                />
+                {"  "}
+                <TextInput
+                  label="Last Name"
+                  placeholder={this.state.last}
+                  keyboardType="default"
+                  maxLength={32}
+                  selectTextOnFocus={true}
+                  textContentType="familyName"
+                  autoCompleteType="name"
+                  errormessage="This field is required."
+                  onSubmitEditing={lname => this.setState({'last': lname})}
+                  style={themeBodyText}
+                />
+            </Text>
+        );
 
         content = (
             <View>
-              <TextInput
-                label="First Name"
-                placeholder={this.state.first}
-                keyboardType="default"
-                maxLength={32}
-                selectTextOnFocus={true}
-                textContentType="name"
-                autoCompleteType="name"
-                errorMessage="This field is required."
-                onChangeText={fname => this.setState(first, fname)}
-              />
-              <TextInput
-                label="Last Name"
-                placeholder={this.state.last}
-                keyboardType="default"
-                maxLength={32}
-                selectTextOnFocus={true}
-                textContentType="familyName"
-                autoCompleteType="name"
-                errorMessage="This field is required."
-                onSubmitEditing={lname => this.setState(last, lname)}
-              />
+              {name}
               <TextInput
                 label="Email"
                 placeholder={this.state.email}
@@ -424,8 +465,9 @@ export default class User extends React.Component {
                 selectTextOnFocus={true}
                 textContentType="emailAddress"
                 autoCompleteType="email"
-                errorMessage="This field is required.  Please enter valid email address."
-                onSubmitEditing={emailAddr => this.setState(email, emailAddr)}
+                errormessage="This field is required.  Please enter valid email address."
+                onSubmitEditing={emailAddr => this.setState({'email': emailAddr})}
+                style={themeBodyText}
               />
               <TextInput
                 label="Phone Number"
@@ -435,13 +477,15 @@ export default class User extends React.Component {
                 selectTextOnFocus={true}
                 textContentType="telephoneNumber"
                 autoCompleteType="tel"
-                errorMessage="Please enter valid phone number: ###-###-####"
-                onSubmitEditing={phoneNum => this.setState(phone, phoneNum)}
+                errormessage="Please enter valid phone number: ###-###-####"
+                onSubmitEditing={phoneNum => this.setState({'phone': phoneNum})}
+                style={themeBodyText}
               />
               <Picker
                 label="Preferred Contact Method:"
                 selectedValue={this.state.contactPreference}
-                onValueChange={(itemValue, itemIndex) => this.setState(contactPreference, itemValue)}
+                onValueChange={(itemValue, itemIndex) => this.setState({'contactPreference': itemValue})}
+                style={themeBodyText}
                 >
                 <Picker.Item
                     label='Email'
@@ -455,7 +499,8 @@ export default class User extends React.Component {
               <Picker
                 label="Entry Permission:"
                 selectedValue={this.state.entryPermission}
-                onValueChange={(itemValue, itemIndex) => this.setState(entryPermission, itemValue)}
+                onValueChange={(itemValue, itemIndex) => this.setState({'entryPermission': itemValue})}
+                style={themeBodyText}
                 >
                 <Picker.Item
                     label='Allow accompanied entry'
@@ -477,7 +522,8 @@ export default class User extends React.Component {
                   maxLength={255}
                   selectTextOnFocus={true}
                   testID={"note-edit"}
-                  onSubmitEditing={someNote => this.setState(note, someNote)}
+                  onSubmitEditing={someNote => this.setState({'note': someNote})}
+                  style={themeBodyText}
               />
               {submitButton}
               {resetButton}
@@ -495,19 +541,20 @@ export default class User extends React.Component {
      *
      * @returns List of user's tickets.
      */
-    listTickets = (props) => {
-        var ticketList = [];
-        var content;
-        if (props.filter === undefined || props.filter === 'none') {
-            ticketList = this.state.tickets;
-        } else if (props.filter === 'open') {
+    listTickets = (filter) => {
+        let ticketList = [];
+        if (filter === undefined || filter === 'none') {
+            for (let ticket in this.state.tickets) {
+                ticketList.push(ticket);
+            }
+        } else if (filter === 'open') {
             // generates list of user's tickets that are open
             for (let ticket of this.state.tickets) {
                 if (ticket.isOpen()) {
                     ticketList.push(ticket);
                 }
             }
-        } else if (props.filter === 'closed') {
+        } else if (filter === 'closed') {
             // generates list of user's tickets that are closed
             for (let ticket of this.state.tickets) {
                 if (!ticket.isOpen()) {
@@ -515,10 +562,7 @@ export default class User extends React.Component {
                 }
             }
         }
-        for (ticket in ticketList) {
-            content += ""; // TODO: add Ticket display items
-        }
-        return content;
+        return ticketList;
     }
 
     /**

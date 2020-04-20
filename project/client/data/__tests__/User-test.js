@@ -5,7 +5,7 @@ import { fireEvent, render, wait, getByPlaceholderText, getByDisplayValue, getBy
 import * as JestNative from '@testing-library/jest-native';
 import * as CONSTANTS from '../../constants/Reference';
 
-import User from '../User';
+import User from '../UserTwo';
 import { TextInput } from 'react-native-gesture-handler';
 
 expect.extend({...JestNative});
@@ -78,7 +78,7 @@ const SAMPLE_USER_PWD = [
 
 describe(`User`, () => {
     jest.useFakeTimers();
-  
+
     beforeEach(() => {
       // TODO: test setup
     });
@@ -87,12 +87,12 @@ describe(`User`, () => {
       // TODO: test cleanup
     });
 
-      
+
     it(`renders the user screen`, () => {
       const tree = renderer.create(<User />).toJSON();
       expect(tree).toMatchSnapshot();
     });
-  
+
     it(`renders the user profile editing screen`, () => {
       const tree = renderer.create(<User edit_mode />).toJSON();
       expect(tree).toMatchSnapshot();
@@ -102,7 +102,12 @@ describe(`User`, () => {
     describe(`created with default values`, () => {
       const { getByTestId, getByTitle, getByText, baseElement } = render(<User />);
 
-      let testElement = getByTestId(`user-first`);
+      let testElement = getByTestId(`user-name`);
+      test(`renders User name`, () => {
+        expect(testElement).toBeEnabled();
+      });
+
+      testElement = getByTestId(`user-first`);
       test(`renders User first name`, () => {
         expect(testElement).toBeEnabled();
       });
@@ -144,7 +149,7 @@ describe(`User`, () => {
         expect(testElement).toBeUndefined();
       });
 
-      testElement = getByText(/Edit Profile/i);
+      testElement = getByTestId(`edit-button`);
       test(`renders Edit Button`, () => {
         expect(testElement).toBeEnabled();
       });
@@ -225,20 +230,27 @@ describe(`User`, () => {
         expect(tree.props.tickets).toBeUndefined();
       });
 
-      testElement = getByText(/Update/i);
+      testElement = getByTestId(`update-button`);
       test(`has an Update Button`, () => {
         expect(testElement).toBeEnabled();
-      })
+      });
 
-      testElement = getByText(/Reset/i);
+      // TODO: Figure out why getBy are throwing declaration exceptions instead of
+      // returning 'undefined' when target is not found
+      // testElement = getByTestId(`create-button`);
+      // test(`does not have a Create Account Button`, () => {
+      //   expect(testElement).toBeUndefined();
+      // });
+
+      testElement = getByTestId(`reset-button`);
       test(`has a Reset Button`, () => {
         expect(testElement).toBeEnabled();
-      })
+      });
 
-      testElement = getByText(/Cancel/i);
+      testElement = getByTestId(`cancel-button`);
       test(`has a Cancel Button`, () => {
         expect(testElement).toBeEnabled();
-      })
+      });
 
     });
 

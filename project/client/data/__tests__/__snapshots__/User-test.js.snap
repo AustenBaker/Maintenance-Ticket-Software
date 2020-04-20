@@ -149,6 +149,7 @@ exports[`User renders the user profile editing screen 1`] = `
         "opacity": 1,
       }
     }
+    testID="update-button"
   >
     <View
       style={
@@ -191,6 +192,7 @@ exports[`User renders the user profile editing screen 1`] = `
         "opacity": 1,
       }
     }
+    testID="reset-button"
   >
     <View
       style={
@@ -233,6 +235,7 @@ exports[`User renders the user profile editing screen 1`] = `
         "opacity": 1,
       }
     }
+    testID="cancel-button"
   >
     <View
       style={
@@ -262,24 +265,88 @@ exports[`User renders the user profile editing screen 1`] = `
 
 exports[`User renders the user screen 1`] = `
 <View>
-  <Text>
-    Name: 
-    First Name
-     
-    Last Name
-  </Text>
   <Text
     testID="user-name"
+  >
+    Name: 
+    <Text
+      testID="user-first"
+    >
+      First Name
+    </Text>
+    <Text
+      testID="user-last"
+    >
+      Last Name
+    </Text>
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#FFF",
+        "fontSize": 17,
+      }
+    }
+    testID="user-email"
   >
     Email: 
     default@CastlebergCommunities.com
   </Text>
   
   <Text
+    style={
+      Object {
+        "color": "#FFF",
+        "fontSize": 17,
+      }
+    }
     testID="user-entry"
   >
     Entry: Accompanied entry only.
   </Text>
   
+  <View
+    accessibilityLabel="Edit Profile Button"
+    accessibilityRole="button"
+    accessibilityState={Object {}}
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+    testID="edit-button"
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#007AFF",
+              "fontSize": 18,
+              "margin": 8,
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        Edit Profile
+      </Text>
+    </View>
+  </View>
 </View>
 `;
