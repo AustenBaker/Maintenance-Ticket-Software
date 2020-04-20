@@ -24,7 +24,7 @@ describe("TESTING CATAGORIES", function() {
         })
 
         //update
-        it.skip("fetch POST /account/update")
+        it("fetch POST /account/update")
 
         //logout
         it('fetch POST /account/logout', async function(){
@@ -57,7 +57,7 @@ describe("TESTING CATAGORIES", function() {
     describe('3. Ticket', async function() {
         let newTicketID = ""
         it('fetch POST /ticket/create', async function(){
-            const res = await ticketFetch.submitTicket("a@a.com","parker way apt","213","Door wont open","jammed some how",false,5,"No progress",false)
+            const res = await ticketFetch.submitTicket("g@a.com","parker way apt","213","Door wont open","jammed some how",false,5,"No progress",false)
             newTicketID = res.id
             expect(res.id).to.be.a('number')
         })

@@ -27,7 +27,7 @@ exports.User = mongoose.model('User', new Schema({
 
 exports.Ticket = mongoose.model('Ticket', new Schema({
     id: { type: Number, unique: true },
-    email: { type: String, unique: true },
+    email: { type: String },
     aptComplex: { type: String },
     unit: { type: String },
     issue: { type: String },

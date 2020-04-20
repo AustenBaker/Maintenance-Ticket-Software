@@ -15,7 +15,7 @@ router.post('/create', (req, res) => {
         .status(200)
         .json({ id: ticketID })
         .end('Successful ticket creation')
-    ).catch(err => res.status(400).json({ error: "HELP" }));
+    ).catch(err => res.status(400).json({ error: err }));
 });
 
 // GET /:id
