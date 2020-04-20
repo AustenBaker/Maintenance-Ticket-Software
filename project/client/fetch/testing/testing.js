@@ -50,7 +50,7 @@ describe("TESTING CATAGORIES", function() {
     })
 
     describe('2. Property',function() {
-        it.skip("Future Developement")
+        it.skip("Future Development")
 
     })
 
