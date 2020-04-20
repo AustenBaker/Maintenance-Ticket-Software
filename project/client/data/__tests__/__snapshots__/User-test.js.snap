@@ -1,7 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`User renders the user profile editing screen 1`] = `
-<View>
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+    }
+  }
+>
   <Text
     style={
       Object {
@@ -41,7 +48,7 @@ exports[`User renders the user profile editing screen 1`] = `
       keyboardType="default"
       label="Last Name"
       maxLength={32}
-      onSubmitEditing={[Function]}
+      onChangeText={[Function]}
       placeholder="Last Name"
       rejectResponderTermination={true}
       selectTextOnFocus={true}
@@ -53,49 +60,10 @@ exports[`User renders the user profile editing screen 1`] = `
       }
       textContentType="familyName"
       underlineColorAndroid="transparent"
+      value="Last Name"
     />
   </Text>
-  <TextInput
-    allowFontScaling={true}
-    autoCompleteType="email"
-    errormessage="This field is required.  Please enter valid email address."
-    keyboardType="email-address"
-    label="Email"
-    maxLength={32}
-    onSubmitEditing={[Function]}
-    placeholder="default@CastlebergCommunities.com"
-    rejectResponderTermination={true}
-    selectTextOnFocus={true}
-    style={
-      Object {
-        "color": "#FFF",
-        "fontSize": 17,
-      }
-    }
-    textContentType="emailAddress"
-    underlineColorAndroid="transparent"
-  />
-  <TextInput
-    allowFontScaling={true}
-    autoCompleteType="tel"
-    errormessage="Please enter valid phone number: ###-###-####"
-    keyboardType="phone-pad"
-    label="Phone Number"
-    maxLength={12}
-    onSubmitEditing={[Function]}
-    placeholder="000-000-0000"
-    rejectResponderTermination={true}
-    selectTextOnFocus={true}
-    style={
-      Object {
-        "color": "#FFF",
-        "fontSize": 17,
-      }
-    }
-    textContentType="telephoneNumber"
-    underlineColorAndroid="transparent"
-  />
-  <View
+  <Text
     style={
       Object {
         "color": "#FFF",
@@ -103,34 +71,31 @@ exports[`User renders the user profile editing screen 1`] = `
       }
     }
   >
-    <RCTPicker
-      items={
-        Array [
-          Object {
-            "label": "Email",
-            "textColor": undefined,
-            "value": "email",
-          },
-          Object {
-            "label": "Text",
-            "textColor": undefined,
-            "value": "text",
-          },
-        ]
-      }
-      onChange={[Function]}
-      selectedIndex={0}
+    Email:
+      
+    <TextInput
+      allowFontScaling={true}
+      autoCompleteType="email"
+      errormessage="This field is required.  Please enter valid email address."
+      keyboardType="email-address"
+      label="Email"
+      maxLength={32}
+      onChangeText={[Function]}
+      placeholder="your.email@server.com"
+      rejectResponderTermination={true}
+      selectTextOnFocus={true}
       style={
-        Array [
-          Object {
-            "height": 216,
-          },
-          undefined,
-        ]
+        Object {
+          "color": "#FFF",
+          "fontSize": 17,
+        }
       }
+      textContentType="emailAddress"
+      underlineColorAndroid="transparent"
+      value="default@CastlebergCommunities.com"
     />
-  </View>
-  <View
+  </Text>
+  <Text
     style={
       Object {
         "color": "#FFF",
@@ -138,56 +103,153 @@ exports[`User renders the user profile editing screen 1`] = `
       }
     }
   >
-    <RCTPicker
-      items={
-        Array [
-          Object {
-            "label": "Allow accompanied entry",
-            "textColor": undefined,
-            "value": "accompanied",
-          },
-          Object {
-            "label": "Notify before entry",
-            "textColor": undefined,
-            "value": "notify",
-          },
-          Object {
-            "label": "Allow entry",
-            "textColor": undefined,
-            "value": "any",
-          },
-        ]
-      }
-      onChange={[Function]}
-      selectedIndex={0}
+    Phone:
+      
+    <TextInput
+      allowFontScaling={true}
+      autoCompleteType="tel"
+      errormessage="Please enter valid phone number: ###-###-####"
+      keyboardType="phone-pad"
+      label="Phone Number"
+      maxLength={12}
+      onChangeText={[Function]}
+      placeholder="###-###-####"
+      rejectResponderTermination={true}
+      selectTextOnFocus={true}
       style={
-        Array [
-          Object {
-            "height": 216,
-          },
-          undefined,
-        ]
+        Object {
+          "color": "#FFF",
+          "fontSize": 17,
+        }
       }
+      textContentType="telephoneNumber"
+      underlineColorAndroid="transparent"
+      value="000-000-0000"
     />
-  </View>
-  <TextInput
-    allowFontScaling={true}
-    defaultValue=""
-    keyboardType="default"
-    label="Note"
-    maxLength={255}
-    onSubmitEditing={[Function]}
-    rejectResponderTermination={true}
-    selectTextOnFocus={true}
+  </Text>
+  <Text
     style={
       Object {
         "color": "#FFF",
         "fontSize": 17,
       }
     }
-    testID="note-edit"
-    underlineColorAndroid="transparent"
-  />
+  >
+    
+
+    Preferred Contact:
+      
+    <View>
+      <RCTPicker
+        items={
+          Array [
+            Object {
+              "label": "Email",
+              "textColor": undefined,
+              "value": "email",
+            },
+            Object {
+              "label": "Text",
+              "textColor": undefined,
+              "value": "text",
+            },
+          ]
+        }
+        onChange={[Function]}
+        selectedIndex={0}
+        style={
+          Array [
+            Object {
+              "height": 216,
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#FFF",
+        "fontSize": 17,
+      }
+    }
+  >
+    
+
+    Entry Permission:
+      
+    <View>
+      <RCTPicker
+        items={
+          Array [
+            Object {
+              "label": "Allow accompanied entry",
+              "textColor": undefined,
+              "value": "accompanied",
+            },
+            Object {
+              "label": "Notify before entry",
+              "textColor": undefined,
+              "value": "notify",
+            },
+            Object {
+              "label": "Allow entry",
+              "textColor": undefined,
+              "value": "any",
+            },
+          ]
+        }
+        onChange={[Function]}
+        selectedIndex={0}
+        style={
+          Array [
+            Object {
+              "height": 216,
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    
+
+
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#FFF",
+        "fontSize": 17,
+      }
+    }
+  >
+    Note:
+    
+  
+    <TextInput
+      allowFontScaling={true}
+      defaultValue=""
+      keyboardType="default"
+      label="Note"
+      maxLength={255}
+      multiline={true}
+      numberOfLines={4}
+      onChangeText={[Function]}
+      placeholder="Enter note here."
+      rejectResponderTermination={true}
+      selectTextOnFocus={true}
+      style={
+        Object {
+          "color": "#FFF",
+          "fontSize": 17,
+        }
+      }
+      testID="note-edit"
+      underlineColorAndroid="transparent"
+    />
+  </Text>
   <View
     accessibilityLabel="Update Profile Button"
     accessibilityRole="button"
@@ -321,7 +383,14 @@ exports[`User renders the user profile editing screen 1`] = `
 `;
 
 exports[`User renders the user screen 1`] = `
-<View>
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+    }
+  }
+>
   <Text
     style={
       Object {
@@ -379,7 +448,11 @@ exports[`User renders the user screen 1`] = `
     }
     testID="user-entry"
   >
-    Entry: Accompanied entry only.
+    Entry Permission:
+      Accompanied entry only.
+    
+
+
   </Text>
   
   <View

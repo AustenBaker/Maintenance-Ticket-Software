@@ -183,12 +183,12 @@ describe(`User`, () => {
         expect(testElement.props.units).toHaveLength(1);
       });
 
-      testElement = getByPlaceholderText(`default@CastlebergCommunities.com`);
+      testElement = getByPlaceholderText(`your.email@server.com`);
       test(`has the placeholder email address`, () => {
         expect(testElement).toBeEnabled();
       });
 
-      testElement = getByPlaceholderText(`000-000-0000`);
+      testElement = getByPlaceholderText(`###-###-####`);
       test(`has the default phone number`, () => {
         expect(testElement).toBeEnabled();
       });
