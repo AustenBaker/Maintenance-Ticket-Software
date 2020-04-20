@@ -8,14 +8,14 @@ const { Ticket } = require('./database');
 
 // Create ticket
 router.post('/create', (req, res) => {
-    const body = { id: Date.now(), ...req.body };
+    let ticketID = Date.now()
+    const body = { id: ticketID, ...req.body };
     const newTicket = new Ticket(body);
     newTicket.save().then(() => res
-        .json({ id })
-        .writeHead(200, body)
-        //.end(JSON.stringify({ id }))
+        .status(200)
+        .json({ id: ticketID })
         .end('Successful ticket creation')
-    ).catch(err => res.status(400).json({ error: err }));
+    ).catch(err => res.status(400).json({ error: "HELP" }));
 });
 
 // GET /:id
