@@ -53,104 +53,83 @@ export default class User extends React.Component {
       let themeBodyText =
         colorScheme.theme === 'light' ? styles.iosLightThemeText : styles.iosDarkThemeText;
 
-        let content;
-        
-        let name = (
-            <Text testId="user-name">
-                Name: {this.state.first_name}{this.state.last_name}
-            </Text>
-        );
-
-        let apt = '';
-        // TODO: figure out how to render Unit listing
-        if (!this.state.units === undefined) {
-            apt = (
-                <Text testId="user-units">
-                </Text>
-            );
-        };
-
+        var content;
         let phoneCheck = this.state.phone !== User.defaultProps.phone;
-        let email = "";
-        // Only star email if it is the preferred contact method and
-        // a phone number is also available.
+
+        // if phone number exists, create text output
+        // and add star to user's preferred contact type
+        // if multiple methods available
+        var contact = [];
         if (this.state.contact === CONSTANTS.PREFERRED_CONTACT.EMAIL && phoneCheck) {
-            email = (
-            <Text testId="user-email" style={themeBodyText}>
+            contact.push(
+            <Text testID="user-name" style={themeBodyText}>
             Email: {this.state.email + "* "}
             </Text>
             );
         } else {
-            email = (
-            <Text testId="user-email" style={themeBodyText}>
+            contact.push(
+            <Text testID="user-name" style={themeBodyText}>
             Email: {this.state.email}
             </Text>
             );
-        };
-
-        let phone = "";
-        // If phone number is preferred contact method, star phone number.
-        // Print out both phone number and contact preference note if user
-        // phone number is available.
+        }
         if (phoneCheck) {
             if (this.state.contact === CONSTANTS.PREFERRED_CONTACT.TXT) {
-                phone = (
-                    <Text testId="user-phone" style={themeBodyText}>Phone: {this.state.phone + "*\n"}
+                contact.push(
+                    <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "*\n"}
                     * = Preferred contact method.
                     </Text>
                 );
             } else {
-                phone = (
-                    <Text testId="user-phone" style={themeBodyText}>Phone: {this.state.phone + "\n"}
+                contact.push(
+                    <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "\n"}
                     * = Preferred contact method.
                     </Text>
                 );
-            };
-        };
+            }
+        } else contact.push(<Text></Text>);
 
-        // Embed entry permission data in a <Text> container.
-        let entry = (
-            <Text testId="user-entry" style={themeBodyText}>
+        // create <Text> container for entry permission data
+        var entry = (
+            <Text testID="user-entry" style={themeBodyText}>
                 {(this.state.entry_permission === CONSTANTS.ENTRY_PERMISSION.ANY) ? "Entry: Allowed."
                 : (this.state.entry_permission === CONSTANTS.ENTRY_PERMISSION.NOT) ? "Entry: Notify before entry."
                 : "Entry: Accompanied entry only."}
             </Text>
         );
 
-        // Embed note in a <Text> container if one exists.
-        let note = "";
+        // if note exists, create a <Text> container for it
+        var note = "";
         if (this.state.note !== "") {
             note = (
-                <Text testId="user-note">
+                <Text>
                   {"Note: \n"}
                   {this.state.note}
                 </Text>
             );
-        };
+        } else {
+          note = (<Text></Text>);
+        }
 
-        let editButton = (
-            <Button
-                title="Edit Profile"
-                accessibilityLabel="Update Profile Button"
-                onPress={() => this.setState(edit_mode, true)}
-            >
-            <Text testId="edit-button">Edit Profile</Text>
-            </Button>
-        );
+        var editButton = (<Button
+            title="Edit Profile"
+            onPress={() => this.update(this)}
+            accessibilityLabel="Update Profile Button"
+        />);
 
         // label & put user info into a <View><Text> wrapper
         // for display
         content = (
             <View>
-              {name}
-              {apt}
-              {email}
-              {phone}
+              <Text>
+                Name: {this.state.first_name} {this.state.last_name}
+              </Text>
+              {contact[0]}
+              {contact[1]}
               {entry}
               {note}
-              {editButton}
             </View>
-          );
+          ); // TODO: add edit button
         return content;
     }
 
@@ -158,23 +137,16 @@ export default class User extends React.Component {
      * This method is used to assign a unit to a resident user.
      * No duplicate values will be added to assigned units list.
      *
-     * @param unit Unit number of unit to be assigned to user
-     * 
-     * @return true if unit assignment succeeds, false if it fails.
+     * @param units array of units to be assigned to user
      */
     assignUnit = (props) => {
-        let assigned = false;
-        // TODO: check the logic here, do we want to return true if user is already assigned to the unit?
-        // The unit addition needs to be statefully executed so sequential additions will all resolve properly
-        // despite being asynchronous.
-        if (!(props.unit === undefined) && ((this.state.units === undefined) || !(props.unit in this.state.units))) {
-            this.setState((state) => {
-                return {units: [...state.units, props.unit]};
-            });
-            assigned = true;
-        };
-        return assigned;
-    };
+        for (let unit of props.units) {
+            // check to see if the unit is already assigned to user
+            if (unit in this.state.units === false) {
+                this.setState(units, [...this.state.units, unit]);
+            }
+        }
+    }
 
     /**
      * This method posts updated user information to server.
@@ -251,68 +223,13 @@ export default class User extends React.Component {
      * perform the requested activity.
      *
      * @param activity The activity to be performed
-     * @param targetTicket Ticket number of target Ticket of activity (optional)
-     * @param targetUser Email address of user target of activity (defaults to self)
-     * @param targetUnit Unit number of unit target of activity (optional)
      *
      * @returns True if the user is authorized to perform the
      * specified activity.
      */
-    isAuthorized = (props, activity, targetTicket = undefined, targetUser = this.state.email, targetUnit = undefined) => {
-        // TODO: double check parameter passing rules for class methods.  This may need to be relocated or
-        // restructured.
-        // Initialize all test values to false so authorization defaults to denial
-        let active, valid, isMgmt, isMnt = false;
-        // TODO: check for valid session & user account activation
-        // and assign value to active
-        if (active) {
-            // Check if User is MGMT
-            isMgmt = this.state.user_type === CONSTANTS.USER_TYPE.MGMT;
-
-            // Check if User is MNT
-            isMnt = this.state.user_type === CONSTANTS.USER_TYPE.MNT;
-        } else {
-            // User is not authenticated or does not have an active account
-            return valid;
-        }
-        // TODO: add more activity authorization checks
-        // Check to see if user is authorized to perform requested activity
-        switch (activity) {
-            case 'create ticket': {
-                // MGMT/MNT users can make tickets for any unit/property
-                let proceed = isMgmt || isMnt;
-                // RES users can only make tickets for their own units
-                proceed = proceed || (!(targetUnit === undefined) && !(this.state.units === undefined) &&
-                    (targetUnit in this.state.units));
-                valid = proceed;
-                break;
-            };
-            case 'update ticket', 'close ticket': {
-                // MGMT/MNT users can update or close any ticket
-                let proceed = isMgmt || isMnt;
-                // RES users can only update or close their own tickets
-                proceed = proceed || (!(targetTicket === undefined) && !(this.state.tickets === undefined) &&
-                    (ticket in this.state.tickets));
-                valid = proceed;
-                break;
-            };
-            case 'assign unit', 'delete ticket', 'manage property': {
-                // MGMT users can assign residents to units, delete tickets and manage property
-                valid = isMgmt;
-                break;
-            };
-            case 'manage user': {
-                // MGMT users can activate, deactivate, promote or delete other user accounts,
-                // but not their own account
-                valid = isMgmt && targetUser !== this.state.email;
-                break;
-            };
-            default: {
-                // Deny authorization for any inactive, unauthorized or anonymous user or
-                // any unrecognized command.
-                break;
-            };
-        };
+    isAuthorized = (props) => {
+        let valid = false;
+        // TODO: check user type vs. authorized user types for activity
         return valid;
     };
 
@@ -492,19 +409,18 @@ export default class User extends React.Component {
      * @returns List of user's tickets.
      */
     listTickets = (props) => {
-        let ticketList = [];
-        if ((props.filter === undefined || props.filter === 'none') && !(this.state.tickets === undefined)) {
-            for (let ticket of this.state.tickets) {
-                ticketList.push(ticket);
-            };
-        } else if (props.filter === CONSTANTS.STATUS.OPEN) {
+        var ticketList = [];
+        var content;
+        if (props.filter === undefined || props.filter === 'none') {
+            ticketList = this.state.tickets;
+        } else if (props.filter === 'open') {
             // generates list of user's tickets that are open
             for (let ticket of this.state.tickets) {
                 if (ticket.isOpen()) {
                     ticketList.push(ticket);
                 }
             }
-        } else if (props.filter === CONSTANTS.STATUS.CLOSED) {
+        } else if (props.filter === 'closed') {
             // generates list of user's tickets that are closed
             for (let ticket of this.state.tickets) {
                 if (!ticket.isOpen()) {
@@ -512,7 +428,10 @@ export default class User extends React.Component {
                 }
             }
         }
-        return ticketList;
+        for (ticket in ticketList) {
+            content += ""; // TODO: add Ticket display items
+        }
+        return content;
     }
 
     /**
