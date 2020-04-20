@@ -17,32 +17,26 @@ export async function handleLogin(user, pass) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: user, password: pass })
-    }).then(res => res.json()).then(data => {
-        console.log("Login Successful")
+    }).then(res => res).then(data => {
         return data
     }).catch(err => {
-        console.log("Error during login: " + err)
         return err;
     })
-    console.log(response)
     // TODO: Add in response data validation check?
     return await response
 }
-
 
 export async function logout(){
     const response = await fetch(PATH + '/account/logout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: ""
-    }).then(res => res.json()).then(data => {
-        console.log("Logout Successful")
+    }).then(res => res).then(data => {
         return data
     }).catch(err => {
-        console.log("ERROR during logout: " + err)
         return err
     })
-    return await response.json()
+    return await response
 }
 
 /**
@@ -53,8 +47,8 @@ export async function logout(){
  * @param {String} last 
  * @param {Array} units 
  * @param {String} email 
- * @param {Number} phone 
- * @param {Number} contactPreference 
+ * @param {String} phone 
+ * @param {String} contactPreference 
  * @param {String} entryPermission 
  * @param {String} type 
  * @param {String} note 
@@ -81,12 +75,12 @@ export async function register(username, password, first, last, units, email, ph
             tickets:tickets, 
             activate:activate
         })
-    }).then(res => res.json()).then(data => {
+    }).then(res => res).then(data => {
         return data
     }).catch(err => {
         return err
     })
-    return await response
+    return await response.json()
 }
 
 /**
@@ -97,28 +91,23 @@ export async function deleteAccount(username){
     const response = await fetch(PATH + '/account/delete', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body:  { username: username }
-    }).then(res => res.json()).then(data => {
-        console.log("Delete Account Successful")
+        body: JSON.stringify({username:username})
+    }).then(res => res).then(data => {
         return data
     }).catch(err => {
-        console.log("ERROR deleting account: " + err)
         return err
     })
-    console.log(response)
     return await response
 }
 
 export async function getUserFromUsername(username){ 
-    const response = await fetch(PATH + '/account/:username', {
+    const response = await fetch(PATH + '/account/' + username, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         body: { username: username }
-    }).then(res => res.json()).then(data => {
-        console.log("User Found from Username Successful")
+    }).then(res => res).then(data => {
         return data
     }).catch(err => {
-        console.log("ERROR getting user from username: " + err)
         return err
     })
     return await response.json()
@@ -148,7 +137,7 @@ export async function update(username, password, first, last, units, email, phon
             tickets: tickets,
             activate: activate
         })
-    }).then(res => res.json()).then(data => {
+    }).then(res => res).then(data => {
         console.log("Update Successful")
         return data
     }).catch(err => {
