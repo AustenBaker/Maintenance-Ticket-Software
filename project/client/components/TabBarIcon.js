@@ -7,6 +7,7 @@ import { colorScheme } from '../stores';
 export default function TabBarIcon(props) {
   let themeInactiveIcon =
     colorScheme.theme === 'light' ? Colors.iosLightIcon : Colors.iosDarkIcon;
+    
   return (
     <Ionicons
       name={props.name}
