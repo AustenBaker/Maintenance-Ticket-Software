@@ -16,4 +16,7 @@ local.properties
 client.iml
 build.gradle
 .vscode
-.vscode/*
+.vscode/**
+coverage/**
+lcov/**
+data/__tests__/Practice-test.js
