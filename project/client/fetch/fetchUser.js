@@ -102,15 +102,14 @@ export async function deleteAccount(username){
 
 export async function getUserFromUsername(username){ 
     const response = await fetch(PATH + '/account/' + username, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        body: { username: username }
+        method: 'GET'
     }).then(res => res).then(data => {
         return data
     }).catch(err => {
         return err
     })
-    return await response
+    //console.log(response.json())
+    return await response.json()
 }
 
 /**

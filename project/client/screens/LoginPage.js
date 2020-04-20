@@ -23,7 +23,7 @@ class LoginPage extends React.PureComponent {
     });
     const data = await res.json();
     // Do stuff here
-    this.props.UserStore.loggedIn = true;
+    //this.props.UserStore.loggedIn = true;
     this.props.navigation.navigate('Profile'); // Or something else
   }
 

@@ -101,6 +101,7 @@ export async function getTicketsFromEmail(email){
  * @param {number} id 
  */
 export async function getTicketFromId(id){ 
+    console.log(PATH + '/ticket/' + id)
     const response = await fetch(PATH + '/ticket/' + id, {
         method: 'GET'
     }).then(res => res).then(data => {

@@ -32,7 +32,7 @@ describe("TESTING CATAGORIES", function() {
             expect(res.status).equal(200)
         })
 
-        it('fetch GET /account/getUserFromUsername', async function(){
+        it('fetch GET /account/:username', async function(){
             const res = await userFetch.getUserFromUsername("golfkid")
             expect(res.first).equal('kyle')
         })
