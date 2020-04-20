@@ -7,6 +7,7 @@ import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-app
 //import { PrioritySelection } from '../components/PrioritySelection'
 import { colorScheme } from '../stores';
 import Colors from '../constants/Colors';
+let ticketFetch = require('../fetch/fetchTicket')
 
 
 var radio_props = [
@@ -34,6 +35,13 @@ class CreateTicketScreen extends React.Component {
       //state changes according to switch
       //which will result in re-render the text
    }
+
+   submitTheTicket = async () => {
+    console.log("submiting the ticket")
+    //await ticketFetch.submitTicket("b@a.com","parker way apt","213","Door wont open","jammed some how",false,5,"No progress",false)
+    const res = await ticketFetch.submitTicket(this.state.email,this.state.aptComplex,this.state.unit,this.state.issue,this.state.details,this.state.emergency,0,"pending",false)
+    console.log(res)
+  }
 
   render(){
 
@@ -122,7 +130,7 @@ class CreateTicketScreen extends React.Component {
         <Button
           title="Create Ticket Request"
           accessibilityLabel="Create Ticket Request Button"
-         // onPress = {this.submitTicket(this.state)}
+          onPress = {() => this.submitTheTicket(this)}
         />
         </View>
       </ScrollView>

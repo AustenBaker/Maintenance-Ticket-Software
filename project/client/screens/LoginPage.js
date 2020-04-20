@@ -6,13 +6,15 @@ import { Appearance, AppearanceProvider } from 'react-native-appearance';
 import { userStore, colorScheme } from '../stores';
 import Colors from '../constants/Colors';
 
+let userFetch = require('../fetch/fetchUser')
+
 
 class LoginPage extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      username: undefined,
-      password: undefined
+      username: "",
+      password: ""
     }
   }
 
@@ -23,20 +25,18 @@ class LoginPage extends React.PureComponent {
     });
     const data = await res.json();
     // Do stuff here
-    this.props.UserStore.loggedIn = true;
-    this.props.navigation.navigate('Profile'); // Or something else
+    //this.props.UserStore.loggedIn = true;
+    this.props.navigation.navigate('ProfileScreen'); // Or something else
   }
 
-  async handleLogin() {
-    const res = await fetch('http://127.0.0.1:3001/account/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: this.state.username, password: this.state.password })
-    });
-    const data = await res.json();
-    // Do stuff here
-    this.props.UserStore.loggedIn = true;
-    this.props.navigation.navigate('Profile'); // Or something else
+  handleLogin = async () => {
+    let res = await userFetch.handleLogin(this.state.username,this.state.password)
+    if(res.status === 200){
+      res.json().then(response => {
+        //todo save respoonse fields to user dataStore
+        console.log(response)
+      })
+    }
   }
 
   render() {
@@ -64,8 +64,8 @@ class LoginPage extends React.PureComponent {
               autoCapitalize="none"
               keyboardAppearance={themeKeyboard}
               style={themeTextBox}
-              onChangeText={username => this.setState({ username })}
-              value={this.state.username}
+              onChangeText={text => this.setState({ username: text })}
+              //value={this.state.username}
             />
             <TextInput
               secureTextEntry
@@ -74,8 +74,8 @@ class LoginPage extends React.PureComponent {
               autoCapitalize="none"
               keyboardAppearance={themeKeyboard}
               style={themeTextBox}
-              onChangeText={password => this.setState({ password })}
-              value={this.state.password}
+              onChangeText={text => this.setState({ password: text })}
+              //value={this.state.password}
             />
 
             <Button
