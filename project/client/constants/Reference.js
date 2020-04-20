@@ -26,7 +26,7 @@ export const REGEX = {
     // memo pattern: a-zA-Z0-9_-+=!?.,;:()&
     // allows any combination of letters, digits and select punctuation
     // length up to 255 characters
-    MEMO: /^[[\w]*[\-\+=!\?.,;:/(/)&]?]{,255}$/
+    MEMO: /^[[\w]*[\-\+=!\?\.,;:/(/)&]?]{,255}$/
 }
 // User property list
 export const USER_PROPERTIES = [
