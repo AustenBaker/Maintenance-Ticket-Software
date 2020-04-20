@@ -6,7 +6,6 @@ const app = require('../index')
 describe("TESTING CATAGORIES", function() {
     this.timeout(15000)
     describe('1. Accounts',function() { 
-        it.skip("testing this")
         //register
         it('POST /register', function(done){
             request(app)
@@ -29,14 +28,14 @@ describe("TESTING CATAGORIES", function() {
         it('POST /logout', function(done){
             request(app)
                 .post('/account/logout')
-                .expect(302, done)
-            done()
+                .expect(200, done)
+            //done()
         })
 
         //delete account
         it('Delete', function(done){
             request(app)
-                .post('/account/delete')
+                .delete('/account/delete')
                 .send({username: 'testing'})
                 .expect(200, done)
             done()
@@ -66,9 +65,10 @@ describe("TESTING CATAGORIES", function() {
             done()
         })
 
+        let newTicketId = ""
         it('GET /ticket/:id', function(done){
             this.timeout(15000)
-            request(app)
+            newTicketId = request(app)
                 .get('/ticket/1585610325626')
                 .expect('Content-Type', /json/)
                 .expect(200,done)
@@ -77,10 +77,10 @@ describe("TESTING CATAGORIES", function() {
 
         it("Delete /ticket/", function(done){
             request(app)
-                .delete('/ticket/45681654645')
+                .delete('/ticket/' + newTicketId)
                 .expect(404,done) //just for the time being
                 //.expect(200,done)
-            done()
+            //done()
         })
     })
 
