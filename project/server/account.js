@@ -110,7 +110,7 @@ router.get('/:username', async (req, res) => {
     if (!user) res.status(400).json({ error: 'NO_SUCH_USER' });
     else {
         const { first, last, units, username, email, phone, contactPreference, entryPermissions, type, note, tickets, activate } = user;
-        res.status(200).json({ first, last, username, email, type });
+        res.status(200).json({ first, last, units, username, email, phone, contactPreference, entryPermissions, type, note, tickets, activate });
     }
 });
 
