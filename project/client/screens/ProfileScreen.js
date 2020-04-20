@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
-import { colorScheme } from '../stores';
+import { userStore, colorScheme } from '../stores';
 import Colors from '../constants/Colors'
 
 import { MonoText } from '../components/StyledText';
@@ -21,17 +21,16 @@ export default function ProfileScreen(properties) {
   let themeSeparator =
     colorScheme.theme === 'light' ? Colors.iosLightSeparator : Colors.iosDarkSeparator;
 
-  // TODO: add in code that checks for active user session,
-  // redirects to login if no active session found,
-  // attempts to load user data into properties if found,
-  // loads account creation page if referred to account creation
-  var testUser = {
-    first_name: "Mary",
-    last_name: "Sue",
+  // TODO: Check for valid session and then load user values
+  // from UserStore if it exists and if session is valid
+  // otherwise redirect to login page
+  let testUser = {
+    first: "Mary",
+    last: "Sue",
     email: "someday@somepl.ace",
     phone: "123-456-7890",
-    contact: "text",
-    entry: "notify",
+    contactPreference: "text",
+    entryPermission: "notify",
     note: "The dog definitely bites."
   };
   return (
