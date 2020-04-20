@@ -93,7 +93,7 @@ class LoginPage extends React.PureComponent {
             />
 
             <Button
-              onPress={() => this.props.navigation.replace('Tabs') }
+              onPress={() => this.props.navigation.replace('BottomTabNavigator') }
               style={themeBodyText}
               title="Skip Sign In"
               accessibilityLabel="Secret Dev Button to Skip Sign In"
