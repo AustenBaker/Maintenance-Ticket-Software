@@ -8,16 +8,17 @@ class UserStore {
             loading: true,
             loggedIn: false,
             username: '',
-            firstName: '',
-            lastName: '',
+            first: '',
+            last: '',
+            units: [],
             email: '',
             phone: '',
-            contact: CONSTANTS.PREFERRED_CONTACT.EMAIL,
-            entry: CONSTANTS.ENTRY_PERMISSION.ACC,
-            userType: CONSTANTS.USER_TYPE.RES,
+            contactPreference: CONSTANTS.PREFERRED_CONTACT.EMAIL,
+            entryPermission: CONSTANTS.ENTRY_PERMISSION.ACC,
+            type: CONSTANTS.USER_TYPE.RES,
             note: '',
-            units: [],
-            ticketList: []
+            tickets: [],
+            activate: false
             /* Add new global states here */
         });
     }
