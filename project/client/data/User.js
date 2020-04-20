@@ -116,12 +116,14 @@ export default class User extends React.Component {
                 phone = (
                     <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "*\n"}
                     * = Preferred contact method.
+                    {'\n\n'}
                     </Text>
                 );
             } else {
                 phone = (
                     <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "\n"}
                     * = Preferred contact method.
+                    {'\n\n'}
                     </Text>
                 );
             }
@@ -130,9 +132,11 @@ export default class User extends React.Component {
         // Embed entry permission data in a <Text> container.
         let entry = (
             <Text testID="user-entry" style={themeBodyText}>
-                {(this.state.entryPermission === CONSTANTS.ENTRY_PERMISSION.ANY) ? "Entry: Allowed."
-                : (this.state.entryPermission === CONSTANTS.ENTRY_PERMISSION.NOT) ? "Entry: Notify before entry."
-                : "Entry: Accompanied entry only."}
+                Entry Permission:
+                {(this.state.entryPermission === CONSTANTS.ENTRY_PERMISSION.ANY) ? "  Allowed."
+                : (this.state.entryPermission === CONSTANTS.ENTRY_PERMISSION.NOT) ? "  Notify before entry."
+                : "  Accompanied entry only."}
+                {'\n\n'}
             </Text>
         );
 
@@ -140,9 +144,13 @@ export default class User extends React.Component {
         var note = "";
         if (this.state.note !== "") {
             note = (
-                <Text testID="user-note" style={themeBodyText}>
-                  {"Note: \n"}
-                  {this.state.note}
+                <Text
+                  testID="user-note"
+                  style={themeBodyText}
+                  >
+                    {"Note: \n"}
+                    {this.state.note}
+                    {'\n\n'}
                 </Text>
             );
         }
@@ -158,7 +166,7 @@ export default class User extends React.Component {
         // label & put user info into a <View><Text> wrapper
         // for display
         content = (
-            <View>
+            <View style={styles.container}>
               {name}
               {email}
               {phone}
@@ -399,7 +407,9 @@ export default class User extends React.Component {
             testID="reset-button"
             onPress={() => {
                 // returns this.state to previous state using profile values
-                for (let key in profile) {
+                this.setState({'edit_mode': true}, () => {
+                  // TODO: implement restore from userStore
+                  for (let key in profile) {
                     if (key === 'units' || key === 'tickets') {
                         this.setState({key: [...profile[key]]});
                     } else {
@@ -407,7 +417,8 @@ export default class User extends React.Component {
                         console.log('key: ' + key + ', value: ' + profile[key] + ', ');
                         console.log('state: ' + this.state[key])
                     }
-                };
+                  }
+                });
                 // TODO: figure out why this is not re-rendering
             }}
             accessibilityLabel="Reset Profile Button"
@@ -416,7 +427,19 @@ export default class User extends React.Component {
         let cancelButton = (<Button
             title="Cancel"
             testID="cancel-button"
-            onPress={() => alert(`TODO: navigate to previous page or home`)}
+            onPress={() => {
+                this.setState({'edit_mode' : false}, () => {
+                    for (let key in profile) {
+                        if (key === 'units' || key === 'tickets') {
+                          this.setState({key: [...profile[key]]});
+                        } else {
+                          this.setState({key: profile[key]});
+                          console.log('key: ' + key + ', value: ' + profile[key] + ', ');
+                          console.log('state: ' + this.state[key])
+                        }
+                    };
+                });
+            }}
             accessibilityLabel="Cancel Button"
             style={themeBodyText}
         />);
@@ -427,7 +450,7 @@ export default class User extends React.Component {
                 {" "}
                 <TextInput
                   label="First Name"
-                  placeholder={this.state.first}
+                  placeholder={"First Name"}
                   value={this.state.first}
                   keyboardType="default"
                   maxLength={32}
@@ -441,51 +464,69 @@ export default class User extends React.Component {
                 {"  "}
                 <TextInput
                   label="Last Name"
-                  placeholder={this.state.last}
+                  placeholder={"Last Name"}
+                  value={this.state.last}
                   keyboardType="default"
                   maxLength={32}
                   selectTextOnFocus={true}
                   textContentType="familyName"
                   autoCompleteType="name"
                   errormessage="This field is required."
-                  onSubmitEditing={lname => this.setState({'last': lname})}
+                  onChangeText={lname => this.setState({'last': lname})}
                   style={themeBodyText}
                 />
             </Text>
         );
 
-        content = (
-            <View>
-              {name}
+        let email = (
+            <Text style={themeBodyText}>
+              Email:
+              {"  "}
               <TextInput
                 label="Email"
-                placeholder={this.state.email}
+                placeholder={"your.email@server.com"}
+                value={this.state.email}
                 keyboardType="email-address"
                 maxLength={32}
                 selectTextOnFocus={true}
                 textContentType="emailAddress"
                 autoCompleteType="email"
                 errormessage="This field is required.  Please enter valid email address."
-                onSubmitEditing={emailAddr => this.setState({'email': emailAddr})}
+                onChangeText={emailAddr => this.setState({'email': emailAddr})}
                 style={themeBodyText}
               />
+            </Text>
+        );
+
+        let phone = (
+            <Text style={themeBodyText}>
+              Phone:
+              {"  "}
               <TextInput
                 label="Phone Number"
-                placeholder={this.state.phone}
+                placeholder={"###-###-####"}
+                value={this.state.phone}
                 keyboardType="phone-pad"
                 maxLength={12}
                 selectTextOnFocus={true}
                 textContentType="telephoneNumber"
                 autoCompleteType="tel"
                 errormessage="Please enter valid phone number: ###-###-####"
-                onSubmitEditing={phoneNum => this.setState({'phone': phoneNum})}
+                onChangeText={phoneNum => this.setState({'phone': phoneNum})}
                 style={themeBodyText}
               />
-              <Picker
-                label="Preferred Contact Method:"
-                selectedValue={this.state.contactPreference}
-                onValueChange={(itemValue, itemIndex) => this.setState({'contactPreference': itemValue})}
-                style={themeBodyText}
+            </Text>
+        );
+
+        let prefcon = (
+            <Text style={themeBodyText}>
+                {'\n'}
+                Preferred Contact:
+                {"  "}
+                <Picker
+                  label="Preferred Contact Method:"
+                  selectedValue={this.state.contactPreference}
+                  onValueChange={(itemValue, itemIndex) => this.setState({'contactPreference': itemValue})}
                 >
                 <Picker.Item
                     label='Email'
@@ -496,11 +537,18 @@ export default class User extends React.Component {
                     value={CONSTANTS.PREFERRED_CONTACT.TXT}
                 />
               </Picker>
-              <Picker
-                label="Entry Permission:"
-                selectedValue={this.state.entryPermission}
-                onValueChange={(itemValue, itemIndex) => this.setState({'entryPermission': itemValue})}
-                style={themeBodyText}
+            </Text>
+        );
+
+        let enter = (
+            <Text style={themeBodyText}>
+                {'\n'}
+                Entry Permission:
+                {"  "}
+                <Picker
+                  label="Entry Permission:"
+                  selectedValue={this.state.entryPermission}
+                  onValueChange={(itemValue, itemIndex) => this.setState({'entryPermission': itemValue})}
                 >
                 <Picker.Item
                     label='Allow accompanied entry'
@@ -515,16 +563,37 @@ export default class User extends React.Component {
                     value={CONSTANTS.ENTRY_PERMISSION.ANY}
                 />
               </Picker>
+              {'\n\n'}
+            </Text>
+        );
+
+        let note = (
+            <Text style={themeBodyText}>
+              Note:
+              {"\n  "}
               <TextInput
                   label="Note"
+                  placeholder={"Enter note here."}
                   defaultValue={this.state.note}
                   keyboardType="default"
                   maxLength={255}
+                  multiline
+                  numberOfLines={4}
                   selectTextOnFocus={true}
                   testID={"note-edit"}
-                  onSubmitEditing={someNote => this.setState({'note': someNote})}
+                  onChangeText={someNote => this.setState({'note': someNote})}
                   style={themeBodyText}
               />
+            </Text>
+        );
+        content = (
+            <View style={styles.container}>
+              {name}
+              {email}
+              {phone}
+              {prefcon}
+              {enter}
+              {note}
               {submitButton}
               {resetButton}
               {cancelButton}
@@ -604,6 +673,7 @@ export default class User extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignSelf: "center"
   },
   iosLightThemeText: {
     color: Colors.black,

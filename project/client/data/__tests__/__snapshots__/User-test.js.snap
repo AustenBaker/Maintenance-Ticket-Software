@@ -2,38 +2,63 @@
 
 exports[`User renders the user profile editing screen 1`] = `
 <View>
-  <TextInput
-    allowFontScaling={true}
-    autoCompleteType="name"
-    errorMessage="This field is required."
-    keyboardType="default"
-    label="First Name"
-    maxLength={32}
-    onChangeText={[Function]}
-    placeholder="First Name"
-    rejectResponderTermination={true}
-    selectTextOnFocus={true}
-    textContentType="name"
-    underlineColorAndroid="transparent"
-  />
-  <TextInput
-    allowFontScaling={true}
-    autoCompleteType="name"
-    errorMessage="This field is required."
-    keyboardType="default"
-    label="Last Name"
-    maxLength={32}
-    onSubmitEditing={[Function]}
-    placeholder="Last Name"
-    rejectResponderTermination={true}
-    selectTextOnFocus={true}
-    textContentType="familyName"
-    underlineColorAndroid="transparent"
-  />
+  <Text
+    style={
+      Object {
+        "color": "#FFF",
+        "fontSize": 17,
+      }
+    }
+  >
+    Name:
+     
+    <TextInput
+      allowFontScaling={true}
+      autoCompleteType="name"
+      errormessage="This field is required."
+      keyboardType="default"
+      label="First Name"
+      maxLength={32}
+      onChangeText={[Function]}
+      placeholder="First Name"
+      rejectResponderTermination={true}
+      selectTextOnFocus={true}
+      style={
+        Object {
+          "color": "#FFF",
+          "fontSize": 17,
+        }
+      }
+      textContentType="name"
+      underlineColorAndroid="transparent"
+      value="First Name"
+    />
+      
+    <TextInput
+      allowFontScaling={true}
+      autoCompleteType="name"
+      errormessage="This field is required."
+      keyboardType="default"
+      label="Last Name"
+      maxLength={32}
+      onSubmitEditing={[Function]}
+      placeholder="Last Name"
+      rejectResponderTermination={true}
+      selectTextOnFocus={true}
+      style={
+        Object {
+          "color": "#FFF",
+          "fontSize": 17,
+        }
+      }
+      textContentType="familyName"
+      underlineColorAndroid="transparent"
+    />
+  </Text>
   <TextInput
     allowFontScaling={true}
     autoCompleteType="email"
-    errorMessage="This field is required.  Please enter valid email address."
+    errormessage="This field is required.  Please enter valid email address."
     keyboardType="email-address"
     label="Email"
     maxLength={32}
@@ -41,13 +66,19 @@ exports[`User renders the user profile editing screen 1`] = `
     placeholder="default@CastlebergCommunities.com"
     rejectResponderTermination={true}
     selectTextOnFocus={true}
+    style={
+      Object {
+        "color": "#FFF",
+        "fontSize": 17,
+      }
+    }
     textContentType="emailAddress"
     underlineColorAndroid="transparent"
   />
   <TextInput
     allowFontScaling={true}
     autoCompleteType="tel"
-    errorMessage="Please enter valid phone number: ###-###-####"
+    errormessage="Please enter valid phone number: ###-###-####"
     keyboardType="phone-pad"
     label="Phone Number"
     maxLength={12}
@@ -55,10 +86,23 @@ exports[`User renders the user profile editing screen 1`] = `
     placeholder="000-000-0000"
     rejectResponderTermination={true}
     selectTextOnFocus={true}
+    style={
+      Object {
+        "color": "#FFF",
+        "fontSize": 17,
+      }
+    }
     textContentType="telephoneNumber"
     underlineColorAndroid="transparent"
   />
-  <View>
+  <View
+    style={
+      Object {
+        "color": "#FFF",
+        "fontSize": 17,
+      }
+    }
+  >
     <RCTPicker
       items={
         Array [
@@ -86,7 +130,14 @@ exports[`User renders the user profile editing screen 1`] = `
       }
     />
   </View>
-  <View>
+  <View
+    style={
+      Object {
+        "color": "#FFF",
+        "fontSize": 17,
+      }
+    }
+  >
     <RCTPicker
       items={
         Array [
@@ -128,6 +179,12 @@ exports[`User renders the user profile editing screen 1`] = `
     onSubmitEditing={[Function]}
     rejectResponderTermination={true}
     selectTextOnFocus={true}
+    style={
+      Object {
+        "color": "#FFF",
+        "fontSize": 17,
+      }
+    }
     testID="note-edit"
     underlineColorAndroid="transparent"
   />
@@ -266,15 +323,35 @@ exports[`User renders the user profile editing screen 1`] = `
 exports[`User renders the user screen 1`] = `
 <View>
   <Text
+    style={
+      Object {
+        "color": "#FFF",
+        "fontSize": 17,
+      }
+    }
     testID="user-name"
   >
-    Name: 
+    Name:
+     
     <Text
+      style={
+        Object {
+          "color": "#FFF",
+          "fontSize": 17,
+        }
+      }
       testID="user-first"
     >
       First Name
     </Text>
+     
     <Text
+      style={
+        Object {
+          "color": "#FFF",
+          "fontSize": 17,
+        }
+      }
       testID="user-last"
     >
       Last Name
