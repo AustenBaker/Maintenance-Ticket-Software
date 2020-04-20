@@ -110,7 +110,7 @@ export async function getUserFromUsername(username){
     }).catch(err => {
         return err
     })
-    return await response.json()
+    return await response
 }
 
 /**

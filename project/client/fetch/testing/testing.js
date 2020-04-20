@@ -1,17 +1,17 @@
 //import { submitTicket, deleteTicket, updateTicket, getTicketsFromEmail, getTicketFromId} from '../fetchTicket';
 //import { getTicketFromId } from '../fetchTicket';
-var ticket = require('../fetchTicket')
+var ticketFetch = require('../fetchTicket')
+var userFetch = require('../fetchUser')
 var expect = require('chai').expect
 //import { handleLogin, logout, register, deleteAccount, getUserFromUsername, update} from '../fetchUser' ;
 
 describe("TESTING CATAGORIES", function() {
-    console.log("WORKKSDFLJSDKFJ")
     this.timeout(15000)
-    describe('1. Accounts',function() {
+    describe('1. Accounts',function() { 
        //register
         it('fetch POST /account/register', async function(){
-            const res = await userFetch.createAccount("kyle","schn",["parkway","hill crest"],"golfkid",
-                                                "topSecret","kyle2@gmail.com",2624739108,2,"Go for it","res","I swear I am nice",
+            const res = await userFetch.register("golfkid","topSecret","kyle","schn",["parkway","hill crest"],
+                                                "kyle2@gmail.com",2624739108,2,"Go for it","res","I swear I am nice",
                                                 [],false)
             expect(res.username).equal("golfkid")
         })
@@ -49,9 +49,9 @@ describe("TESTING CATAGORIES", function() {
         })
     })
 
-    describe('2. Property',function() {
-        it.skip("Future Development")
-
+    describe('2. Property',function() { 
+        it.skip("Future Developement")
+        
     })
 
     describe('3. Ticket', async function() {
@@ -61,7 +61,7 @@ describe("TESTING CATAGORIES", function() {
             newTicketID = res.id
             expect(res.id).to.be.a('number')
         })
-
+        
         // TODO: needs to be implemented in backend
         it.skip('fetch POST /ticket/update', async function(){
             const res = await ticketFetch.updateTicket("a@a.com","parker way apt","213","I SWITCHED THIS","jammed some how",true,5,"No progress",false)
@@ -80,14 +80,13 @@ describe("TESTING CATAGORIES", function() {
             expect(res.status).equal(200)
         })
 
-        it.skip("Future Development")
-/*
-        it("Delete /ticket/", function(done){
-               // .delete('/ticket/45681654645')
-               // .expect(404,done) //just for the time being
-                //.expect(200,done)
-        }).skip*/
 
+        it.skip("get ticket array for user from their email")
     })
 
 })
+
+
+
+
+
