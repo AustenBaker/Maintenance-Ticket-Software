@@ -142,37 +142,39 @@ export default class User extends React.Component {
 
         // if note exists, create a <Text> container for it
         var note = "";
-        if (this.state.note !== "") {
+        if (!(this.state.note === undefined || this.state.note === "")) {
             note = (
-                <Text
-                  testID="user-note"
-                  style={themeBodyText}
-                  >
-                    {"Note: \n"}
-                    {this.state.note}
-                    {'\n\n'}
-                </Text>
+                <View testID="user-note" style={styles.memoBox}>
+                  <Text style={themeBodyText}>{"Note:"}</Text>
+                  <Text style={themeBodyText}>{this.state.note}</Text>
+                </View>
             );
         }
 
         var editButton = (<Button
             title="Edit Profile"
             testID="edit-button"
-            onPress={() => this.setState({'edit_mode': true})}
             accessibilityLabel="Edit Profile Button"
             style={themeBodyText}
+            onPress={() => this.setState({'edit_mode': true})}
         />);
 
         // label & put user info into a <View><Text> wrapper
         // for display
         content = (
             <View style={styles.container}>
-              {name}
-              {email}
-              {phone}
-              {entry}
-              {note}
-              {editButton}
+              <View style={styles.container, styles.form}>
+                {name}
+                {email}
+                {phone}
+                {entry}
+                {note}
+              </View>
+              <View style={styles.buttons}>
+                <View style={styles.bigButton}>
+                  {editButton}
+                </View>
+              </View>
             </View>
           ); // TODO: add edit button
         return content;
@@ -377,6 +379,7 @@ export default class User extends React.Component {
             submitButton = (<Button
                 title="Update"
                 testID="update-button"
+                style={styles.button}
                 onPress={() => {
                     // calls updateUser to update database in setState callback function,
                     // this forces setState updates to process before pushing the server update
@@ -389,6 +392,8 @@ export default class User extends React.Component {
             submitButton = (<Button
                 title="Create Account"
                 testID="create-button"
+                accessibilityLabel="Create Account Button"
+                style={themeBodyText}
                 onPress={() => {
                     // TODO: generate 'human validation' captcha test, and if passed,
                     // generate 'new account' message for management to flag account for
@@ -398,13 +403,13 @@ export default class User extends React.Component {
                     // this forces setState updates to process before pushing the server update
                     this.setState({'edit_mode' : false}, () => this.updateUser(this));
                 }}
-                accessibilityLabel="Create Account Button"
-                style={themeBodyText}
             />);
         };
         let resetButton = (<Button
             title="Reset"
             testID="reset-button"
+            accessibilityLabel="Reset Profile Button"
+            style={themeBodyText}
             onPress={() => {
                 // returns this.state to previous state using profile values
                 this.setState({'edit_mode': true}, () => {
@@ -421,12 +426,12 @@ export default class User extends React.Component {
                 });
                 // TODO: figure out why this is not re-rendering
             }}
-            accessibilityLabel="Reset Profile Button"
-            style={themeBodyText}
         />);
         let cancelButton = (<Button
             title="Cancel"
             testID="cancel-button"
+            accessibilityLabel="Cancel Button"
+            style={themeBodyText}
             onPress={() => {
                 this.setState({'edit_mode' : false}, () => {
                     for (let key in profile) {
@@ -440,8 +445,6 @@ export default class User extends React.Component {
                     };
                 });
             }}
-            accessibilityLabel="Cancel Button"
-            style={themeBodyText}
         />);
 
         let name = (
@@ -459,7 +462,7 @@ export default class User extends React.Component {
                   autoCompleteType="name"
                   errormessage="This field is required."
                   onChangeText={fname => this.setState({'first': fname})}
-                  style={themeBodyText}
+                  style={themeBodyText, styles.formLineShared}
                 />
                 {"  "}
                 <TextInput
@@ -473,7 +476,7 @@ export default class User extends React.Component {
                   autoCompleteType="name"
                   errormessage="This field is required."
                   onChangeText={lname => this.setState({'last': lname})}
-                  style={themeBodyText}
+                  style={themeBodyText, styles.formLineShared}
                 />
             </Text>
         );
@@ -493,7 +496,7 @@ export default class User extends React.Component {
                 autoCompleteType="email"
                 errormessage="This field is required.  Please enter valid email address."
                 onChangeText={emailAddr => this.setState({'email': emailAddr})}
-                style={themeBodyText}
+                style={themeBodyText, styles.formLineSolo}
               />
             </Text>
         );
@@ -513,7 +516,7 @@ export default class User extends React.Component {
                 autoCompleteType="tel"
                 errormessage="Please enter valid phone number: ###-###-####"
                 onChangeText={phoneNum => this.setState({'phone': phoneNum})}
-                style={themeBodyText}
+                style={themeBodyText, styles.formLineSolo}
               />
             </Text>
         );
@@ -568,9 +571,10 @@ export default class User extends React.Component {
         );
 
         let note = (
-            <Text style={themeBodyText}>
-              Note:
-              {"\n  "}
+            <View style={styles.memoBox}>
+              <Text style={themeBodyText}>
+                Note:
+              </Text>
               <TextInput
                   label="Note"
                   placeholder={"Enter note here."}
@@ -582,22 +586,32 @@ export default class User extends React.Component {
                   selectTextOnFocus={true}
                   testID={"note-edit"}
                   onChangeText={someNote => this.setState({'note': someNote})}
-                  style={themeBodyText}
-              />
-            </Text>
+                  style={styles.memo}
+                />
+            </View>
         );
         content = (
-            <View style={styles.container}>
+          <View style={styles.container}>
+            <View style={styles.container, styles.form}>
               {name}
               {email}
               {phone}
               {prefcon}
               {enter}
               {note}
-              {submitButton}
-              {resetButton}
-              {cancelButton}
             </View>
+            <View style={styles.buttons}>
+              <View style={styles.smallButton}>
+                {submitButton}
+              </View>
+              <View style={styles.smallButton}>
+                {resetButton}
+              </View>
+              <View style={styles.smallButton}>
+                {cancelButton}
+              </View>
+            </View>
+          </View>
         );
         return content;
     }
@@ -673,14 +687,127 @@ export default class User extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignSelf: "center"
+    flexAlign: 'center',
+    alignSelf: 'center',
+    alignContent: 'center',
+    margin: 20,
   },
+  form: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    layoutDirection: 'LTR',
+    alignItems: 'flex-start',
+    alignSelf: 'stretch',
+    alignContent: 'flex-start',
+    borderRadius: 10,
+    padding: 20,
+    overflow: 'hidden',
+    shadowColor: '#555555',
+    shadowOffset: {
+        width: 10,
+        height: 10,
+    },
+    shadowOpacity: 10,
+    shadowRadius: 10,
+    elevation: 6,
+  },
+  formLineSolo: {
+    padding: 2,
+    flexAlign: 'column',
+    alignSelf: 'stretch',
+    alignContent: 'stretch',
+    borderWidth: 2,
+    borderColor: 'lightgrey',
+    borderBottomColor: 'darkgrey',
+    borderRightColor: 'darkgrey',
+  },
+  formLineShared: {
+      flex: 0.3,
+      padding: 2,
+      flexAlign: 'column',
+      alignSelf: 'stretch',
+      alignContent: 'stretch',
+      borderWidth: 2,
+      borderColor: 'lightgrey',
+      borderBottomColor: 'darkgrey',
+      borderRightColor: 'darkgrey',
+  },
+  memoBox: {
+    flex: 1,
+    flexDirection: 'column',
+    alignContent: 'flex-start',
+    alignItems: 'stretch',
+    alignSelf: 'stretch',
+  },
+  memo: {
+    width: '100%',
+    fontSize: 17,
+    flex: 1,
+    padding: 2,
+    flexAlign: 'column',
+    alignSelf: 'stretch',
+    alignContent: 'stretch',
+    borderWidth: 2,
+    borderColor: 'lightgrey',
+    borderBottomColor: 'darkgrey',
+    borderRightColor: 'darkgrey',
+},
   iosLightThemeText: {
     color: Colors.black,
-    fontSize: 17
+    fontSize: 17,
+    padding: 2,
   },
   iosDarkThemeText: {
     color: Colors.white,
-    fontSize: 17
-  }
+    fontSize: 17,
+    padding: 2,
+  },
+  buttons: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      layoutDirection: 'LTR',
+      alignItems: 'center',
+      alignSelf: 'stretch',
+      alignContent: 'flex-start',
+      marginHorizontal: 10,
+      paddingHorizontal: 10,
+      paddingVertical: 2,
+  },
+  bigButton: {
+    flex: 1,
+    margin: 0,
+    flexDirection: 'column',
+    borderRadius: 5,
+    overflow: 'hidden',
+    justifyContent: 'flex-start',
+    alignContent: 'stretch',
+    alignSelf: 'stretch',
+    shadowColor: '#555555',
+    shadowOffset: {
+        width: 10,
+        height: 10,
+    },
+    shadowOpacity: 10,
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  smallButton: {
+    flex: 0.3,
+    margin: 0,
+    flexDirection: 'column',
+    borderRadius: 5,
+    overflow: 'hidden',
+    justifyContent: 'flex-start',
+    alignContent: 'stretch',
+    alignSelf: 'stretch',
+    shadowColor: '#555555',
+    shadowOffset: {
+        width: 10,
+        height: 10,
+    },
+    shadowOpacity: 10,
+    shadowRadius: 10,
+    elevation: 8,
+  },
 });
