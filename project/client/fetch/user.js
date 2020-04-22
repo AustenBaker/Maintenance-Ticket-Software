@@ -85,32 +85,13 @@ export async function getUserFromUsername(username){
  * @param body = {username, password, first, last, units, email, phone, contactPreference, entryPermission, type, note, tickets, activate}
  */
 
-export async function update(username, password, first, last, units, email, phone, contactPreference, entryPermission, type, note, tickets, activate) {
+export async function update(body) {
     // TODO: Validate user update data
-    const response = await fetch(PATH + '/account/update', {
+    const res = await fetch(PATH + '/account/update', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            username: username,
-            password: password,
-            first: first,
-            last: last,
-            units : units,
-            email: email,
-            phone: phone,
-            contactPreference: contactPreference,
-            entryPermission: entryPermission,
-            type: type,
-            note: note,
-            tickets: tickets,
-            activate: activate
-        })
-    }).then(res => res).then(data => {
-        console.log("Update Successful")
-        return data
-    }).catch(err => {
-        console.log("Error during update: " + err)
-        return err
-    })
-    return await response.json()
+        body: JSON.stringify(body)
+    });
+    
+    return await res.json();
 }
