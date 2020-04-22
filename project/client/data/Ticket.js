@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View,  Button, Text, Picker, StyleSheet, TouchableWithoutFeedbackBase } from 'react-native';
+import { View,  Button, Text, Picker, StyleSheet, FlatList, SectionList, TouchableWithoutFeedbackBase } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
@@ -26,7 +26,7 @@ export default class Ticket extends React.Component{
       ticket_issue_title: props.ticket_issue_title,
       ticket_issue: props.ticket_issue,
       ticket_view_mode: props.ticket_view_mode,
-      ticket_updates: [props.ticket_updates]
+      ticket_updates: [...props.ticket_updates]
     }
   }
 
@@ -42,7 +42,7 @@ export default class Ticket extends React.Component{
     email: "email@email.com",
     emergency: false,
     ticket_view_mode: 0,
-    ticket_updates: []
+    ticket_updates: [] // {timestamp,user,data}
   }
 
 
@@ -58,7 +58,7 @@ export default class Ticket extends React.Component{
 
     // create <Text> container for emergency data
     var emergency = "";
-    if (this.state.emergency === CONSTANTS.EMERGENCY.YES){
+    if (this.state.emergency){
       emergency = (
         <Text testID="emergency">
           Level: EMERGENCY
@@ -134,6 +134,62 @@ export default class Ticket extends React.Component{
           />
         </View>
 
+      </View>
+    );
+    return content;
+  }
+
+  /**
+   * Generate a simple Text display for an individual Ticket
+   *
+   * @param {Ticket} ticket
+   * @param {Boolean} colorEmphasis
+   *
+   * @return React element display for ticket
+   */
+  ticketDisplay(ticket, colorEmphasis = false) {
+    let updates = [];
+    for (let update of this.state.ticket_updates) {
+      // TODO: if timestamp is not a string, add toString()
+      updates.push(
+        <View>
+          <Text>
+            <Text>
+              Updated:
+              {'  '}
+              {update.timestamp}
+            </Text>
+            <Text>
+              By:
+              {'  '}
+              {update.user}
+            </Text>
+          </Text>
+          <Text>
+            {update.data}
+          </Text>
+        </View>
+      );
+    }
+    let content = (
+      <View style={styles.ticketColorBar[colorEmphasis]}>
+        <Text>
+          Ticket Number #
+          {this.state.ticket_number}
+          {'  '}
+          Submitted:
+          {'  '}
+          {this.state.timestamp}
+          {'\n'}
+        </Text>
+        <Text>
+          Unit #
+          {this.state.unit_number}
+          {' '}
+          {this.state.location}
+        </Text>
+        <Text children={[...updates]}>
+        </Text>
       </View>
     );
     return content;
@@ -440,5 +496,16 @@ const styles = StyleSheet.create({
     color: 'blue',
   },
 
+  // simpler color alternation:
+  ticketColorBar: {
+    [true]: {
+      flex: 1,
+      color: 'red'
+    },
+    [false]: {
+    flex: 1,
+    color: 'blue'
+    }
+  }
 
 });
