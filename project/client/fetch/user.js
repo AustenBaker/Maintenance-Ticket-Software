@@ -1,42 +1,28 @@
-const fetch = require("node-fetch")
-
 const PATH = 'http://127.0.0.1:3001'
 
+export async function checkLoginStatus() {
+    const res = await fetch(PATH + '/account/status', {
+        method: 'POST'
+    });
+    return await res.json();
+}
 
-/**
- * 
- * @param {String} user = Username of user
- * @param {String} pass = Password of user
- */
-export async function handleLogin(user, pass) {
-    // TODO: either here or somewhere else, validate
-    // data form before making post request to server
-    // (see constants/Reference.js REGEX for valid input
-    // patterns)
-    const response = await fetch(PATH + '/account/login', {
+export async function login(body) {
+    const res = await fetch(PATH + '/account/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: user, password: pass })
-    }).then(res => res).then(data => {
-        return data
-    }).catch(err => {
-        return err;
-    })
-    // TODO: Add in response data validation check?
-    return await response
+        body: JSON.stringify(body)
+    });
+
+    return await res.json();
 }
 
 export async function logout(){
-    const response = await fetch(PATH + '/account/logout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: ""
-    }).then(res => res).then(data => {
-        return data
-    }).catch(err => {
-        return err
-    })
-    return await response
+    const res = await fetch(PATH + '/account/logout', {
+        method: 'POST'
+    });
+
+    return await res.json();
 }
 
 /**
@@ -55,32 +41,15 @@ export async function logout(){
  * @param {Array} tickets 
  * @param {Boolean} activate 
  */
-export async function register(username, password, first, last, units, email, phone, contactPreference, entryPermission, type, note, tickets, activate) {
+export async function register(body) {
     // TODO:  Validate data before updating to server/database?
-    const response = await fetch(PATH + '/account/register', {
+    const res = await fetch(PATH + '/account/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            username:username, 
-            password:password, 
-            first:first, 
-            last:last, 
-            units:units, 
-            email:email, 
-            phone:phone, 
-            contactPreference:contactPreference, 
-            entryPermission:entryPermission, 
-            type:type, 
-            note:note, 
-            tickets:tickets, 
-            activate:activate
-        })
-    }).then(res => res).then(data => {
-        return data
-    }).catch(err => {
-        return err
-    })
-    return await response.json()
+        body: JSON.stringify(body)
+    });
+
+    return await res.json();
 }
 
 /**

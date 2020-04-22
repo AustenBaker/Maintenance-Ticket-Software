@@ -5,12 +5,15 @@ import * as WebBrowser from 'expo-web-browser';
 import { userStore, colorScheme } from '../stores';
 import Colors from '../constants/Colors';
 import { AppearanceProvider } from 'react-native-appearance';
+import { register } from '../fetch/user';
 
 export default function SignUpScreen({ navigation }) {
+    const [username, onChangeUsername] = React.useState('');
     const [email, onChangeEmail] = React.useState('');
     const [pass, onChangePass] = React.useState('');
     const [fname, onChangeFname] = React.useState('');
     const [lname, onChangeLname] = React.useState('');
+    const [phone, onChangePhone]  = React.useState('');
     const [address, onChangeAddr] = React.useState('');
     const [unit, onChangeUnit] = React.useState('');
 
@@ -23,12 +26,59 @@ export default function SignUpScreen({ navigation }) {
     const themeKeyboard =
       colorScheme.theme === 'light' ? 'light' : 'dark';
 
+  
+  async function handleRegister() {
+    const data = await register({
+      username,
+      email,
+      password: pass,
+      first: fname,
+      last: lname,
+      phone: +phone,
+      type: 'resident',
+      contactPreference: 'email',
+      entryPermissions: 'ANY',
+    });
+
+    if (data.error) alert(data.error);
+    else {
+      const { username, first, last, units, email, phone,
+        contactPreference, entryPermission, type, note,
+        tickets, activate } = data;
+
+      userStore.loggedIn = true;
+      userStore.username = username;
+      userStore.first = first;
+      userStore.last = last;
+      userStore.units = units;
+      userStore.email = email;
+      userStore.phone = phone;
+      userStore.contactPreference = contactPreference;
+      userStore.entryPermission = entryPermission;
+      userStore.type = type;
+      userStore.note = note;
+      userStore.tickets = tickets;
+      userStore.activate = activate;
+
+      navigation.replace('BottomTabNavigator');
+    }
+  }
+
   return (
     <AppearanceProvider>
     <View style={styles.container, themeContainerStyle}>
 
           <Text style={themeLargeTitle}>Let’s Get Started</Text>
 
+          <TextInput
+            placeholder="Username"
+            placeholderTextColor='#8E8E93'
+            autoCapitalize="none"
+            keyboardAppearance={themeKeyboard}
+            style={themeTextBoxStyle}
+            onChangeText={text => onChangeUsername(text)}
+            value={username}
+          />
           <TextInput
             placeholder="Email"
             placeholderTextColor='#8E8E93'
@@ -50,7 +100,6 @@ export default function SignUpScreen({ navigation }) {
           />
 
           <TextInput
-            secureTextEntry
             placeholder="First Name"
             placeholderTextColor='#8E8E93'
             autoCapitalize="none"
@@ -60,7 +109,6 @@ export default function SignUpScreen({ navigation }) {
             value={fname}
           />
           <TextInput
-            secureTextEntry
             placeholder="Last Name"
             placeholderTextColor='#8E8E93'
             autoCapitalize="none"
@@ -70,7 +118,15 @@ export default function SignUpScreen({ navigation }) {
             value={lname}
           />
           <TextInput
-            secureTextEntry
+            placeholder="Phone Number"
+            placeholderTextColor='#8E8E93'
+            autoCapitalize="none"
+            keyboardAppearance={themeKeyboard}
+            style={themeTextBoxStyle}
+            onChangeText={text => onChangePhone(text)}
+            value={phone}
+          />
+          <TextInput
             placeholder="Address"
             placeholderTextColor='#8E8E93'
             autoCapitalize="none"
@@ -80,7 +136,6 @@ export default function SignUpScreen({ navigation }) {
             value={address}
           />
           <TextInput
-            secureTextEntry
             placeholder="Unit"
             placeholderTextColor='#8E8E93'
             autoCapitalize="none"
@@ -90,7 +145,7 @@ export default function SignUpScreen({ navigation }) {
             value={unit}
           />
           <Button
-            onPress={() => handleLogin(user, pass) }
+            onPress={() => handleRegister() }
             style={themeLargeTitle}
             title="Sign Up"
             accessibilityLabel="Sign Up Button"

@@ -10,6 +10,8 @@ import User from '../data/User';
 
 export default function ProfileScreen(properties) {
 
+  if (!userStore.loggedIn) properties.navigation.replace('Root');
+
   let themeContainer =
     colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
   let themeLargeTitle =
@@ -33,11 +35,21 @@ export default function ProfileScreen(properties) {
     entryPermission: "notify",
     note: "The dog definitely bites."
   };
+  let testUser2 = {
+    first: userStore.first,
+    last: userStore.last,
+    email: userStore.email,
+    phone: userStore.phone.toString(),
+    contactPreference: userStore.contactPreference,
+    entryPermission: userStore.entryPermission,
+    note: userStore.note || '',
+  };
+  console.log(testUser2);
   return (
     <View style={styles.container, themeContainer}>
       <ScrollView>
         <View>
-          <User {...testUser}/>
+          <User {...testUser2}/>
         </View>
       </ScrollView>
     </View>

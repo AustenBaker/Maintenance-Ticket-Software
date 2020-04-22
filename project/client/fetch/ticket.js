@@ -1,5 +1,3 @@
-const fetch = require("node-fetch")
-
 const PATH = 'http://127.0.0.1:3001'
 
 
@@ -14,25 +12,13 @@ const PATH = 'http://127.0.0.1:3001'
  * @param {string} progress
  * @param {boolean} closed 
  */
-export async function submitTicket(email, aptComplex, unit, issue, details, emergency, resolveTime, progress, closed){
-    const response = await fetch(PATH + '/ticket/create', {
+export async function submit(body){
+    const res = await fetch(PATH + '/ticket/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, 
-                            aptComplex: aptComplex, 
-                            unit: unit, 
-                            issue: issue, 
-                            details: details, 
-                            emergency: emergency, 
-                            resolveTime: resolveTime, 
-                            progress: progress, 
-                            closed: closed})
-    }).then(res => res).then(data => {
-      return data
-    }). catch(err => {
-      return err
-    })
-    return await response.json()
+      body: JSON.stringify(body)
+    });
+    return await res.json();
 };
 /**
  * 
@@ -87,14 +73,8 @@ export async function updateTicket(email, aptComplex, unit, issue, details, emer
  * @param {string} email 
  */
 export async function getTicketsFromEmail(email){ 
-    const response = fetch(PATH + '/ticket/' + email, {
-        method: 'GET'
-    }).then(res => res).then(data => {
-        return data
-    }). catch(err => {
-        return err
-    })
-    return await response
+    const res = await fetch(PATH + '/ticket/email/' + email);
+    return await res.json();
 }
 /**
  * 

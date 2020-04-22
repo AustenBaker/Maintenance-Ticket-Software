@@ -4,6 +4,7 @@ import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import { userStore, ticketStore } from '../stores';
+import { getTicketsFromEmail } from '../fetch/ticket';
 
 /**
  * TODO: make ticket_number a GUID?
@@ -196,37 +197,44 @@ export default class Ticket extends React.Component{
   }
 
   //generate ticket list using flatlist
-  generateTicketList = () => {
-    var content;
+  generateTicketList = async () => {
+    const ticketsArray = await getTicketsFromEmail(userStore.email);
 
-    content = (
-      <View style={styles.ticketListContainer}>
+    if (ticketsArray.length === 0) return (
+      null
+    );
 
-        <View style={styles.ticketListItem1}>
-          ticket 1
-        </View>
-        <View style={styles.ticketListItem2}>
-          ticket 2
-        </View>
-        <View style={styles.ticketListItem3}>
-          ticket 3
-        </View>
-        <View style={styles.ticketListItem4}>
-          ticket 4
-        </View>
+    else return (
+      <View>
+        {ticketsArray.map(ticket => (
+          <View testID="ticketContainer" style={styles.ticketContainer}>
+            <Text style={styles.ticketLine1}>
+              Location: Apt. {ticket.unit_number}, {ticket.location} {"\n"}
+            </Text>
 
+            <Text style={styles.ticketLine2}>
+              {ticket.status}  |  {ticket.emergency}  |{"\n"}
+            </Text>
+
+            <Text style={styles.ticketLine3}>
+              {ticket.ticket_number}
+            </Text>
+
+            <Text style={styles.ticketLine4}>
+              Timestamp: {ticket.id}
+            </Text>
+          </View>
+        ))}
         <View style={styles.submitTicketUpdateButton}>
           <Button
             title="Go back to detail view"
             onPress={() => {
               this.setState({ticket_view_mode: 0});
             }}
-
           />
         </View>
       </View>
     );
-    return content;
   }
 
   /**

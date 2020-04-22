@@ -3,35 +3,38 @@
 const Promise = require('bluebird');
 
 const router = require('express').Router();
-const { Ticket } = require('./database');
+const { User, Ticket } = require('./database');
 
 
 // Create ticket
-router.post('/create', (req, res) => {
+router.post('/create', async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ error: 'NO_SUCH_USER_TICKET_SUBMIT_FAILED' });
+    
     let ticketID = Date.now()
     const body = { id: ticketID, ...req.body };
     const newTicket = new Ticket(body);
-    newTicket.save().then(() => res
-        .status(200)
-        .json({ id: ticketID })
-        .end('Successful ticket creation')
-    ).catch(err => res.status(400).json({ error: err }));
+    const data = await newTicket.save();
+
+    if (data) return res.json({ sucess: true, id: ticketID });
+    else return res.status(400).json({ error: 'CREATE_TICKET_FAILED' });
 });
 
-// GET /:id
-router.get('/:id', async (req, res) => {
+// GET /id/:id
+router.get('/id/:id', async (req, res) => {
     const { id } = req.params;
     const ticket = await Ticket.findOne({ id });
     if (!ticket) res.status(404).json({ error: 'NO_SUCH_TICKET' });
     else res.status(200).json(ticket);
 });
 
-// GET /:userEmail
-router.get('/:email', async (req, res) => {
+// GET /email/:userEmail
+router.get('/email/:email', async (req, res) => {
     const { email } = req.params;
-    const ticket = await Ticket.find({ email });
-    if (!ticket) res.status(404).json({ error: 'NO_SUCH_TICKET' });
-    else res.status(200).json(ticket);
+    const tickets = await Ticket.find({ email });
+    if (!tickets) res.status(404).json({ error: 'NO_SUCH_TICKET' });
+    else res.status(200).json(tickets);
 });
 
 // POST /update

@@ -5,11 +5,13 @@ import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
-import { colorScheme } from '../stores';
+import { userStore, colorScheme } from '../stores';
 import Colors from '../constants/Colors';
 import {Menu, MenuOptions, MenuOption, MenuTrigger, MenuProvider} from "react-native-popup-menu";
 
 export default function PropertyScreen({navigation}) {
+  if (!userStore.loggedIn) navigation.replace('Root');
+  
   const [addUnit, onChangeAddUnit] = React.useState('');
   const [addResidentToUnit, onChangeAddResident] = React.useState('');
   const [addPropertyName, onChangeAddPropertyName] = React.useState('');
