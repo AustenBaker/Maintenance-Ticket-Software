@@ -687,7 +687,7 @@ export default class User extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexAlign: 'center',
+    flexDirection: 'column',
     alignSelf: 'center',
     alignContent: 'center',
     margin: 20,
@@ -695,7 +695,7 @@ const styles = StyleSheet.create({
   form: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    layoutDirection: 'LTR',
+    direction: 'ltr',
     alignItems: 'flex-start',
     alignSelf: 'stretch',
     alignContent: 'flex-start',
@@ -713,7 +713,7 @@ const styles = StyleSheet.create({
   },
   formLineSolo: {
     padding: 2,
-    flexAlign: 'column',
+    flexDirection: 'column',
     alignSelf: 'stretch',
     alignContent: 'stretch',
     borderWidth: 2,
@@ -724,7 +724,7 @@ const styles = StyleSheet.create({
   formLineShared: {
       flex: 0.3,
       padding: 2,
-      flexAlign: 'column',
+      flexDirection: 'column',
       alignSelf: 'stretch',
       alignContent: 'stretch',
       borderWidth: 2,
@@ -744,7 +744,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     flex: 1,
     padding: 2,
-    flexAlign: 'column',
+    flexDirection: 'column',
     alignSelf: 'stretch',
     alignContent: 'stretch',
     borderWidth: 2,
@@ -766,7 +766,7 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-evenly',
-      layoutDirection: 'LTR',
+      direction: 'ltr',
       alignItems: 'center',
       alignSelf: 'stretch',
       alignContent: 'flex-start',
