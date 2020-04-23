@@ -8,7 +8,7 @@ import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-app
 import { colorScheme, ticketStore, userStore } from '../stores';
 import Colors from '../constants/Colors';
 import * as CONSTANTS from '../constants/Reference';
-let ticketFetch = require('../fetch/fetchTicket')
+import { submit } from '../fetch/ticket';
 
 
 var radio_props = [
@@ -36,15 +36,18 @@ class CreateTicketScreen extends React.Component {
       //which will result in re-render the text
    }
 
-   // TODO: convert to use fetchTicket component
-   submitTheTicket = async () => {
-    console.log("submitting the ticket")
-    //await ticketFetch.submitTicket("b@a.com","parker way apt","213","Door wont open","jammed some how",false,5,"No progress",false)
-    const res = await ticketFetch.submitTicket(this.state.email,this.state.aptComplex,this.state.unit,this.state.issue,this.state.details,this.state.emergency,0,"pending",false)
-    console.log(res)
+   submitTicket = async () => {
+    console.log("submiting the ticket");
+    const { email } = userStore;
+    const data = await submit({ ...this.state, email });
+
+    if (data.error) alert(data.error);
+    else alert(`ticket submitted: ID=${data.id}`);
   }
 
   render(){
+
+//    if (!userStore.loggedIn) this.props.navigation.replace('Root');
 
     let themeContainer =
       colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
@@ -153,7 +156,7 @@ class CreateTicketScreen extends React.Component {
         <Button
           title="Create Ticket Request"
           accessibilityLabel="Create Ticket Request Button"
-          onPress = {() => this.submitTheTicket(this)}
+          onPress = {() => this.submitTicket()}
         />
         </View>
       </ScrollView>

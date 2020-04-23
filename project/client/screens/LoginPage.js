@@ -6,7 +6,7 @@ import { Appearance, AppearanceProvider } from 'react-native-appearance';
 import { userStore, colorScheme } from '../stores';
 import Colors from '../constants/Colors';
 
-let userFetch = require('../fetch/fetchUser')
+import { checkLoginStatus, login } from '../fetch/user';
 
 
 class LoginPage extends React.PureComponent {
@@ -20,22 +20,40 @@ class LoginPage extends React.PureComponent {
 
   // Checks for login status once app loads (to login page)
   async componentDidMount() {
-    const res = await fetch('http://127.0.0.1:3001/account/status', {
-        method: 'POST'
-    });
-    const data = await res.json();
-    // Do stuff here
-    //this.props.UserStore.loggedIn = true;
-    this.props.navigation.navigate('ProfileScreen'); // Or something else
+    const data = await checkLoginStatus();
+    if (data.loggedIn)
+      this.props.navigation.replace('BottomTabNavigator');
   }
 
-  handleLogin = async () => {
-    let res = await userFetch.handleLogin(this.state.username,this.state.password)
-    if(res.status === 200){
-      res.json().then(response => {
-        //todo save respoonse fields to user dataStore
-        console.log(response)
-      })
+  async handleLogin() {
+    const data = await login(this.state);
+    
+    // Login successful
+    if (!data.error) {
+      const { username, first, last, units, email, phone,
+        contactPreference, entryPermission, type, note,
+        tickets, activate } = data;
+
+      userStore.loggedIn = true;
+      userStore.username = username;
+      userStore.first = first;
+      userStore.last = last;
+      userStore.units = units;
+      userStore.email = email;
+      userStore.phone = phone;
+      userStore.contactPreference = contactPreference;
+      userStore.entryPermission = entryPermission;
+      userStore.type = type;
+      userStore.note = note;
+      userStore.tickets = tickets;
+      userStore.activate = activate;
+
+      this.props.navigation.replace('BottomTabNavigator');
+    }
+    
+    // Login failed
+    else {
+      alert('Login failed');
     }
   }
 
@@ -79,7 +97,7 @@ class LoginPage extends React.PureComponent {
             />
 
             <Button
-              onPress={ this.handleLogin }
+              onPress={() => this.handleLogin() }
               style={themeLargeTitle}
               title="Sign In"
               accessibilityLabel="Sign In Button"

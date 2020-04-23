@@ -4,6 +4,7 @@ import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
 import { TextInput, ScrollView, TouchableOpacity, TouchableHighlight } from 'react-native-gesture-handler';
 import { userStore, ticketStore } from '../stores';
+import { getTicketsFromEmail } from '../fetch/ticket';
 
 /**
  * TODO: make ticket_number a GUID?
@@ -324,6 +325,7 @@ export default class Ticket extends React.Component{
     );
     return content;
   }
+
 
   /**
    * This method updates ticket information

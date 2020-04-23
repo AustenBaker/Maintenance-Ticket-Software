@@ -14,6 +14,7 @@ export default class User extends React.Component {
      */
     constructor(props) {
         super(props);
+        console.log(props);
         this.state = {...User.defaultProps};
         for (let key in props) {
             if (key in this.state) {

@@ -1,8 +1,8 @@
 //import { submitTicket, deleteTicket, updateTicket, getTicketsFromEmail, getTicketFromId} from '../fetchTicket';
 //import { getTicketFromId } from '../fetchTicket';
-var ticketFetch = require('../fetchTicket')
-var userFetch = require('../fetchUser')
-var expect = require('chai').expect
+var ticketFetch = require('../ticket');
+var userFetch = require('../user');
+var expect = require('chai').expect;
 //import { handleLogin, logout, register, deleteAccount, getUserFromUsername, update} from '../fetchUser' ;
 
 describe("TESTING CATAGORIES", function() {

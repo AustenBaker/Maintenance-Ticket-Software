@@ -11,7 +11,8 @@ router.post('/status', (req, res) => {
     const ssn = req.session;
     if (!ssn.loggedIn) res.json({ loggedIn: false });
     else {
-        const { first, last, username, email, type } = ssn; const loggedIn = true;
+        const { first, last, username, email, type } = ssn;
+        const loggedIn = true;
         res.json({ loggedIn, first, last, username, email, type });
     }
 });
@@ -21,34 +22,18 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     const ssn = req.session;
     const user = await User.findOne({ username });
-    if (!user) return res.status(403).json({ error: 'ERR_NO_SUCH_USER' });
+    if (!user) return res.json({ error: 'ERR_NO_SUCH_USER' });
     else {
-        bcrypt.compare(password, user.password).then( match => {
-            if (match) {
-                ssn.loggedIn = true;
-                const { first, last, units, username, password, email, phone, contactPreference, entryPermission, type, note, tickets, activate } = user;
-                ssn.username = username;
-                return res
-                    .status(200)
-                    .json({ first:first, 
-                        last:last, 
-                        units:units, 
-                        username:username, 
-                        password:password, 
-                        email:email, 
-                        phone:phone, 
-                        contactPreference:contactPreference, 
-                        entryPermission:entryPermission, 
-                        type:type, 
-                        note:note, 
-                        tickets:tickets, 
-                        activate:activate
-                    })
-                    //.writeHead(200, { first, last, username, email, type })
-                    .end('Success - login');
-            }
-            else return res.status(401).json({ error: 'ERR_WRONG_PSWD' });
-        }).catch(err => res.status(400).json({ error: err }));
+        bcrypt.compare(password, user.password);
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) return res.json({ error: 'WRONG_PASSWORD' });
+
+        const { first, last, units, username, email, phone, contactPreference, entryPermission, type, note, tickets, activate } = user;
+        ssn.loggedIn = true;
+        ssn.username = username;
+        ssn.email = email;
+
+        return res.json({ first, last, units, username, email, phone, contactPreference, entryPermission, type, note, tickets, activate });
     }
 });
 
@@ -73,26 +58,26 @@ router.post('/register', async (req, res) => {
         const hashedPswd = await bcrypt.hash(req.body.password, 10);
         const body = { ...req.body, password: hashedPswd };
         const newUser = new User(body);
-        newUser.save().then(data => {
-            const { first, last, units, username, password, email, phone, contactPreference, entryPermission, type, note, tickets, activate } = data;
-            return res
-                .status(200)
-                .json({ first:first, 
-                    last:last, 
-                    units:units, 
-                    username:username, 
-                    password:password, 
-                    email:email, 
-                    phone:phone, 
-                    contactPreference:contactPreference, 
-                    entryPermission:entryPermission, 
-                    type:type, 
-                    note:note, 
-                    tickets:tickets, 
-                    activate:activate
-                })
-                .end('Success - register');
-        }).catch(err => res.status(400).json({ error: err }));
+        const data = await newUser.save();
+        const { first, last, units, username, email, phone, contactPreference, entryPermission, type, note, tickets, activate } = data;
+        const ssn = req.session;
+        ssn.loggedIn = true;
+        ssn.username = username;
+        ssn.email = email;
+
+        return res.json({ first, 
+            last, 
+            units,
+            username,  
+            email, 
+            phone, 
+            contactPreference,
+            entryPermission,
+            type, 
+            note, 
+            tickets,
+            activate,
+        });
     }
 });
 
