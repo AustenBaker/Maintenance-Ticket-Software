@@ -1,19 +1,19 @@
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, SafeAreaView, Switch } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, Button, SafeAreaView, Switch, Picker } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 //import { PrioritySelection } from '../components/PrioritySelection'
-import { colorScheme } from '../stores';
+import { colorScheme, ticketStore, userStore } from '../stores';
 import Colors from '../constants/Colors';
+import * as CONSTANTS from '../constants/Reference';
 let ticketFetch = require('../fetch/fetchTicket')
 
 
 var radio_props = [
-  {label: 'low',       value: 2},
-  {label: 'normal',    value: 0 },
-  {label: 'emergency', value: 1 }
+  {label: 'normal', value: false },
+  {label: 'emergency', value: true }
 ]
 
 class CreateTicketScreen extends React.Component {
@@ -29,15 +29,16 @@ class CreateTicketScreen extends React.Component {
     };
   }
 
-  toggleSwitch = (value) => {
+  toggleSwitch = () => {
       //onValueChange of the switch this function will be called
-      this.setState({emergency: value})
+      this.setState({emergency: !this.state.emergency});
       //state changes according to switch
       //which will result in re-render the text
    }
 
+   // TODO: convert to use fetchTicket component
    submitTheTicket = async () => {
-    console.log("submiting the ticket")
+    console.log("submitting the ticket")
     //await ticketFetch.submitTicket("b@a.com","parker way apt","213","Door wont open","jammed some how",false,5,"No progress",false)
     const res = await ticketFetch.submitTicket(this.state.email,this.state.aptComplex,this.state.unit,this.state.issue,this.state.details,this.state.emergency,0,"pending",false)
     console.log(res)
@@ -50,7 +51,7 @@ class CreateTicketScreen extends React.Component {
     let themeTextBox =
       colorScheme.theme === 'light' ? styles.lightTextInput : styles.darkTextInput;
     let themeBodyText =
-      colorScheme.theme === 'light' ? Colors.black : Colors.white;
+      colorScheme.theme === 'light' ? styles.lightText : styles.darkText;
     let themeKeyboard =
       colorScheme.theme === 'light' ? 'light' : 'dark';
     let radioColor =
@@ -58,46 +59,50 @@ class CreateTicketScreen extends React.Component {
     let radioLabel =
       colorScheme.theme === 'light' ? Colors.black : Colors.white;
 
+    // set up property selections for Picker
+    let properties = [];
+    for (let property in CONSTANTS.PROPERTY) {
+      properties.push(
+        <Picker.Item
+          label={CONSTANTS.PROPERTY[property]}
+          value={CONSTANTS.PROPERTY[property]}
+        />
+      );
+    };
+
     return (
       <View style={styles.container, themeContainer}>
       <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
         <View style={{alignItems: 'center'}}>
 
-        <Text style={{fontSize: 20, padding: 15, color: radioColor }}>Emergency</Text>
-        <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={ this.emergency ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={this.toggleSwitch}
-        value={this.emergency}
-      />
-
-        <Text style={{fontSize: 20, padding: 15, color: radioColor }}>Ticket Importance Level</Text>
-      <RadioForm
-        labelColor={radioLabel}
-        radio_props={radio_props}
-        formHorizontal={true}
-        labelHorizontal={false}
-        labelStyle={{
-          fontSize: 20,
-          paddingTop: 5,
-          paddingRight: 8,
-          paddingLeft: 8,
-          paddingBottom: 5,
-          color: radioLabel }}
-        buttonSize={20}
-        buttonColor={radioColor}
-        onPress={value => this.setState({value:value})}
-      />
-
-        <TextInput
-          placeholder="Apartment Complex"
-          placeholderTextColor={Colors.iosSystemGray}
-          keyboardAppearance={themeKeyboard}
-          style={themeTextBox}
-          onChangeText={text => this.setState({ aptComplex: text })}
-        />
-
+        <Text style={themeBodyText}>
+          <Text style={themeBodyText}>
+            Emergency?
+            {'  '}
+            No
+            {'  '}
+          </Text>
+          <Switch
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={ this.state.emergency ? "#f5dd4b" : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={() => this.setState({ emergency: !this.state.emergency })}
+            value={this.state.emergency}
+          />
+          <Text style={themeBodyText}>
+            {'  '}
+            Yes
+          </Text>
+        </Text>
+        <Text>
+          {'\n'}
+        </Text>
+      <View style={{flex: 1, flexDirection: 'row', alignContent: 'stretch', alignItems: 'center', minWidth: '100%', marginHorizontal: 20, paddingHorizontal: 55}}>
+      <View style={{flex: .4, minWidth: '50%'}}>
+        <Text style={themeBodyText}>
+          Unit Assigned:
+          {' '}
+        </Text>
         <TextInput
         placeholder="Unit Number"
         placeholderTextColor={Colors.iosSystemGray}
@@ -105,6 +110,24 @@ class CreateTicketScreen extends React.Component {
         style={themeTextBox}
         onChangeText={text => this.setState({ unit: text })}
         />
+        </View>
+
+        <View style={{flex: .4, minWidth: '50%'}}>
+        <Text style={themeBodyText}>
+          Property:
+          {' '}
+        </Text>
+        <Picker
+          placeholder="Apartment Complex"
+          placeholderTextColor={Colors.iosSystemGray}
+          keyboardAppearance={themeKeyboard}
+          style={themeTextBox}
+          selectedValue={this.state.aptComplex}
+          onValueChange={(itemValue, itemKey) => this.setState({ aptComplex: itemValue })}
+          children={properties}
+        />
+        </View>
+      </View>
 
         <TextInput
           placeholder="Issue"
@@ -142,6 +165,20 @@ class CreateTicketScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  lightText: {
+    marginVertical: 4,
+    height: 20,
+    width: '90%',
+    fontSize: 18,
+    color: Colors.black,
+  },
+  darkText: {
+    marginVertical: 4,
+    height: 20,
+    width: '90%',
+    fontSize: 18,
+    color: Colors.white,
   },
   lightTextInput: {
     marginTop: 8,
