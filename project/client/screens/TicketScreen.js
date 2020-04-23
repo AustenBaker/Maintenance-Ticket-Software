@@ -8,10 +8,10 @@ import { colorScheme, ticketStore, userStore } from '../stores';
 import Colors from '../constants/Colors';
 import * as CONSTANTS from '../constants/Reference';
 
-import Ticket from '../data/Ticket2';
+import Ticket from '../data/Ticket';
 
 export default function TicketScreen({ navigation }) {
-//  if (!userStore.loggedIn) navigation.replace('Root');
+  if (!userStore.loggedIn) navigation.replace('Root');
 
   let themeContainer =
     colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;

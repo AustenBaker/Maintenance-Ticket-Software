@@ -27,7 +27,7 @@ class LoginPage extends React.PureComponent {
 
   async handleLogin() {
     const data = await login(this.state);
-    
+
     // Login successful
     if (!data.error) {
       const { username, first, last, units, email, phone,
@@ -50,7 +50,7 @@ class LoginPage extends React.PureComponent {
 
       this.props.navigation.replace('BottomTabNavigator');
     }
-    
+
     // Login failed
     else {
       alert('Login failed');
@@ -111,7 +111,29 @@ class LoginPage extends React.PureComponent {
             />
 
             <Button
-              onPress={() => this.props.navigation.replace('BottomTabNavigator') }
+              onPress={() => this.props.navigation.replace('BottomTabNavigator', () => {
+                let testUser = {
+                  username: "MurphysLaw",
+                  first: "Mary",
+                  last: "Sue",
+                  units: [{
+                    number: '1703',
+                    property: 'Whispering Pines'
+                  },],
+                  email: "someday@somepl.ace",
+                  phone: "123-456-7890",
+                  contactPreference: "text",
+                  entryPermission: "notify",
+                  note: "The dog definitely bites.",
+                  tickets: [],
+                  activate: true,
+                };
+
+                for (let key in testUser) {
+                  userStore[key] = testUser[key];
+                }
+                userStore.loggedIn = true;
+              }) }
               style={themeBodyText}
               title="Skip Sign In"
               accessibilityLabel="Secret Dev Button to Skip Sign In"

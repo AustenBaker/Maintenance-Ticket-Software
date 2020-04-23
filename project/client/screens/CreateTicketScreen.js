@@ -47,7 +47,7 @@ class CreateTicketScreen extends React.Component {
 
   render(){
 
-//    if (!userStore.loggedIn) this.props.navigation.replace('Root');
+    if (!userStore.loggedIn) this.props.navigation.replace('Root');
 
     let themeContainer =
       colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
