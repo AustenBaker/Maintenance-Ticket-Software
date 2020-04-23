@@ -1,9 +1,9 @@
-// REGEX constant 
+// REGEX constant
 export const REGEX = {
 
     // name pattern: up to 32 ASCII alphabetical characters
     NAME: /^[a-zA-Z]{1,32}$/,
-    
+
     // email pattern:  some(.name)*@site.com
     // where some name & site are any combination of letters
     // and numbers, and the site ends in a 2-3 letter/digit extension
@@ -84,3 +84,17 @@ export const EMERGENCY = {
     NO: 'No emergency',
     YES: 'Yes emergency'
 };
+
+// Ticket properties
+export const TICKET_PROPERTIES = [
+    'ticket_number', // Number, unique identifier
+    'timestamp', // Number, time of ticket creation
+    'status', // String, open/closed
+    'location',  // PROPERTY to which unit belongs
+    'unit_number', // String, unit number
+    'email', // String, see constants/Reference.js REGEX.EMAIL for pattern
+    'emergency', // boolean value, true if emergency
+    'ticket_issue_title', // String, 8-32 characters
+    'ticket_issue', // String, 8-255 characters
+    'ticket_updates',
+]
