@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View,  Button, Text, Picker, StyleSheet, FlatList, SectionList, TouchableWithoutFeedbackBase } from 'react-native';
 import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
-import { TextInput, ScrollView } from 'react-native-gesture-handler';
+import { TextInput, ScrollView, TouchableOpacity, TouchableHighlight } from 'react-native-gesture-handler';
 import { userStore, ticketStore } from '../stores';
 
 /**
@@ -147,17 +147,24 @@ export default class Ticket extends React.Component{
    *
    * @return React element display for ticket
    */
-  ticketDisplay(ticket, colorEmphasis = false) {
-    let updates = [];
+  ticketDisplay = (ticket, colorEmphasis = false) => {
+    let details = [];
+    let emergency = ''
+    if (this.state.emergency) {
+      emergency = (
+      <Text>
+        Maintenance Emergency!
+      </Text>);
+    }
     for (let update of this.state.ticket_updates) {
       // TODO: if timestamp is not a string, add toString()
-      updates.push(
+      details.push(
         <View>
           <Text>
             <Text>
               Updated:
               {'  '}
-              {update.timestamp}
+              {update.timestamp.toString()}
             </Text>
             <Text>
               By:
@@ -171,16 +178,29 @@ export default class Ticket extends React.Component{
         </View>
       );
     }
+    // TODO: Correct implementation to incorporate
+    // TicketUpdate item when refactoring
     let content = (
       <View style={styles.ticketColorBar[colorEmphasis]}>
         <Text>
-          Ticket Number #
-          {this.state.ticket_number}
-          {'  '}
-          Submitted:
-          {'  '}
-          {this.state.timestamp}
-          {'\n'}
+          {emergency}
+          <Text>
+            Ticket Number #
+            {this.state.ticket_number}
+          </Text>
+          <Text>
+            {this.state.status}
+          </Text>
+          <Text>
+            Submitted:
+            {'  '}
+            {this.state.timestamp.toString()}
+          </Text>
+          <Text>
+            By:
+            {'  '}
+            {this.state.email}
+          </Text>
         </Text>
         <Text>
           Unit #
@@ -188,33 +208,109 @@ export default class Ticket extends React.Component{
           {' '}
           {this.state.location}
         </Text>
-        <Text children={[...updates]}>
+        <Text>
+          {this.state.ticket_issue_title}
+        </Text>
+        <Text>
+          {this.state.ticket_issue}
+        </Text>
+        <Text children={[...details]}>
         </Text>
       </View>
     );
     return content;
   }
 
-  //generate ticket list using flatlist
-  generateTicketList = () => {
+  //generate ticket list using FlatList
+  /**
+   * @param  {Object} filter
+   * @param {[Ticket]} tickets
+   *
+   * @return React FlatList display of a list of tickets
+   */
+  generateTicketList = (tickets = [], filter = {type: 'user', email: 'user@email.com', unit_number: 'this_user_unit'}) => {
+    // TODO: grab active user default values from store ^^
     var content;
+    let ticketList = [];
+    let valid = false;
+
+    // TODO: replace this with active user data imports from data store
+    let this_user = {
+      email: 'i.am@home.ru',
+      unit_number: '1234',
+      user_type: CONSTANTS.USER_TYPE.MGMT,
+    }
+
+    // TODO: sub in user store user type
+    let privilegedUser = this_user.user_type === CONSTANTS.USER_TYPE.MGMT;
+    privilegedUser = privilegedUser || this_user.user_type === CONSTANTS.USER_TYPE.MNT;
+
+    let keys = ['ticket_number','timestamp','status','email','emergency','ticket_issue_title'];
+    let odd = false;
+
+    for (let oneTicket in tickets) {
+      // TODO: add user check vs. user store for 'none' filter
+      if (filter.type === 'unit' && oneTicket.unit_number === filter.unit_number && privilegedUser) {
+        valid = true;
+      } else if (filter.type === 'user' && oneTicket.email === filter.email && privilegedUser) {
+        valid = true;
+      } else if (filter.type === 'none' && (oneTicket.email === this_user.email || privilegedUser)) {
+        valid = true;
+      } else if (filter.type === 'emergency' && oneTicket.status && privilegedUser) {
+        valid = true;
+      }
+      if (valid){
+        let ticket = {};
+        // TODO: push ticket properties onto array in key: value object format
+        for (let key of keys) {
+          if (!key in oneTicket) {
+            console.log('Ticket data missing');
+            throw new Error('Ticket data missing');
+            break;
+          }
+          ticket[key] = oneTicket[key];
+        }
+        ticket[highlight] = odd;
+        odd = !odd;
+        ticketList.push(ticket);
+      }
+    }
 
     content = (
-      <View style={styles.ticketListContainer}>
-
-        <View style={styles.ticketListItem1}>
-          ticket 1
+      <View>
+        <View style={styles.ticketListContainer}>
+          <FlatList
+            data={ticketList}
+            renderItem={({ticket}) => {
+              <View
+                id={ticket.ticket_number}
+                title={ticket.ticket_issue_title}
+                style={ticketColorBar[ticket.highlight]}
+              >
+              <Text>
+                <Text>
+                  {ticket.emergency?'Emergency!  ':''}
+                  {ticket.status}
+                  {' '}
+                  #{ticket.ticket_number}
+                  {' '}
+                  {ticket.ticket_issue_title}
+                  {' '}
+                  {ticket.timestamp}
+                </Text>
+                <Button
+                  id={ticket.ticket_number}
+                  onPress={() => alert(`TODO: Tie in individual ticket detail display`)}
+                >
+                  <Text>Detail</Text>
+                </Button>
+              </Text>
+              </View>
+            }}
+            keyExtractor={ticket => ticket.ticket_number}
+            extraData={this.state.ticket_view_mode}
+          />
         </View>
-        <View style={styles.ticketListItem2}>
-          ticket 2
-        </View>
-        <View style={styles.ticketListItem3}>
-          ticket 3
-        </View>
-        <View style={styles.ticketListItem4}>
-          ticket 4
-        </View>
-
         <View style={styles.submitTicketUpdateButton}>
           <Button
             title="Go back to detail view"
