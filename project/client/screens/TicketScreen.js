@@ -4,8 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
-import { colorScheme } from '../stores';
+import { colorScheme, ticketStore, userStore } from '../stores';
 import Colors from '../constants/Colors';
+import * as CONSTANTS from '../constants/Reference';
 
 import Ticket from '../data/Ticket';
 
@@ -32,12 +33,28 @@ export default function TicketScreen({ navigation }) {
     },
     [selected],
   );
-  var properties = {};
+  let testTicket = {
+    ticket_number: 1234,
+    timestamp: 202004220730,
+    status: CONSTANTS.STATUS.OPEN,
+    location: CONSTANTS.PROPERTY.WSP,
+    unit_number: '1703',
+    email: 'i.am@home.ru',
+    emergency: false,
+    ticket_issue_title: 'Leaky faucet',
+    ticket_issue: 'Bathroom faucet closest to door is constantly dripping, about 1 drop every 5 seconds.',
+    ticket_updates: [{
+      timestamp: 202004220830,
+      email: 'kyle@CastlebergCommunities.com',
+      details: 'Gasket rotted.  New gasket ordered.  Should arrive 2 days, will replace then.',
+    },],
+
+  };
   return (
     <View style={styles.container, themeContainer}>
       <ScrollView>
         <View>
-          <Ticket {...properties}/>
+          <Ticket {...testTicket}/>
         </View>
       </ScrollView>
     </View>
