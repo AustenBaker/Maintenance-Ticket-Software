@@ -11,40 +11,46 @@ jest.mock('expo', () => ({
     AppLoading: 'AppLoading',
 }));
 
-//renders ticket screen
-test('renders display view correctly', () => {
-    const tree = renderer.create(<Ticket />).toJSON();
-    expect(tree).toMatchSnapshot();
+//renders ticket screen 
+test('renders displayTicketDetails( ) correctly', () => {
+  const tree = renderer.create(<Ticket />).toJSON();
+  expect(tree).toMatchSnapshot();
 });
 
-//renders ticket edit screen
-test('renders ticket edit view correctly', () => {
-    const tree = renderer.create(<Ticket ticket_edit_mode />).toJSON();
-    expect(tree).toMatchSnapshot();
+//renders ticket edit screen DOESNT UPDATE CODE COVERAGE
+test('renders editTicket() view correctly', () => {
+  const ticket_view_mode = 1;
+  const tree = renderer.create(<Ticket ticket_view_mode={ticket_view_mode}/>).toJSON();
+  expect(tree).toMatchSnapshot();
 });
 
-describe(`The following are enabled from user perspective: `, () => {
-  const { getByTestId } = render(<Ticket />);
-  test('ticket_number', () => {
-    expect(getByTestId(`ticket_number`)).toBeEnabled();
-  });
-
-  test('unit_number', () => {
-    expect(getByTestId(`unit_number`)).toBeEnabled();
-  });
-
-  test('status', () => {
-    expect(getByTestId(`status`)).toBeEnabled();
-  });
-
-  test('timestamp', () => {
-    expect(getByTestId(`timestamp`)).toBeEnabled();
-  });
-
-  test('location', () => {
-    expect(getByTestId(`location`)).toBeEnabled();
-  });
-  
-
-  //add things
+test('renders ticketList() view correctly', () => {
+  const ticket_view_mode = 2;
+  const tree = renderer.create(<Ticket ticket_view_mode={ticket_view_mode}/>).toJSON();
+  expect(tree).toMatchSnapshot();
 });
+
+test('Submit Ticket Update Button, should change ticket_view_mode to 0', () => {
+  let tempMock = jest.fn()
+  let component = renderer.create(
+    <Ticket 
+      idkgit={tempMock}
+    />
+  );
+});
+
+//this doesnt change code coverage
+test('check ticket data', () => {
+  const ticket = {
+    ticket_number: 99999,
+    unit_number: 316,
+    ticket_view_mode: 0,
+  };
+
+  expect(ticket).toMatchSnapshot({
+    ticket_number: expect.any(Number),
+    unit_number: expect.any(Number),
+    ticket_view_mode: expect.any(Number),
+  });  
+});
+
