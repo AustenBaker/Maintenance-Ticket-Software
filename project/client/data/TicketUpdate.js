@@ -54,14 +54,14 @@ export default class TicketUpdate extends React.Component {
                 <Button
                   title='Add Update'
                   label='Update Ticket'
-                  onPress={() => {() => this.setState({
+                  onPress={() => this.setState({
                       timestamp: Date.now(),
                       user: userStore.email,
                       edit_mode: false,
                     }), () => {
                         this.updateTicket();
                         // TODO: Redirect to Ticket display
-                  }}}
+                  }}
                 >
                   <Text>
                     Update Ticket
@@ -91,7 +91,7 @@ export default class TicketUpdate extends React.Component {
                     <Text>
                         Updated:
                         {'  '}
-                        {new Date(this.state.timestamp).toString()}
+                        {CONSTANTS.readableTimestamp(this.state.timestamp)}
                     </Text>
                     <Text>
                         By:

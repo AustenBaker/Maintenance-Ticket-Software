@@ -2,32 +2,31 @@
 export const REGEX = {
 
     // name pattern: up to 32 ASCII alphabetical characters
-    NAME: /^[a-zA-Z\-]{1,32}$/,
+    NAME: /^[[a-zA-Z]+[\. -]?]{1,32}$/,
 
     // email pattern:  some(.name)*@site.com
     // where some name & site are any combination of letters
     // and numbers, and the site ends in a 2-3 letter/digit extension
-    // TODO: add in {6,32} to limit input and prevent buffer overflow issues
-    EMAIL: /^([\w\-\.]+)@([\w\-\.]+)\.([a-zA-Z]{2,5})$/,
+    EMAIL: /^(\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+){6,32}$/,
 
     // phone pattern:  ###-###-#### where # is a digit 0-9
-    PHONE: /^[\d]{3}-[\d]{3}-[\d]{4}$/,
+    PHONE: /^\(?([0-9]{3})\)?[-\. ]?([0-9]{3})[-\. ]?([0-9]{4})$/,
 
     // password pattern: a-zA-Z0-9_-!@#$%^&*+=
     // requires at least one each: uppercase letter, number, punctuation
     // length of 8-32 characters
     // password must pass all REGEX.PASSWORD.exec(password)
     // pattern matcher tests to be valid (total: 4)
-    PASSWORD: [/^[[\w]*[A-Z]*[\d]*[\-!@#$%\^\*\+=]*]{8,32}$/,
+    PASSWORD: [/^[[\w]*[A-Z]*[\d]*[-\.!@#$%\^\*\+=]*]{8,32}$/,
         /[A-Z]+/,
         /[\d]+/,
-        /[\-!@#$%\^\*\+=]+/
+        /[-!@#$%\^\*\+=]+/
     ],
 
     // memo pattern: a-zA-Z0-9_-+=!?.,;:()&
     // allows any combination of letters, digits and select punctuation
     // length up to 255 characters
-    MEMO: /^[[\w]*[\-\+=!\?\.,;:\(\)&]?]{,255}$/
+    MEMO: /^[[\w]*[-\+=!\?\.,;:\(\)&]?]{,255}$/
 };
 // User property list
 export const USER_PROPERTIES = [
@@ -107,4 +106,37 @@ export const TICKET_PROPERTIES = [
     'ticket_issue_title', // String, 8-32 characters
     'ticket_issue', // String, 8-255 characters
     'ticket_updates',
-]
+];
+
+export const MAX_DATE = 8640000000000000;
+
+export const readableTimestamp = (timestamp) => {
+    let result = null;
+    if (timestamp > MAX_DATE || timestamp < (-MAX_DATE)) {
+        // invalid timestamp value
+        // TODO: throw error rather than returning null
+        return result;
+    }
+    let time = new Date(timestamp);
+    let morning = false;
+    let hour = time.getHours();
+    if (hour < 12) {
+        morning = true;
+    }
+    if (hour < 1) {
+        hour = 12;
+    }
+    if (hour > 12) {
+        hour -= 12;
+    }
+    let month = time.getMonth() + 1;
+    let minutes = time.getMinutes();
+    let seconds = time.getSeconds();
+    result = month + '/';
+    result += time.getDate() + '/';
+    result += time.getFullYear() + ' ';
+    result += hour + ':';
+    result += (minutes < 10 ? '0' + minutes : minutes) + ':';
+    result += (seconds < 10 ? '0' + seconds : seconds) + (morning ? ' AM' : ' PM');
+    return result;
+}
