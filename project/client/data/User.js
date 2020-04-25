@@ -28,19 +28,16 @@ export default class User extends React.Component {
      * are not all passed into the constructor.
      */
     static defaultProps = {
-        username: "",
-        first: "First Name",
-        last: "Last Name",
-        units: [{
-            number: "1703",
-            property: CONSTANTS.PROPERTY.WSP,
-        },],
-        email: "default@CastlebergCommunities.com",
-        phone: "000-000-0000",
+        username: null,
+        first: null,
+        last: null,
+        units: [], // {number: "1703", property: CONSTANTS.PROPERTY.WSP}
+        email: null,
+        phone: null,
         contactPreference: CONSTANTS.PREFERRED_CONTACT.EMAIL,
         entryPermission: CONSTANTS.ENTRY_PERMISSION.ACC,
         type: CONSTANTS.USER_TYPE.RES,
-        note: "",
+        note: null,
         tickets: [],
         activate: false,
         edit_mode: false
@@ -59,6 +56,17 @@ export default class User extends React.Component {
               }
           }
         return isActivated;
+    }
+
+    /**
+     * Loads current User properties from userStore
+     */
+    getCurrentUser = () => {
+      let profile = [];
+      for (let key in this.state) {
+          profile.push({[key]: userStore[key]});
+      }
+      this.setState({...profile});
     }
 
     /**
@@ -121,7 +129,10 @@ export default class User extends React.Component {
           );
         }
 
-        let phoneCheck = this.state.phone !== User.defaultProps.phone;
+        let phoneCheck = !this.state.phone === undefined;
+        phoneCheck = phoneCheck && (this.state.phone !== User.defaultProps.phone);
+        let emailCheck = !this.state.email === undefined;
+        emailCheck = emailCheck && (this.state.email != User.defaultProps.email);
         let email, phone = null;
         // Only star email if it is the preferred contact method and
         // a phone number is also available.
@@ -138,23 +149,22 @@ export default class User extends React.Component {
             </Text>
             );
         }
-        if (phoneCheck) {
-            if (this.state.contactPreference === CONSTANTS.PREFERRED_CONTACT.TXT) {
-                phone = (
-                    <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "*\n"}
-                      * = Preferred contact method.
-                      {'\n\n'}
-                    </Text>
-                );
-            } else {
-                phone = (
-                    <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "\n"}
-                      * = Preferred contact method.
-                      {'\n\n'}
-                    </Text>
-                );
-            }
-        };
+
+        if (this.state.contactPreference === CONSTANTS.PREFERRED_CONTACT.TXT && emailCheck) {
+            phone = (
+                <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "*\n"}
+                  * = Preferred contact method.
+                  {'\n'}
+                </Text>
+            );
+        } else {
+            phone = (
+                <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "\n"}
+                  {emailCheck ? '* = Preferred contact method.' : null}
+                  {'\n'}
+                </Text>
+            );
+        }
 
         // Embed entry permission data in a <Text> container.
         let entry = (
@@ -264,7 +274,8 @@ export default class User extends React.Component {
             checked.push({['note']: props.note});
         }
 
-        // TODO: update server state and this.setState
+        // TODO: update server state and userStore
+
         return updated;
     }
 
@@ -394,10 +405,10 @@ export default class User extends React.Component {
 
         // store React Native element encoding being generated for return
         let content;
-
-        // store user profile modifications in progress before submission
-        // set initial value to pre-existing user profile
-        const profile = this.getProfile();
+        let profile = [];
+        for (let key in this.state) {
+            profile.push[key] = this.state[key];
+        }
 
         // if edit mode, then update profile
         // if not edit mode, then create user
@@ -411,7 +422,8 @@ export default class User extends React.Component {
                 onPress={() => {
                     // calls updateUser to update database in setState callback function,
                     // this forces setState updates to process before pushing the server update
-                    this.setState({'edit_mode' : false}, () => this.updateUser(this));
+                    profile['edit_mode'] = false;
+                    this.setState({...profile}, () => this.updateUser(this));
                 }}
                 accessibilityLabel="Update Profile Button"
                 style={themeBodyText}
@@ -441,15 +453,9 @@ export default class User extends React.Component {
             onPress={() => {
                 // returns this.state to previous state using profile values
                 this.setState({'edit_mode': true}, () => {
-                  // TODO: implement restore from userStore
-                  for (let key in profile) {
-                    if (key === 'units' || key === 'tickets') {
-                        this.setState({key: [...profile[key]]});
-                    } else {
-                        this.setState({key: profile[key]});
-                        console.log('key: ' + key + ', value: ' + profile[key] + ', ');
-                        console.log('state: ' + this.state[key])
-                    }
+                  // TODO: reload profile page in edit mode?
+                  for (let key in this.state) {
+                      profile[key] = this.state[key];
                   }
                 });
                 // TODO: figure out why this is not re-rendering
@@ -462,15 +468,7 @@ export default class User extends React.Component {
             style={themeBodyText}
             onPress={() => {
                 this.setState({'edit_mode' : false}, () => {
-                    for (let key in profile) {
-                        if (key === 'units' || key === 'tickets') {
-                          this.setState({key: [...profile[key]]});
-                        } else {
-                          this.setState({key: profile[key]});
-                          console.log('key: ' + key + ', value: ' + profile[key] + ', ');
-                          console.log('state: ' + this.state[key])
-                        }
-                    };
+                    this.getCurrentUser();
                 });
             }}
         />);
@@ -482,28 +480,30 @@ export default class User extends React.Component {
                 <TextInput
                   label="First Name"
                   placeholder={"First Name"}
-                  value={this.state.first}
+                  defaultValue={this.state.first}
+                  value={profile['first']}
                   keyboardType="default"
                   maxLength={32}
                   selectTextOnFocus={true}
                   textContentType="name"
                   autoCompleteType="name"
                   errormessage="This field is required."
-                  onChangeText={fname => this.setState({'first': fname})}
+                  onChangeText={fname => {profile['first'] = fname}}
                   style={themeBodyText, styles.formLineShared}
                 />
                 {"  "}
                 <TextInput
                   label="Last Name"
                   placeholder={"Last Name"}
-                  value={this.state.last}
+                  defaultValue={this.state.last}
+                  value={profile['last']}
                   keyboardType="default"
                   maxLength={32}
                   selectTextOnFocus={true}
                   textContentType="familyName"
                   autoCompleteType="name"
                   errormessage="This field is required."
-                  onChangeText={lname => this.setState({'last': lname})}
+                  onChangeText={lname => {profile['last'] = lname}}
                   style={themeBodyText, styles.formLineShared}
                 />
             </Text>
@@ -516,14 +516,15 @@ export default class User extends React.Component {
               <TextInput
                 label="Email"
                 placeholder={"your.email@server.com"}
-                value={this.state.email}
+                defaultValue={this.state.email}
+                value={profile['email']}
                 keyboardType="email-address"
                 maxLength={32}
                 selectTextOnFocus={true}
                 textContentType="emailAddress"
                 autoCompleteType="email"
                 errormessage="This field is required.  Please enter valid email address."
-                onChangeText={emailAddr => this.setState({'email': emailAddr})}
+                onChangeText={emailAddr => {profile['email'] = emailAddr}}
                 style={themeBodyText, styles.formLineSolo}
               />
             </Text>
@@ -536,14 +537,15 @@ export default class User extends React.Component {
               <TextInput
                 label="Phone Number"
                 placeholder={"###-###-####"}
-                value={this.state.phone}
+                defaultValue={this.state.phone}
+                value={profile['phone']}
                 keyboardType="phone-pad"
                 maxLength={12}
                 selectTextOnFocus={true}
                 textContentType="telephoneNumber"
                 autoCompleteType="tel"
                 errormessage="Please enter valid phone number: ###-###-####"
-                onChangeText={phoneNum => this.setState({'phone': phoneNum})}
+                onChangeText={phoneNum => {profile['phone'] = phoneNum}}
                 style={themeBodyText, styles.formLineSolo}
               />
             </Text>
@@ -556,8 +558,9 @@ export default class User extends React.Component {
                 {"  "}
                 <Picker
                   label="Preferred Contact Method:"
-                  selectedValue={this.state.contactPreference}
-                  onValueChange={(itemValue, itemIndex) => this.setState({'contactPreference': itemValue})}
+                  selectedValue={profile['contactPreference']}
+                  defaultValue={this.state.contactPreference}
+                  onValueChange={(itemValue, itemIndex) => {profile['contactPreference'] = itemValue}}
                 >
                 <Picker.Item
                     label='Email'
@@ -578,8 +581,9 @@ export default class User extends React.Component {
                 {"  "}
                 <Picker
                   label="Entry Permission:"
-                  selectedValue={this.state.entryPermission}
-                  onValueChange={(itemValue, itemIndex) => this.setState({'entryPermission': itemValue})}
+                  selectedValue={profile['entryPermission']}
+                  defaultValue={this.state.entryPermission}
+                  onValueChange={(itemValue, itemIndex) => {profile['entryPermission'] = itemValue}}
                 >
                 <Picker.Item
                     label='Allow accompanied entry'
@@ -607,13 +611,14 @@ export default class User extends React.Component {
                   label="Note"
                   placeholder={"Enter note here."}
                   defaultValue={this.state.note}
+                  value={profile['note']}
                   keyboardType="default"
                   maxLength={255}
                   multiline
                   numberOfLines={4}
                   selectTextOnFocus={true}
                   testID={"note-edit"}
-                  onChangeText={someNote => this.setState({'note': someNote})}
+                  onChangeText={someNote => {profile['note'] = someNote}}
                   style={styles.memo}
                 />
             </View>
@@ -683,12 +688,23 @@ export default class User extends React.Component {
      *
      * @returns True if password change completed successfully.
      */
-    changePassword = (props) => {
+    changePassword = (pwd) => {
         var updated = false;
-        // TODO: add session validation check
-        if (props.pwd !== undefined && CONSTANTS.REGEX.PASSWORD.exec(props.pwd)) {
+        let authenticated = false;
+        let valid = !(pwd === undefined);
+        if (valid) {
+            for (let pattern of CONSTANTS.REGEX.PASSWORD) {
+                valid = valid && pattern.exec(pwd);
+            }
+        }
+        // TODO: add session validation check (cookie?)
+        authenticated = userStore.loggedIn && this.state.username === userStore.username;
+        if (authenticated && valid) {
             // TODO: process password update
-            // fire off email reset or handle email message link
+        }
+        if (valid && !authenticated) {
+            // TODO: generate password reset email to username's email address
+            // make sure to add persistent field to database + timestamp for expiration
         }
         return updated;
     }
