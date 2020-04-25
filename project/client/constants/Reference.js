@@ -7,6 +7,7 @@ export const REGEX = {
     // email pattern:  some(.name)*@site.com
     // where some name & site are any combination of letters
     // and numbers, and the site ends in a 2-3 letter/digit extension
+    // TODO: add in {6,32} to limit input and prevent buffer overflow issues
     EMAIL: /^([\w\-\.]+)@([\w\-\.]+)\.([a-zA-Z]{2,5})$/,
 
     // phone pattern:  ###-###-#### where # is a digit 0-9
@@ -83,6 +84,15 @@ export const STATUS = {
 export const EMERGENCY = {
     NO: 'No emergency',
     YES: 'Yes emergency'
+};
+
+// Ticket view modes
+export const TICKET_VIEW = {
+    'DETAIL': 0,
+    'UPDATE': 1,
+    'LIST': 2,
+    'NEW': 3,
+    'NORMAL': 4,
 };
 
 // Ticket properties
