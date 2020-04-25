@@ -1,0 +1,161 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketUpdate renders the ticket update 1`] = `
+<View
+  style={
+    Object {
+      "alignContent": "stretch",
+      "alignItems": "flex-start",
+      "alignSelf": "center",
+      "flex": 1,
+      "flexDirection": "column",
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 16,
+      }
+    }
+  >
+    <Text>
+      Updated:
+        
+      Wed Dec 31 1969 18:00:00 GMT-0600 (Central Standard Time)
+    </Text>
+    <Text>
+      By:
+        
+      none
+    </Text>
+  </Text>
+  <Text
+    style={
+      Object {
+        "fontSize": 16,
+      }
+    }
+  >
+    No changes.
+  </Text>
+</View>
+`;
+
+exports[`TicketUpdate renders the ticket update creation screen 1`] = `
+<View
+  style={
+    Object {
+      "alignContent": "stretch",
+      "alignItems": "flex-start",
+      "alignSelf": "center",
+      "flex": 1,
+      "flexDirection": "column",
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 16,
+      }
+    }
+  >
+    <Text>
+      Ticket Update:
+       
+    </Text>
+    <TextInput
+      allowFontScaling={true}
+      label="Details"
+      onValueChange={[Function]}
+      placeholder="Additional information."
+      rejectResponderTermination={true}
+      underlineColorAndroid="transparent"
+      value="No changes."
+    />
+    <View
+      accessibilityRole="button"
+      accessibilityState={Object {}}
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#007AFF",
+                "fontSize": 18,
+                "margin": 8,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          Add Update
+        </Text>
+      </View>
+    </View>
+    <View
+      accessibilityRole="button"
+      accessibilityState={Object {}}
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#007AFF",
+                "fontSize": 18,
+                "margin": 8,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          Cancel Update
+        </Text>
+      </View>
+    </View>
+  </Text>
+</View>
+`;
