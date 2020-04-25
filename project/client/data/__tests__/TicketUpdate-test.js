@@ -30,12 +30,12 @@ describe(`TicketUpdate`, () => {
 
 
     it(`renders the ticket update`, () => {
-      const tree = renderer.create(<TicketUpdate />).toJSON();
+      const tree = renderer.create(<TicketUpdate timestamp={0}/>).toJSON();
       expect(tree).toMatchSnapshot();
     });
 
     it(`renders the ticket update creation screen`, () => {
-      const tree = renderer.create(<TicketUpdate edit_mode />).toJSON();
+      const tree = renderer.create(<TicketUpdate edit_mode timestamp={0}/>).toJSON();
       expect(tree).toMatchSnapshot();
     });
 });

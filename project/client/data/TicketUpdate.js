@@ -16,7 +16,7 @@ export default class TicketUpdate extends React.Component {
 
     static defaultProps = {
         user: 'none',
-        timestamp: 0,
+        timestamp: Date.now(),
         details: 'No changes.',
         edit_mode: false
     }
@@ -35,6 +35,7 @@ export default class TicketUpdate extends React.Component {
     updateTicket = () => {
         return super.addUpdate(this);
     }
+
     makeUpdate = () => {
         let content = (
             <View style={styles.container}>
