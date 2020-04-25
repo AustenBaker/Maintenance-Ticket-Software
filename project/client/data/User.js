@@ -31,7 +31,10 @@ export default class User extends React.Component {
         username: "",
         first: "First Name",
         last: "Last Name",
-        units: ["1703"],
+        units: [{
+            number: "1703",
+            property: CONSTANTS.PROPERTY.WSP,
+        },],
         email: "default@CastlebergCommunities.com",
         phone: "000-000-0000",
         contactPreference: CONSTANTS.PREFERRED_CONTACT.EMAIL,
@@ -84,31 +87,54 @@ export default class User extends React.Component {
             </Text>
         );
 
-        let apt = '';
-        // TODO: figure out how to render Unit listing
+        // loads units into a text wrapper for display
+        let units = null;
+        // if there are any units assigned...
         if (!this.state.units === undefined) {
-            apt = (
-                <Text testID="user-units" style={themeBodyText}>
+          let apt = [(
+            <Text testID="user-units" style={themeBodyText}>
                 Units:
-                {" "}
-                </Text>
+                {'  '}
+            </Text>
+          ),];
+          // ...load up each unit into the list of apartments...
+          let count = 0;
+          let max = this.state.units.length;
+          for (let unit in this.state.units) {
+            apt.push(
+              <Text testID={"unit#" + count++} style={themeBodyText}>
+                #{unit.number}
+                {' '}
+                {unit.property}
+                {(count < max ? ', ' : '')}
+              </Text>
             );
-        };
+          };
+          // ...and then assign them as children for the unit display
+          units = (
+            <Text
+              testID='unit-wrapper'
+              style={themeBodyText}
+            >
+              {apt}
+            </Text>
+          );
+        }
 
         let phoneCheck = this.state.phone !== User.defaultProps.phone;
-        let email, phone = "";
+        let email, phone = null;
         // Only star email if it is the preferred contact method and
         // a phone number is also available.
         if (this.state.contactPreference === CONSTANTS.PREFERRED_CONTACT.EMAIL && phoneCheck) {
             email = (
             <Text testID="user-email" style={themeBodyText}>
-            Email: {this.state.email + "* "}
+              Email: {this.state.email + "* "}
             </Text>
             );
         } else {
             email = (
             <Text testID="user-email" style={themeBodyText}>
-            Email: {this.state.email}
+              Email: {this.state.email}
             </Text>
             );
         }
@@ -116,15 +142,15 @@ export default class User extends React.Component {
             if (this.state.contactPreference === CONSTANTS.PREFERRED_CONTACT.TXT) {
                 phone = (
                     <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "*\n"}
-                    * = Preferred contact method.
-                    {'\n\n'}
+                      * = Preferred contact method.
+                      {'\n\n'}
                     </Text>
                 );
             } else {
                 phone = (
                     <Text testID="user-phone" style={themeBodyText}>Phone: {this.state.phone + "\n"}
-                    * = Preferred contact method.
-                    {'\n\n'}
+                      * = Preferred contact method.
+                      {'\n\n'}
                     </Text>
                 );
             }
@@ -142,7 +168,7 @@ export default class User extends React.Component {
         );
 
         // if note exists, create a <Text> container for it
-        var note = "";
+        var note = null;
         if (!(this.state.note === undefined || this.state.note === "")) {
             note = (
                 <View testID="user-note" style={styles.memoBox}>
@@ -169,6 +195,7 @@ export default class User extends React.Component {
                 {email}
                 {phone}
                 {entry}
+                {units}
                 {note}
               </View>
               <View style={styles.buttons}>
@@ -284,10 +311,10 @@ export default class User extends React.Component {
         // and assign value to active
         if (active) {
             // Check if User is MGMT
-            isMgmt = this.state.type === CONSTANTS.USER_TYPE.MGMT;
+            isMgmt = userStore.type === CONSTANTS.USER_TYPE.MGMT;
 
             // Check if User is MNT
-            isMnt = this.state.type === CONSTANTS.USER_TYPE.MNT;
+            isMnt = userStore.type === CONSTANTS.USER_TYPE.MNT;
         } else {
             // User is not authenticated or does not have an active account
             return valid;
