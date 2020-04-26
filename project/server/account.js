@@ -22,7 +22,7 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     const ssn = req.session;
     const user = await User.findOne({ username });
-    if (!user) return res.json({ error: 'ERR_NO_SUCH_USER' });
+    if (!user) return res.json({ error: 'NO_SUCH_USER' });
     else {
         bcrypt.compare(password, user.password);
         const match = await bcrypt.compare(password, user.password);
@@ -96,7 +96,7 @@ router.delete('/delete', async (req, res) => {
     // Checks if user already exists
     const userDeleted = await User.findOneAndDelete({ username: req.body.username });
     if (userDeleted) return res.status(200).json({ success: "USER_DELETED" });
-    else return res.sendStatus(404).json({ error: 'NO_SUCH_USER'} ).end();
+    else return res.sendStatus(404).json({ error: 'NO_SUCH_USER'} )
 });
 
 // Get user info TODO: JWT signed Bearer token for security
@@ -110,29 +110,41 @@ router.get('/:username', async (req, res) => {
     }
 });
 
+// GET /email/:userEmail
+router.get('/email/:email', async (req, res) => {
+    const { email } = req.params;
+    const user = await User.findOne({ email:email });
+    if (!user) res.status(404).json({ error: 'NO_SUCH_USER' });
+    else res.status(200).json(user.tickets);
+});
+
+
 // POST /update
 router.put('/update', async (req, res) => {
     const updateObj = {};
-    const { username } = req.session;
+    const { username } = req.body;
 
-    const currentUser = await User.findOne({ username });
-
+    const currentUser = await User.findOne({ username:username });
+    if (!currentUser) return res.json({ error: "NO_USER_FOUND"})
+    
     for (let prop in req.body) if (req.body[prop]) updateObj[prop] = req.body[prop];
 
     // password is updated, check and rehash
     if (req.body.password) {
-        const { password } = req.body.password;
-        const passwordMatch = await bcrypt.compare(password, currentUser.password);
-        if (!passwordMatch) throw 'WRONG_PASSWORD';
-        const hashedPswd = await bcrypt.hash(password, 10);
-        updateObj.password = hashedPswd;
+        const { password } = req.body;
+        await bcrypt.compare(password, currentUser.password, async function(err, res) {
+            if (res){
+                // they are the same
+            } else {
+                const hashedPswd = await bcrypt.hash(password, 10);
+                updateObj.password = hashedPswd;
+            }
+        });
     }
 
-    const updated = currentUser.update(updateObj);
-    
-    // Stores updated info in session
-    // Returns updated info as a response
-
+    const updated = await User.updateOne({"username":username},updateObj);
+    if (updated.nModified === 1) return res.json( updateObj )
+    else return res.json({ error: "ACCOUNT_NOT_UPDATED"})
 });
 
 

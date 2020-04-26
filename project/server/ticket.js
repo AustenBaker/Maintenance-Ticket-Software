@@ -9,7 +9,7 @@ const { User, Ticket } = require('./database');
 // Create ticket
 router.post('/create', async (req, res) => {
     const { email } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email:email });
     if (!user) return res.json({ error: 'NO_SUCH_USER_TICKET_SUBMIT_FAILED' });
     
     let ticketID = Date.now()
@@ -17,8 +17,16 @@ router.post('/create', async (req, res) => {
     const newTicket = new Ticket(body);
     const data = await newTicket.save();
 
-    if (data) return res.json({ sucess: true, id: ticketID });
-    else return res.status(400).json({ error: 'CREATE_TICKET_FAILED' });
+    //need to add it to user ticket list
+    let ticketList = user.tickets
+    ticketList.push(ticketID)
+    const updated = await User.updateOne({"email":email},{$set:{tickets:ticketList}});
+    if (updated.nModified === 1) {
+        if (data) return res.json({ sucess: true, id: ticketID });
+        else return res.status(400).json({ error: 'CREATE_TICKET_FAILED' });
+    } else {
+        return res.status(400).json({ error: 'CREATE_TICKET_FAILED' });
+    }
 });
 
 // GET /id/:id
@@ -29,13 +37,6 @@ router.get('/id/:id', async (req, res) => {
     else res.status(200).json(ticket);
 });
 
-// GET /email/:userEmail
-router.get('/email/:email', async (req, res) => {
-    const { email } = req.params;
-    const tickets = await Ticket.find({ email });
-    if (!tickets) res.status(404).json({ error: 'NO_SUCH_TICKET' });
-    else res.status(200).json(tickets);
-});
 
 // POST /update
 router.put('/update', async (req, res) => {
@@ -50,8 +51,7 @@ router.put('/update', async (req, res) => {
     
     if (updated.nModified === 1) return res.json( updateObj )
     else return res.json({ error: "TICKET_NOT_UPDATED"})
-    // Stores updated info in session
-    // Returns updated info as a responses
+
 });
 
 // DELETE /delete

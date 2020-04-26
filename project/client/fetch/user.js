@@ -49,7 +49,6 @@ export async function register(body) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     });
-    //console.log(res)
     return await res.json();
 }
 
@@ -62,10 +61,6 @@ export async function deleteAccount(username){
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({username:username})
-    }).then(res => res).then(data => {
-        return data
-    }).catch(err => {
-        return err
     })
     return await response
 }
@@ -73,10 +68,6 @@ export async function deleteAccount(username){
 export async function getUserFromUsername(username){ 
     const response = await fetch(PATH + '/account/' + username, {
         method: 'GET'
-    }).then(res => res).then(data => {
-        return data
-    }).catch(err => {
-        return err
     })
     return await response.json()
 }
@@ -91,7 +82,17 @@ export async function update(body) {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
-    });
-    
-    return await res.json();
+    })
+    return res.json();
+}
+
+/**
+ * 
+ * @param {string} email 
+ */
+export async function getTicketsFromEmail(email){ 
+    const res = await fetch(PATH + '/account/email/' + email, {
+        method: 'GET'
+    })
+    return await res.json()
 }
