@@ -14,7 +14,6 @@ export async function login(body) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     });
-
     return await res.json();
 }
 
@@ -22,7 +21,6 @@ export async function logout(){
     const res = await fetch(PATH + '/account/logout', {
         method: 'POST'
     });
-
     return await res.json();
 }
 

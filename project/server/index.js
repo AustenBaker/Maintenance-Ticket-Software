@@ -40,7 +40,7 @@ app.use(session({
     cookie: {
         secure: settings.secure,
         httpOnly: true,
-        maxAge: 3600 * 1000, // 1 hour
+        maxAge: 3600 * 1000, // 1 hour,
     }
 }));
 

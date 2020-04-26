@@ -29,10 +29,10 @@ router.post('/login', async (req, res) => {
         if (!match) return res.json({ error: 'WRONG_PASSWORD' });
 
         const { first, last, units, username, email, phone, contactPreference, entryPermission, type, note, tickets, activate } = user;
-        ssn.loggedIn = true;
-        ssn.username = username;
-        ssn.email = email;
-
+        ssn.cookie.loggedIn = true;
+        ssn.cookie.username = username;
+        ssn.cookie.email = email;
+        
         return res.json({ first, last, units, username, email, phone, contactPreference, entryPermission, type, note, tickets, activate });
     }
 });
@@ -95,8 +95,12 @@ router.post('/deactivate', (req, res) => {
 router.delete('/delete', async (req, res) => {
     // Checks if user already exists
     const userDeleted = await User.findOneAndDelete({ username: req.body.username });
-    if (userDeleted) return res.status(200).json({ success: "USER_DELETED" });
-    else return res.sendStatus(404).json({ error: 'NO_SUCH_USER'} )
+    if (userDeleted) {
+        res.status(200).json({ success: "USER_DELETED" });
+    } else {
+        res.status(404).json({ error: 'NO_SUCH_USER'} )
+    }
+    return res
 });
 
 // Get user info TODO: JWT signed Bearer token for security

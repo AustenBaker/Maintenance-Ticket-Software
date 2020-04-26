@@ -5,9 +5,6 @@ var userFetch = require('../user');
 var expect = require('chai').expect;
 
 // jest --verbose --coverage
-//import * as JestNative from '@testing-library/jest-native';
-//expect.extend({...JestNative});
-
 
 describe("Frontend to backend bindings", function() {
     let newTicketID1 = ""
@@ -40,9 +37,9 @@ describe("Frontend to backend bindings", function() {
             expect(res.first).to.be.a('string')
         })
 
-        it.skip('fetch POST /account/status', async function(){
+        it('fetch POST /account/status', async function(){
             const res = await userFetch.checkLoginStatus({})
-            expect(res.first).to.be.a('string')
+            expect(res.loggedIn).equal(true)
         })
 
         it('fetch POST /account/login (WRONG PASSWORD)', async function(){
@@ -90,7 +87,7 @@ describe("Frontend to backend bindings", function() {
         
     })
 
-    describe('3. Ticket', async function() {
+    describe('3. Ticket', function() {
         it('fetch POST /ticket/create', async function(){
             const res = await ticketFetch.submit({
                 email: "kyle2@gmail.com",
@@ -111,7 +108,7 @@ describe("Frontend to backend bindings", function() {
                 email: "kyle2@gmail.com",
                 aptComplex: "parkway",
                 unit: "524",
-                issue: "I SWITCHED THIS",
+                issue: "Created another",
                 emergency: false,
                 resolvedTime: 1,
                 progress: "waiting",
@@ -147,7 +144,7 @@ describe("Frontend to backend bindings", function() {
         })
     })
 
-    describe('4. Clean up created entries', async function() {
+    describe('4. Clean up created entries', function() {
         //delete accounts and try to update no existant stuff
         it('fetch DELETE /account/delete', async function(){
             const res = await userFetch.deleteAccount("golfkid")
