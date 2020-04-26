@@ -57,8 +57,12 @@ router.put('/update', async (req, res) => {
 // DELETE /delete
 router.delete('/delete', async (req, res) => {
     const ticketDeleted = await Ticket.findOneAndDelete({ id: req.body.id });
-    if (ticketDeleted) return res.status(200).json({ success: "TICKET_DELETED" });
-    else return res.status(404).json({ error: 'NO_SUCH_TICKET'} );
+    if (ticketDeleted) {
+        res.status(200).json({ success: "TICKET_DELETED" });
+    } else {
+         res.status(404).json({ error: 'NO_SUCH_TICKET'} );
+    }
+    return res
 });
 
 module.exports = router;
