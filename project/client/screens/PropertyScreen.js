@@ -10,8 +10,8 @@ import Colors from '../constants/Colors';
 import {Menu, MenuOptions, MenuOption, MenuTrigger, MenuProvider} from "react-native-popup-menu";
 
 export default function PropertyScreen({navigation}) {
-  if (!userStore.loggedIn) navigation.replace('Root');
-  
+//  if (!userStore.loggedIn) navigation.replace('Root');
+
   const [addUnit, onChangeAddUnit] = React.useState('');
   const [addResidentToUnit, onChangeAddResident] = React.useState('');
   const [addPropertyName, onChangeAddPropertyName] = React.useState('');
@@ -34,7 +34,7 @@ export default function PropertyScreen({navigation}) {
  * Need to do: make sure only maintenance and manager can access the appropriate settings
  * Need to do: tie in backend functionality
  * Need to do: test
- * For the menu provider those are dummy values, it should be connected to the backend so it pulls the available residents 
+ * For the menu provider those are dummy values, it should be connected to the backend so it pulls the available residents
  * per unit so that the user can choose.
  */
     return(
@@ -47,22 +47,24 @@ export default function PropertyScreen({navigation}) {
           autoCapitalize="none"
           placeholderTextColor='#8E8E93'
           keyboardAppearance={themeKeyboard}
-          style={themeBodyText} 
-          onChangeAddUnit={text => onChangeAddUnit(text)}
+          style={themeBodyText}
+          onChangeText={text => onChangeAddUnit(text)}
           value = {addUnit}
-          /> 
+          />
          <TextInput
           placeholder="Add Resident to Unit"
           autoCapitalize="none"
           placeholderTextColor='#8E8E93'
           keyboardAppearance={themeKeyboard}
-          style={themeBodyText}      
-          onChangeAddResident={text => onChangeAddResident(text)}
+          style={themeBodyText}
+          onChangeText={text => onChangeAddResident(text)}
           value = {addResidentToUnit}
-          /> 
+          />
 
         <Button
-        onPress={() => navigation.replace('Add') }
+        onPress={() => {
+          // TODO: do something here to actually assign resident to unit
+        }, () => navigation.replace('Add') }
         style={themeBodyText}
         title="Add"
         accessibilityLabel="Add to Unit"
@@ -75,39 +77,41 @@ export default function PropertyScreen({navigation}) {
           autoCapitalize="none"
           placeholderTextColor='#8E8E93'
           keyboardAppearance={themeKeyboard}
-          style={themeBodyText}      
-          onChangeAddPropertyName={text => onChangeAddPropertyName(text)}
+          style={themeBodyText}
+          onChangeText={text => onChangeAddPropertyName(text)}
           value = {addPropertyName}
-          /> 
+          />
         <TextInput
           placeholder="Street Address"
           autoCapitalize="none"
           placeholderTextColor='#8E8E93'
           keyboardAppearance={themeKeyboard}
-          style={themeBodyText}      
-          onChangeAddPropertyStreetAddress={text => onChangeAddPropertyStreetAddress(text)}
+          style={themeBodyText}
+          onChangeText={text => onChangeAddPropertyStreetAddress(text)}
           value = {addPropertyStreetAddress}
-          /> 
+          />
         <TextInput
           placeholder="City"
           autoCapitalize="none"
           placeholderTextColor='#8E8E93'
           keyboardAppearance={themeKeyboard}
-          style={themeBodyText}      
-          onChangeAddCity={text => onChangeAddCity(text)}
+          style={themeBodyText}
+          onChangeText={text => onChangeAddCity(text)}
           value = {addCity}
-          /> 
+          />
         <TextInput
           placeholder="Zipcode"
           autoCapitalize="none"
           placeholderTextColor='#8E8E93'
           keyboardAppearance={themeKeyboard}
-          style={themeBodyText}      
-          onChangeAddPropertyZipcode={text => onChangeAddPropertyZipcode(text)}
+          style={themeBodyText}
+          onChangeText={text => onChangeAddPropertyZipcode(text)}
           value = {addPropertyZipcode}
           />
         <Button
-        onPress={() => navigation.replace('Add') }
+        onPress={() => {
+          // TODO: Do something here to actually add property to system
+        }, () => navigation.replace('Add') }
         style={themeBodyText}
         title="Add Property"
         accessibilityLabel="Add Property"
@@ -117,10 +121,10 @@ export default function PropertyScreen({navigation}) {
           autoCapitalize="none"
           placeholderTextColor='#8E8E93'
           keyboardAppearance={themeKeyboard}
-          style={themeBodyText}      
-          onChangeInputUnit={text => onChangeInputUnit(text)}
+          style={themeBodyText}
+          onChangeText={text => onChangeInputUnit(text)}
           value = {inputUnit}
-        />       
+        />
         <MenuProvider>
             <MenuOptions>
             <MenuTrigger>
@@ -145,7 +149,7 @@ function updateProperty(addUnit, addResidentToUnit) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ addUnit: addUnit, addResidentToUnit: addResidentToUnit })
     }).then(res => res.json()).then(data => {
-        
+
     }).catch(err => {
         // error code is err.error...update not successful
     })
