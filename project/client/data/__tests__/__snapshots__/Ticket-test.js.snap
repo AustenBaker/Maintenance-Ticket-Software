@@ -7,7 +7,7 @@ exports[`renders display view correctly 1`] = `
       Object {
         "backgroundColor": "white",
         "borderRadius": 12,
-        "height": 200,
+        "height": 120,
         "marginBottom": 20,
         "marginLeft": "10%",
         "marginTop": 20,
@@ -25,30 +25,13 @@ exports[`renders display view correctly 1`] = `
         }
       }
     >
-      <View
-        testID="unit_number"
-      >
-        <Text
-          style={
-            Object {
-              "fontSize": 20,
-              "fontWeight": "bold",
-            }
-          }
-        >
-          Location: Apt. 
-          316
-          , 
-        </Text>
-      </View>
-      <View
-        testID="location"
-      >
-        Whispering Pines
-         
-        
+      Location: Apt. 
+      316
+      , 
+      Whispering Pines
+       
+      
 
-      </View>
     </Text>
     <Text
       style={
@@ -62,148 +45,142 @@ exports[`renders display view correctly 1`] = `
       >
         Status: Open
       </Text>
-        
-      
-
-    </Text>
-    <View
-      testID="emergency"
-    >
+        |  
       <Text
         testID="emergency"
       >
         Level: Normal
       </Text>
-       
+        |
       
 
-    </View>
-    <View>
+    </Text>
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "textAlign": "right",
+        }
+      }
+    >
       <Text
         testID="ticket_number"
       >
         Ticket ID #
         99999
       </Text>
-        
-      
-
-    </View>
-    <View
-      testID="timestamp"
+    </Text>
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "textAlign": "right",
+        }
+      }
     >
       Timestamp: 
       
-    </View>
-    <View />
+    </Text>
   </View>
   <View
     style={
       Object {
-        "flex": 1,
-        "flexDirection": "row",
-        "justifyContent": "space-between",
+        "alignSelf": "auto",
+        "width": 400,
       }
     }
   >
     <View
+      accessibilityLabel="Edit Ticket Button"
+      accessibilityRole="button"
+      accessibilityState={Object {}}
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
-          "width": "30%",
+          "opacity": 1,
         }
       }
     >
       <View
-        accessibilityLabel="Edit Ticket Button"
-        accessibilityRole="button"
-        accessibilityState={Object {}}
-        accessible={true}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
-          Object {
-            "opacity": 1,
-          }
+          Array [
+            Object {},
+          ]
         }
       >
-        <View
+        <Text
           style={
             Array [
-              Object {},
+              Object {
+                "color": "#007AFF",
+                "fontSize": 18,
+                "margin": 8,
+                "textAlign": "center",
+              },
             ]
           }
         >
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "#007AFF",
-                  "fontSize": 18,
-                  "margin": 8,
-                  "textAlign": "center",
-                },
-              ]
-            }
-          >
-            Edit Ticket
-          </Text>
-        </View>
+          Edit Ticket
+        </Text>
       </View>
     </View>
+  </View>
+  <View
+    style={
+      Object {
+        "alignSelf": "auto",
+        "width": 400,
+      }
+    }
+  >
     <View
+      accessibilityLabel="Edit Ticket Button"
+      accessibilityRole="button"
+      accessibilityState={Object {}}
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
-          "width": "30%",
+          "opacity": 1,
         }
       }
     >
       <View
-        accessibilityLabel="Edit Ticket Button"
-        accessibilityRole="button"
-        accessibilityState={Object {}}
-        accessible={true}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
-          Object {
-            "opacity": 1,
-          }
+          Array [
+            Object {},
+          ]
         }
       >
-        <View
+        <Text
           style={
             Array [
-              Object {},
+              Object {
+                "color": "#007AFF",
+                "fontSize": 18,
+                "margin": 8,
+                "textAlign": "center",
+              },
             ]
           }
         >
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "#007AFF",
-                  "fontSize": 18,
-                  "margin": 8,
-                  "textAlign": "center",
-                },
-              ]
-            }
-          >
-            Show Ticket List
-          </Text>
-        </View>
+          Show Ticket List
+        </Text>
       </View>
     </View>
   </View>
@@ -217,7 +194,7 @@ exports[`renders ticket edit view correctly 1`] = `
       Object {
         "backgroundColor": "white",
         "borderRadius": 12,
-        "height": 200,
+        "height": 120,
         "marginBottom": 20,
         "marginLeft": "10%",
         "marginTop": 20,
@@ -235,30 +212,13 @@ exports[`renders ticket edit view correctly 1`] = `
         }
       }
     >
-      <View
-        testID="unit_number"
-      >
-        <Text
-          style={
-            Object {
-              "fontSize": 20,
-              "fontWeight": "bold",
-            }
-          }
-        >
-          Location: Apt. 
-          316
-          , 
-        </Text>
-      </View>
-      <View
-        testID="location"
-      >
-        Whispering Pines
-         
-        
+      Location: Apt. 
+      316
+      , 
+      Whispering Pines
+       
+      
 
-      </View>
     </Text>
     <Text
       style={
@@ -272,148 +232,142 @@ exports[`renders ticket edit view correctly 1`] = `
       >
         Status: Open
       </Text>
-        
-      
-
-    </Text>
-    <View
-      testID="emergency"
-    >
+        |  
       <Text
         testID="emergency"
       >
         Level: Normal
       </Text>
-       
+        |
       
 
-    </View>
-    <View>
+    </Text>
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "textAlign": "right",
+        }
+      }
+    >
       <Text
         testID="ticket_number"
       >
         Ticket ID #
         99999
       </Text>
-        
-      
-
-    </View>
-    <View
-      testID="timestamp"
+    </Text>
+    <Text
+      style={
+        Object {
+          "fontSize": 14,
+          "textAlign": "right",
+        }
+      }
     >
       Timestamp: 
       
-    </View>
-    <View />
+    </Text>
   </View>
   <View
     style={
       Object {
-        "flex": 1,
-        "flexDirection": "row",
-        "justifyContent": "space-between",
+        "alignSelf": "auto",
+        "width": 400,
       }
     }
   >
     <View
+      accessibilityLabel="Edit Ticket Button"
+      accessibilityRole="button"
+      accessibilityState={Object {}}
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
-          "width": "30%",
+          "opacity": 1,
         }
       }
     >
       <View
-        accessibilityLabel="Edit Ticket Button"
-        accessibilityRole="button"
-        accessibilityState={Object {}}
-        accessible={true}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
-          Object {
-            "opacity": 1,
-          }
+          Array [
+            Object {},
+          ]
         }
       >
-        <View
+        <Text
           style={
             Array [
-              Object {},
+              Object {
+                "color": "#007AFF",
+                "fontSize": 18,
+                "margin": 8,
+                "textAlign": "center",
+              },
             ]
           }
         >
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "#007AFF",
-                  "fontSize": 18,
-                  "margin": 8,
-                  "textAlign": "center",
-                },
-              ]
-            }
-          >
-            Edit Ticket
-          </Text>
-        </View>
+          Edit Ticket
+        </Text>
       </View>
     </View>
+  </View>
+  <View
+    style={
+      Object {
+        "alignSelf": "auto",
+        "width": 400,
+      }
+    }
+  >
     <View
+      accessibilityLabel="Edit Ticket Button"
+      accessibilityRole="button"
+      accessibilityState={Object {}}
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
-          "width": "30%",
+          "opacity": 1,
         }
       }
     >
       <View
-        accessibilityLabel="Edit Ticket Button"
-        accessibilityRole="button"
-        accessibilityState={Object {}}
-        accessible={true}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
-          Object {
-            "opacity": 1,
-          }
+          Array [
+            Object {},
+          ]
         }
       >
-        <View
+        <Text
           style={
             Array [
-              Object {},
+              Object {
+                "color": "#007AFF",
+                "fontSize": 18,
+                "margin": 8,
+                "textAlign": "center",
+              },
             ]
           }
         >
-          <Text
-            style={
-              Array [
-                Object {
-                  "color": "#007AFF",
-                  "fontSize": 18,
-                  "margin": 8,
-                  "textAlign": "center",
-                },
-              ]
-            }
-          >
-            Show Ticket List
-          </Text>
-        </View>
+          Show Ticket List
+        </Text>
       </View>
     </View>
   </View>

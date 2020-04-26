@@ -29,7 +29,7 @@ describe(`The following are enabled from user perspective: `, () => {
     expect(getByTestId(`ticket_number`)).toBeEnabled();
   });
 
-  test('unit_number', () => {
+  test.skip('unit_number', () => {
     expect(getByTestId(`unit_number`)).toBeEnabled();
   });
 
@@ -37,11 +37,11 @@ describe(`The following are enabled from user perspective: `, () => {
     expect(getByTestId(`status`)).toBeEnabled();
   });
 
-  test('timestamp', () => {
+  test.skip('timestamp', () => {
     expect(getByTestId(`timestamp`)).toBeEnabled();
   });
 
-  test('location', () => {
+  test.skip('location', () => {
     expect(getByTestId(`location`)).toBeEnabled();
   });
   

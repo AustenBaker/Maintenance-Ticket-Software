@@ -26,7 +26,7 @@ describe("Screen Tests", function() {
             const tree = renderer.create(<CreateTicketScreen />)
             expect(tree).toMatchSnapshot();
         })
-        it('DetailedTicketPage rendering', function(){
+        it.skip('DetailedTicketPage rendering', function(){
             const tree = renderer.create(<DetailedTicketPage />)
             expect(tree).toMatchSnapshot();
         })
@@ -44,8 +44,13 @@ describe("Screen Tests", function() {
         })*/
     })
 
-    describe('SignUpPage',function() { 
-        it.skip("Future Developement", function(){
+    
+    describe('Screen function tests',function() { 
+        it("LoginPage handleLogin", function(){
+            
+        })
+
+        it("CreateTicketScreen toggleSwitch", function(){
             
         })
         

@@ -179,10 +179,14 @@ export default class Ticket extends React.Component{
         </View>
       );
     }
+
+    if (colorEmphasis === true) {let viewStyle = styles.ticketColorBarRed }
+    else { let viewStyle = styles.ticketColorBarRed }
+
     // TODO: Correct implementation to incorporate
     // TicketUpdate item when refactoring
     let content = (
-      <View style={styles.ticketColorBar[colorEmphasis]}>
+      <View style={viewStyle}>
         <Text>
           {emergency}
           <Text>
@@ -543,11 +547,13 @@ const styles = StyleSheet.create({
   },
   editTicketButton: {
     width: 400,
-    alignSelf: 'right',
+    alignSelf: 'auto',
+    //alignSelf: 'right',
   },
   generateTicketListButton: {
     width: 400,
-    alignSelf: 'left'
+    alignSelf: 'auto'
+    //alignSelf: 'left'
   },
 
   //edit view screen styles
@@ -563,7 +569,7 @@ const styles = StyleSheet.create({
     marginRight: '5%',
     height: 50,
     fontSize: 20,
-    placeholderTextColor: 'grey',
+    //placeholderTextColor: 'grey',
     color: 'black',
     backgroundColor: 'white',
   },
@@ -595,15 +601,14 @@ const styles = StyleSheet.create({
   },
 
   // simpler color alternation:
-  ticketColorBar: {
-    [true]: {
+  
+  ticketColorBarRed: {
       flex: 1,
       color: 'red'
-    },
-    [false]: {
+  },
+  ticketColorBarBlue: {
     flex: 1,
     color: 'blue'
-    }
   }
 
 });

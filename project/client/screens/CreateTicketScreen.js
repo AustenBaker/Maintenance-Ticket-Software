@@ -32,6 +32,7 @@ class CreateTicketScreen extends React.Component {
   toggleSwitch = () => {
       //onValueChange of the switch this function will be called
       this.setState({emergency: !this.state.emergency});
+      return this.state.emergency
       //state changes according to switch
       //which will result in re-render the text
    }
@@ -43,6 +44,7 @@ class CreateTicketScreen extends React.Component {
 
     if (data.error) alert(data.error);
     else alert(`ticket submitted: ID=${data.id}`);
+    return data.id
   }
 
   render(){

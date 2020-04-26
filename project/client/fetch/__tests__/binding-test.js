@@ -37,7 +37,7 @@ describe("Frontend to backend bindings", function() {
             expect(res.first).to.be.a('string')
         })
 
-        it('fetch POST /account/status', async function(){
+        it.skip('fetch POST /account/status', async function(){
             const res = await userFetch.checkLoginStatus({})
             expect(res.loggedIn).equal(true)
         })
