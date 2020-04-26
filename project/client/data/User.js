@@ -3,9 +3,14 @@ import { TextInput, Text, Button, View, StyleSheet, Picker } from 'react-native'
 import * as CONSTANTS from '../constants/Reference';
 // import Ticket from './Ticket.js';
 import Colors from '../constants/Colors'
+import { observer, inject } from 'mobx-react';
+import { observable, computed, action } from 'mobx';
+import * as fetchUser from '../fetch/user';
 import { userStore, colorScheme } from '../stores';
 
-// TODO: Update unit to include property indicator
+// @inject('userStore')
+@observer
+// TODO: Update unit to properly use userStore
 export default class User extends React.Component {
 
     /**
@@ -14,7 +19,6 @@ export default class User extends React.Component {
      */
     constructor(props) {
         super(props);
-        console.log(props);
         this.state = {...User.defaultProps};
         for (let key in props) {
             if (key in this.state) {
@@ -235,46 +239,110 @@ export default class User extends React.Component {
 
     /**
      * This method posts updated user information to server.
-     * Allows update for all user profile data except password.
+     * Allows update for all user profile data.
+     * Partial updates are permitted; however, a valid username is required.
      *
-     * @param first User first name
-     * @param last User last name
-     * @param email User email address
-     * @param phone User phone number (optional)
-     * @param contactPreference User preferred contact method (email/text)
-     * @param entryPermission User entry preference
-     * @param note Note from user regarding special circumstances
+     * @param {String} first User first name
+     * @param {String} last User last name
+     * @param {String} email User email address
+     * @param {String} phone User phone number (optional)
+     * @param {String} contactPreference User preferred contact method (email/text)
+     * @param {String} entryPermission User entry preference
+     * @param {String} note Note from user regarding special circumstances
+     * @param {*} unit Unit to which user will be assigned {number: {String}, property: {String}}
+     * @param {Boolean} activate True if user account is active
+     * @param {String} password Password hash to store for validation purposes
+     * @param {String} type User type (Resident, Maintenance Worker, Manager)
      *
-     * @returns true if updated successfully
+     * @returns {Boolean} true if updated successfully
      */
-    updateUser = (props) => {
+    @action updateUser = async (props) => {
         var updated = false;
         var checked = [];
-        // check and store valid values in an array
-        if ('first' in props && CONSTANTS.REGEX.NAME.exec(props.first)) {
-            checked.push({['first']: props.first});
-        }
-        if ('last' in props && CONSTANTS.REGEX.NAME.exec(props.last)) {
-            checked.push({['last']: props.last});
-        }
-        if ('email' in props && CONSTANTS.REGEX.EMAIL.exec(props.email)) {
-            checked.push({['email']: props.email});
-        }
-        if ('phone' in props && CONSTANTS.REGEX.PHONE.exec(props.phone)) {
-            checked.push({['phone']: props.phone});
-        }
-        if ('contactPreference' in props && props.contactPreference in CONSTANTS.PREFERRED_CONTACT) {
-            checked.push({['contactPreference']: props.contactPreference});
-        }
-        if ('entryPermission' in props &&
-          props.entryPermission in  CONSTANTS.ENTRY_PERMISSION){
-            checked.push({['entry']: props.entry});
-        }
-        if ('note' in props && CONSTANTS.REGEX.MEMO.exec(props.note)) {
-            checked.push({['note']: props.note});
+        let isUsername = ('username' in props) && !(props.username === undefined)
+          && !(props.username === null) && CONSTANTS.REGEX.EMAIL.exec(props.username);
+
+        let isCurrentUser = isUsername && !(userStore['username'] === undefined)
+          && !(userStore['username'] === null)
+          && (userStore['username'] === props['username']);
+
+        let isMgmt = userStore.type === CONSTANTS.USER_TYPE.MGMT;
+
+        if (!isUsername || !(isCurrentUser || isMgmt)) {
+          // if no username, not current user and not manager, abort update immediately
+          // TODO: implement some sort of error process
+          return false;
         }
 
-        // TODO: update server state and userStore
+        // track props passed in vs. valid props pushed onto
+        // validated props array
+        let countProps, countPush = 0;
+
+        // TODO: if checks fail, throw error
+        // checks and stores valid values in an array
+        for (let key in props) {
+          countProps++;
+          switch (key) {
+            case 'unit' : {
+              if (isMgmt && CONSTANTS.validate('units', [props[key],])) {
+                checked.push({[key]: props[key]});
+                countPush++;
+              }
+              break;
+            }
+            case 'activate' : {
+              let authorized = isMgmt && !isCurrentUser && userStore.loggedIn
+                && props[key] in [true, false];
+              if (authorized) {
+                checked.push({[key]: props[key]});
+                countPush++;
+              }
+              break;
+            }
+            case 'password' : {
+              let authorized = (isCurrentUser || isMgmt) && userStore.loggedIn
+                && CONSTANTS.validate(key, (props[key]));
+              // TODO: add in email reset validation process
+              if (authorized) {
+                checked.push({[key]: props[key]});
+                countPush++;
+              }
+              break;
+            }
+            case 'type' : {
+              let authorized = isMgmt && !isCurrentUser && userStore.loggedIn
+                && CONSTANTS.validate(key, props[key]);
+              if (authorized) {
+                checked.push({[key]: props[key]});
+                countPush++;
+              }
+              break;
+            }
+            case 'username' : {
+              if (CONSTANTS.validate(key, props[key]) && (isCurrentUser || isMgmt)) {
+                checked.push({[key]: props[key]});
+                countPush++;
+              }
+              break;
+            }
+            default :  {
+              if (CONSTANTS.validate(key, props[key] && key in CONSTANTS.USER_PROPERTIES)) {
+                checked.push({[key]: props[key]});
+                countPush++;
+              }
+              break;
+            }
+          }
+        }
+
+        if (countPush === countProps) {
+          // TODO: update database
+          let userUpdate = await fetchUser.update(...checked);
+          // TODO: update userStore if isCurrentUser && database update succeeds
+          updated = true;
+        } else {
+          // TODO: implement some sort of error message
+        }
 
         return updated;
     }
@@ -486,7 +554,6 @@ export default class User extends React.Component {
                   maxLength={32}
                   selectTextOnFocus={true}
                   textContentType="name"
-                  autoCompleteType="name"
                   errormessage="This field is required."
                   onChangeText={fname => {profile['first'] = fname}}
                   style={themeBodyText, styles.formLineShared}
@@ -501,7 +568,6 @@ export default class User extends React.Component {
                   maxLength={32}
                   selectTextOnFocus={true}
                   textContentType="familyName"
-                  autoCompleteType="name"
                   errormessage="This field is required."
                   onChangeText={lname => {profile['last'] = lname}}
                   style={themeBodyText, styles.formLineShared}
@@ -522,7 +588,6 @@ export default class User extends React.Component {
                 maxLength={32}
                 selectTextOnFocus={true}
                 textContentType="emailAddress"
-                autoCompleteType="email"
                 errormessage="This field is required.  Please enter valid email address."
                 onChangeText={emailAddr => {profile['email'] = emailAddr}}
                 style={themeBodyText, styles.formLineSolo}
@@ -543,7 +608,6 @@ export default class User extends React.Component {
                 maxLength={12}
                 selectTextOnFocus={true}
                 textContentType="telephoneNumber"
-                autoCompleteType="tel"
                 errormessage="Please enter valid phone number: ###-###-####"
                 onChangeText={phoneNum => {profile['phone'] = phoneNum}}
                 style={themeBodyText, styles.formLineSolo}
@@ -690,17 +754,14 @@ export default class User extends React.Component {
      */
     changePassword = (pwd) => {
         var updated = false;
-        let authenticated = false;
-        let valid = !(pwd === undefined);
-        if (valid) {
-            for (let pattern of CONSTANTS.REGEX.PASSWORD) {
-                valid = valid && pattern.exec(pwd);
-            }
-        }
+        let authenticated = userStore.loggedIn && this.state.username === userStore.username;
+        let valid = CONSTANTS.validate('password', pwd);
+
         // TODO: add session validation check (cookie?)
-        authenticated = userStore.loggedIn && this.state.username === userStore.username;
         if (authenticated && valid) {
             // TODO: process password update
+            let para = {username: userStore.username, password: pwd};
+            this.updateUser(para);
         }
         if (valid && !authenticated) {
             // TODO: generate password reset email to username's email address
