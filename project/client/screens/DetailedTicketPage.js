@@ -20,7 +20,11 @@ export default function DetailedTicketPage({ navigation }) {
     colorScheme.theme === 'light' ? Colors.white : Colors.iosDarkTable;
   let themeSeparator =
     colorScheme.theme === 'light' ? Colors.iosLightSeparator : Colors.iosDarkSeparator;
-
+  let themeKeyboard =
+    colorScheme.theme === 'light' ? 'light' : 'dark';
+  let themeTextBox =
+    colorScheme.theme === 'light' ? styles.lightTextInput : styles.darkTextInput;
+   
   return (
     <View style={styles.container, themeContainer}>
 
