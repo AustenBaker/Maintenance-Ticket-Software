@@ -74,6 +74,12 @@ export const PROPERTY = {
     TAW: 'Tuc-A-Way Apartments'
 };
 
+export const TICKET_UPDATE_PROPERTIES = [
+    'timestamp',    // Number Date timestamp
+    'user',         // User email address
+    'details'       // Details updating Ticket status
+];
+
 // Ticket status
 export const STATUS = {
     OPEN: 'Open ticket',
@@ -147,4 +153,92 @@ export const readableTimestamp = (timestamp = Date.now()) => {
     result += (minutes < 10 ? '0' + minutes : minutes) + ':';
     result += (seconds < 10 ? '0' + seconds : seconds) + (morning ? ' AM' : ' PM');
     return result;
+}
+
+
+export const validate = (property, value) => {
+    let valid = false;
+    switch (property) {
+        case 'ticket_number' : {
+            valid = (/^[\d+]{1,32}$/).exec(value);
+            break;
+        }
+        case 'timestamp' : {
+            valid = value < MAX_DATE && value > ((-1) * MAX_DATE);
+            break;
+        }
+        case 'status' : {
+            valid = value in STATUS;
+            break;
+        }
+        case 'location' : {
+            valid = value in PROPERTY;
+            break;
+        }
+        case 'unit_number' : {
+            valid = (/^[\w+]{1,32}$/).exec(value);
+            break;
+        }
+        case 'email', 'username', 'user' : {
+            valid = REGEX.EMAIL.exec(value);
+            break;
+        }
+        case 'emergency', 'activate', 'edit_mode' : {
+            valid = value in [true, false];
+            break;
+        }
+        case 'ticket_issue', 'note', 'details' : {
+            valid = REGEX.MEMO.exec(value);
+            break;
+        }
+        case 'ticket_issue_title', 'first', 'last' : {
+            valid = REGEX.NAME.exec(value);
+            break;
+        }
+        case 'password' : {
+            valid = REGEX.PASSWORD.exec(value);
+            break;
+        }
+        case 'phone' : {
+            valid = REGEX.PHONE.exec(value);
+            break;
+        }
+        case 'type' : {
+            valid = value in USER_TYPE;
+            break;
+        }
+        case 'entryPermission' : {
+            valid = value in ENTRY_PERMISSION;
+            break;
+        }
+        case 'contactPreference' : {
+            valid = value in PREFERRED_CONTACT;
+            break;
+        }
+        case 'ticket_view_mode' : {
+            valid = value in TICKET_VIEW;
+            break;
+        }
+        case 'units' : {
+            let fail = false;
+            for (let unit in value) {
+              fail = fail || !('number' in unit) || !('property' in unit)
+                || !(unit.property in PROPERTY) || !(/^[\w+]{1,32}$/).exec(unit.number);
+            }
+            valid = !fail;
+            break;
+        }
+        case 'ticket_updates' : {
+            let fail = false;
+            for (let item in value) {
+                for (let key in TICKET_UPDATE_PROPERTIES) {
+                    fail = fail || !(key in item) || !validate(key, item[key]);
+                }
+            }
+            valid = !fail;
+            break;
+        }
+        default: break;
+    }
+    return valid;
 }
