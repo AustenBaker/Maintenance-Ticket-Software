@@ -7,6 +7,8 @@ const crypto = require('crypto');
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const mongoose = require('mongoose');
 const cors = require('cors');
 
 const fs = Promise.promisifyAll(require('fs'));
@@ -27,7 +29,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'));
 
 // CORS allow
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:19006',
+    credentials: true
+}));
 
 // Creates session
 app.use(cookieParser());
@@ -41,12 +46,21 @@ app.use(session({
         secure: settings.secure,
         httpOnly: true,
         maxAge: 3600 * 1000, // 1 hour,
-    }
+    },
+    // store: new MongoStore({
+    //     mongooseConnection: mongoose.connection,
+    //     ttl: 3600
+    // })
 }));
 
 // Home
 app.get('/', (req, res) => { // jshint ignore:line
     res.status(200).end('Hello world or whatever')
+});
+
+app.use((req, res, next) => {
+    console.log(req.session);
+    next();
 });
 
 ////////// API ENDPOINTS //////////

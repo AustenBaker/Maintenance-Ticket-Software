@@ -1,9 +1,10 @@
-const PATH = 'http://127.0.0.1:3001'
-const fetch = require("node-fetch");
+const PATH = 'http://127.0.0.1:3001';
 
 export async function checkLoginStatus() {
+    debugger;
     const res = await fetch(PATH + '/account/status', {
-        method: 'POST'
+        method: 'POST',
+        credentials: 'include'
     });
     return await res.json();
 }
@@ -12,14 +13,16 @@ export async function login(body) {
     const res = await fetch(PATH + '/account/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        credentials: 'include'
     });
     return await res.json();
 }
 
 export async function logout(){
     const res = await fetch(PATH + '/account/logout', {
-        method: 'POST'
+        method: 'POST',
+        credentials: 'include'
     });
     return await res.json();
 }
@@ -45,7 +48,8 @@ export async function register(body) {
     const res = await fetch(PATH + '/account/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        credentials: 'include'
     });
     return await res.json();
 }
@@ -65,7 +69,8 @@ export async function deleteAccount(username){
 
 export async function getUserFromUsername(username){ 
     const response = await fetch(PATH + '/account/' + username, {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include'
     })
     return await response.json()
 }

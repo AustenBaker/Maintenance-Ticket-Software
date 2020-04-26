@@ -10,7 +10,7 @@ import User from '../data/User';
 
 export default function ProfileScreen(properties) {
 
-  if (!userStore.loggedIn) properties.navigation.replace('Root');
+  // if (!userStore.loggedIn) properties.navigation.replace('Root');
 
   let themeContainer =
     colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;

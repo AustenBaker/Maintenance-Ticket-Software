@@ -29,9 +29,9 @@ router.post('/login', async (req, res) => {
         if (!match) return res.json({ error: 'WRONG_PASSWORD' });
 
         const { first, last, units, username, email, phone, contactPreference, entryPermission, type, note, tickets, activate } = user;
-        ssn.cookie.loggedIn = true;
-        ssn.cookie.username = username;
-        ssn.cookie.email = email;
+        ssn.loggedIn = true;
+        ssn.username = username;
+        ssn.email = email;
         
         return res.json({ first, last, units, username, email, phone, contactPreference, entryPermission, type, note, tickets, activate });
     }

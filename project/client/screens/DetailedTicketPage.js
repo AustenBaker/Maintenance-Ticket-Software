@@ -8,7 +8,7 @@ import { userStore, colorScheme } from '../stores';
 import Colors from '../constants/Colors';
 
 export default function DetailedTicketPage({ navigation }) {
-  if (!userStore.loggedIn) navigation.replace('Root');
+  // if (!userStore.loggedIn) navigation.replace('Root');
 
   let themeContainer =
     colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
