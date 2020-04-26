@@ -110,7 +110,15 @@ export const TICKET_PROPERTIES = [
 
 export const MAX_DATE = 8640000000000000;
 
-export const readableTimestamp = (timestamp) => {
+/**
+ * Converts numerical Date value into string representation, returning
+ * current timestamp value if no value passed.
+ *
+ * @param {Number} timestamp Numerical timestamp value
+ *
+ * @returns {String} D/M/YYYY H:MM:SS AM/PM date format String
+ */
+export const readableTimestamp = (timestamp = Date.now()) => {
     let result = null;
     if (timestamp > MAX_DATE || timestamp < (-MAX_DATE)) {
         // invalid timestamp value
