@@ -114,7 +114,10 @@ export const TICKET_PROPERTIES = [
     'ticket_updates',
 ];
 
-export const MAX_DATE = 8640000000000000;
+export const DATE = {
+    'MAX': 8640000000000000,
+    'WEEK': 604800000, // 7 days x 24 hours x 60 minutes x 60 seconds x 1000 milliseconds
+};
 
 /**
  * Converts numerical Date value into string representation, returning
@@ -126,7 +129,7 @@ export const MAX_DATE = 8640000000000000;
  */
 export const readableTimestamp = (timestamp = Date.now()) => {
     let result = null;
-    if (timestamp > MAX_DATE || timestamp < (-MAX_DATE)) {
+    if (timestamp > DATE.MAX || timestamp < (-DATE.MAX)) {
         // invalid timestamp value
         // TODO: throw error rather than returning null
         return result;
@@ -158,87 +161,52 @@ export const readableTimestamp = (timestamp = Date.now()) => {
 
 export const validate = (property, value) => {
     let valid = false;
-    switch (property) {
-        case 'ticket_number' : {
-            valid = (/^[\d+]{1,32}$/).exec(value);
-            break;
-        }
-        case 'timestamp' : {
-            valid = value < MAX_DATE && value > ((-1) * MAX_DATE);
-            break;
-        }
-        case 'status' : {
-            valid = value in STATUS;
-            break;
-        }
-        case 'location' : {
-            valid = value in PROPERTY;
-            break;
-        }
-        case 'unit_number' : {
-            valid = (/^[\w+]{1,32}$/).exec(value);
-            break;
-        }
-        case 'email', 'username', 'user' : {
-            valid = REGEX.EMAIL.exec(value);
-            break;
-        }
-        case 'emergency', 'activate', 'edit_mode' : {
-            valid = value in [true, false];
-            break;
-        }
-        case 'ticket_issue', 'note', 'details' : {
-            valid = REGEX.MEMO.exec(value);
-            break;
-        }
-        case 'ticket_issue_title', 'first', 'last' : {
-            valid = REGEX.NAME.exec(value);
-            break;
-        }
-        case 'password' : {
-            valid = REGEX.PASSWORD.exec(value);
-            break;
-        }
-        case 'phone' : {
-            valid = REGEX.PHONE.exec(value);
-            break;
-        }
-        case 'type' : {
-            valid = value in USER_TYPE;
-            break;
-        }
-        case 'entryPermission' : {
-            valid = value in ENTRY_PERMISSION;
-            break;
-        }
-        case 'contactPreference' : {
-            valid = value in PREFERRED_CONTACT;
-            break;
-        }
-        case 'ticket_view_mode' : {
-            valid = value in TICKET_VIEW;
-            break;
-        }
-        case 'units' : {
+    let validator = [{
+        'ticket_number': ((item) => {return (/^[\d+]{1,32}$/).exec(item)}),
+        'timestamp': ((item) => {return item < DATE.MAX && item > ((-1) * DATE.MAX)}),
+        'status': ((item) => {return item in STATUS}),
+        'location': ((item) => {return item in PROPERTY}),
+        'unit_number': ((item) => {return (/^[\w+]{1,32}$/).exec(item)}),
+        'email': ((item) => {return REGEX.EMAIL.exec(item)}),
+        'username': ((item) => {return REGEX.EMAIL.exec(item)}),
+        'user': ((item) => {return REGEX.EMAIL.exec(item)}),
+        'emergency': ((item) => {return item in [true, false]}),
+        'activate': ((item) => {return item in [true, false]}),
+        'edit_mode': ((item) => {return item in [true, false]}),
+        'ticket_issue': ((item) => {return REGEX.MEMO.exec(item)}),
+        'note': ((item) => {return REGEX.MEMO.exec(item)}),
+        'details': ((item) => {return REGEX.MEMO.exec(item)}),
+        'first': ((item) => {return REGEX.NAME.exec(item)}),
+        'last': ((item) => {return REGEX.NAME.exec(item)}),
+        'ticket_issue_title': ((item) => {return REGEX.NAME.exec(item)}),
+        'password': ((item) => {return REGEX.PASSWORD.exec(item)}),
+        'phone': ((item) => {return REGEX.PHONE.exec(item)}),
+        'type': ((item) => {return item in USER_TYPE}),
+        'entryPermission': ((item) => {return item in ENTRY_PERMISSION}),
+        'contactPreference': ((item) => {return item in PREFERRED_CONTACT}),
+        'ticket_view_mode': ((item) => {return item in TICKET_VIEW}),
+        'units': ((item) => {
             let fail = false;
-            for (let unit in value) {
+            for (let unit in item) {
               fail = fail || !('number' in unit) || !('property' in unit)
-                || !(unit.property in PROPERTY) || !(/^[\w+]{1,32}$/).exec(unit.number);
+                || !(unit.property in PROPERTY) || !validate('unit_number', unit.number);
             }
-            valid = !fail;
-            break;
-        }
-        case 'ticket_updates' : {
+            return !fail;
+          }),
+        'ticket_updates': ((item) => {
             let fail = false;
-            for (let item in value) {
+            for (let tUpdate in item) {
                 for (let key in TICKET_UPDATE_PROPERTIES) {
-                    fail = fail || !(key in item) || !validate(key, item[key]);
+                    fail = fail || !(key in tUpdate) || !validate(key, tUpdate[key]);
                 }
             }
-            valid = !fail;
-            break;
-        }
-        default: break;
+            return !fail;
+        }),
+    }];
+
+    if (property in validator) {
+        valid = validator[property](value);
     }
+
     return valid;
 }
