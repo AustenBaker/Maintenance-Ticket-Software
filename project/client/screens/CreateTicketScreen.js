@@ -37,7 +37,7 @@ class CreateTicketScreen extends React.Component {
    }
 
    submitTicket = async () => {
-    console.log("submiting the ticket");
+    console.log("submitting the ticket");
     const { email } = userStore;
     const data = await submit({ ...this.state, email });
 
@@ -47,7 +47,7 @@ class CreateTicketScreen extends React.Component {
 
   render(){
 
-    if (!userStore.loggedIn) this.props.navigation.replace('Root');
+//    if (!userStore.loggedIn) this.props.navigation.replace('Root');
 
     let themeContainer =
       colorScheme.theme === 'light' ? styles.iosLightContainer : styles.iosDarkContainer;
@@ -61,6 +61,8 @@ class CreateTicketScreen extends React.Component {
       colorScheme.theme === 'light' ? Colors.black : Colors.white;
     let radioLabel =
       colorScheme.theme === 'light' ? Colors.black : Colors.white;
+    let themePicker =
+      colorScheme.theme === 'light' ? styles.lightPicker : styles.darkPicker;
 
     // set up property selections for Picker
     let properties = [];
@@ -69,6 +71,7 @@ class CreateTicketScreen extends React.Component {
         <Picker.Item
           label={CONSTANTS.PROPERTY[property]}
           value={CONSTANTS.PROPERTY[property]}
+          key={property}
         />
       );
     };
@@ -123,8 +126,7 @@ class CreateTicketScreen extends React.Component {
         <Picker
           placeholder="Apartment Complex"
           placeholderTextColor={Colors.iosSystemGray}
-          keyboardAppearance={themeKeyboard}
-          style={themeTextBox}
+          style={themePicker}
           selectedValue={this.state.aptComplex}
           onValueChange={(itemValue, itemKey) => this.setState({ aptComplex: itemValue })}
           children={properties}
@@ -169,6 +171,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  lightPicker: {
+    marginVertical: 8,
+    height: 40,
+    width: '90%',
+    borderColor: Colors.black,
+    borderBottomWidth: 2,
+    color: Colors.black,
+  },
+  darkPicker: {
+    marginVertical: 8,
+    height: 40,
+    width: '90%',
+    borderColor: Colors.white,
+    borderBottomWidth: 2,
+    color: Colors.white,
+  },
   lightText: {
     marginVertical: 4,
     height: 20,
@@ -184,8 +202,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
   lightTextInput: {
-    marginTop: 8,
-    marginBottom: 8,
+    marginVertical: 8,
     height: 40,
     width: '90%',
     borderColor: Colors.black,
@@ -194,8 +211,7 @@ const styles = StyleSheet.create({
     color: Colors.black,
 },
   darkTextInput: {
-    marginTop: 8,
-    marginBottom: 8,
+    marginVertical: 8,
     height: 40,
     width: '90%',
     borderColor: Colors.iosDarkIcon,
@@ -208,7 +224,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
   iosDarkContainer: {
-    flexGrow: 1,
+    flex: 1,
     backgroundColor: Colors.black,
   },
 });
