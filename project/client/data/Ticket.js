@@ -4,7 +4,7 @@ import * as CONSTANTS from '../constants/Reference';
 import User from './User.js';
 import { TextInput, ScrollView, TouchableOpacity, TouchableHighlight } from 'react-native-gesture-handler';
 import { userStore, ticketStore } from '../stores';
-import { getTicketsFromEmail } from '../fetch/ticket';
+import { getTicketsFromEmail } from '../fetch/user';
 
 /**
  * TODO: make ticket_number a GUID?
@@ -229,10 +229,10 @@ export default class Ticket extends React.Component{
    *
    * @return React FlatList display of a list of tickets
    */
-  generateTicketList = (tickets = [], filter = {type: 'user', email: 'user@email.com', unit_number: 'this_user_unit'}) => {
+  async generateTicketList (tickets = [], filter = {type: 'user', email: 'user@email.com', unit_number: 'this_user_unit'}) {
     // TODO: grab active user default values from store ^^
     var content;
-    let ticketList = [];
+    let ticketList = await getTicketsFromEmail(userStore.email);
     let valid = false;
 
     // TODO: replace this with active user data imports from data store
@@ -282,7 +282,7 @@ export default class Ticket extends React.Component{
         <View style={styles.ticketListContainer}>
           <FlatList
             data={ticketList}
-            renderItem={({ticket}) => {
+            renderItem={({ticket}) => (
               <View
                 id={ticket.ticket_number}
                 title={ticket.ticket_issue_title}
@@ -307,7 +307,7 @@ export default class Ticket extends React.Component{
                 </Button>
               </Text>
               </View>
-            }}
+            )}
             keyExtractor={ticket => ticket.ticket_number}
             extraData={this.state.ticket_view_mode}
           />

@@ -1,7 +1,6 @@
 const PATH = 'http://127.0.0.1:3001';
 
 export async function checkLoginStatus() {
-    debugger;
     const res = await fetch(PATH + '/account/status', {
         method: 'POST',
         credentials: 'include'
