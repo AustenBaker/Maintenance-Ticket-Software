@@ -24,7 +24,7 @@ router.post('/create', async (req, res) => {
 // GET /id/:id
 router.get('/id/:id', async (req, res) => {
     const { id } = req.params;
-    const ticket = await Ticket.findOne({ id });
+    const ticket = await Ticket.findOne({ id:id });
     if (!ticket) res.status(404).json({ error: 'NO_SUCH_TICKET' });
     else res.status(200).json(ticket);
 });
@@ -38,8 +38,20 @@ router.get('/email/:email', async (req, res) => {
 });
 
 // POST /update
-router.put('/update', (req, res) => {
-    // TODO ticket
+router.put('/update', async (req, res) => {
+    const updateObj = {};
+    const { ticketID } = req.body;
+
+    const currTicket = await Ticket.findOne({ id:ticketID });
+    if (!currTicket) return res.json({ error: "NO_TICKET_WITH_ID"})
+
+    for (let prop in req.body) if (req.body[prop]) updateObj[prop] = req.body[prop];
+    const updated = await Ticket.updateOne({"id":ticketID},updateObj);
+    
+    if (updated.nModified === 1) return res.json( updateObj )
+    else return res.json({ error: "TICKET_NOT_UPDATED"})
+    // Stores updated info in session
+    // Returns updated info as a responses
 });
 
 // DELETE /delete

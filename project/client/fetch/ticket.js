@@ -49,25 +49,17 @@ export async function deleteTicket(id){
  * @param {string} progress
  * @param {boolean} closed 
  */
-export async function updateTicket(email, aptComplex, unit, issue, details, emergency, resolveTime, progress, closed){
-    const response = fetch(PATH + '/ticket/update', {
+export async function updateTicket(body){
+    const res = await fetch(PATH + '/ticket/update', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, 
-            aptComplex: aptComplex, 
-            unit: unit, 
-            issue: issue, 
-            details: details, 
-            emergency: emergency, 
-            resolveTime: resolveTime, 
-            progress: progress, 
-            closed: closed})
+        body: JSON.stringify(body)
         }).then(res => res).then(data => {
         return data
     }). catch(err => {
         return err
     })
-    return await response
+    return res.json();
 }
 /**
  * 
@@ -82,8 +74,8 @@ export async function getTicketsFromEmail(email){
  * @param {number} id 
  */
 export async function getTicketFromId(id){ 
-    console.log(PATH + '/ticket/' + id)
-    const response = await fetch(PATH + '/ticket/' + id, {
+    //console.log(PATH + '/ticket/id/' + id)
+    const response = await fetch(PATH + '/ticket/id/' + id, {
         method: 'GET'
     }).then(res => res).then(data => {
         return data;

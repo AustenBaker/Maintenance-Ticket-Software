@@ -1,15 +1,17 @@
 var ticketFetch = require('../ticket');
 var userFetch = require('../user');
 
-//var expect = require('chai').expect;
+//mocha -r esm binding-test.js
+var expect = require('chai').expect;
 
-import * as JestNative from '@testing-library/jest-native';
-expect.extend({...JestNative});
+// jest --verbose --coverage
+//import * as JestNative from '@testing-library/jest-native';
+//expect.extend({...JestNative});
 
-// jest -t "binding-test" --verbose --coverage
+
 describe("Frontend to backend bindings", function() {
     let newTicketID = ""
-    this.timeout(15000)
+    //this.timeout(15000)
     describe('1. Accounts',function() { 
        //register
         it('fetch POST /account/register', async function(){
@@ -74,30 +76,31 @@ describe("Frontend to backend bindings", function() {
                 emergency: false,
                 resolvedTime: 1,
                 progress: "waiting",
-                closed: false
+                closed: true
             })
-            newTicketID = res.id
-            console.log(res)
+            newTicketID = await res.id
             expect(res.id).to.be.a('number')
         })
         
-        it.skip('fetch POST /ticket/update', async function(){
+
+        it('fetch POST /ticket/update', async function(){
             const res = await ticketFetch.updateTicket({
+                ticketID: newTicketID,
                 email: "kyle2@gmail.com",
                 aptComplex: "parkway",
                 unit: "524",
                 issue: "I SWITCHED THIS",
                 emergency: false,
                 resolvedTime: 1,
-                progress: "waiting",
+                progress: "hurry",
                 closed: true
             })
-            expect(res.closed).equal(true)
+            expect(res.progress).equal("hurry")
         })
 
-        it.skip('fetch GET /ticket/:id', async function(){
+        it('fetch GET /ticket/:id', async function(){
             const res = await ticketFetch.getTicketFromId(newTicketID)
-            expect(res.issue).equal("Door wont open")
+            expect(res.issue).equal("I SWITCHED THIS")
         })
 
         it.skip("get ticket array for user from their email")

@@ -78,7 +78,6 @@ export async function getUserFromUsername(username){
     }).catch(err => {
         return err
     })
-    //console.log(response.json())
     return await response.json()
 }
 
