@@ -1,4 +1,5 @@
 const PATH = 'http://127.0.0.1:3001'
+const fetch = require("node-fetch");
 
 export async function checkLoginStatus() {
     const res = await fetch(PATH + '/account/status', {
@@ -26,12 +27,12 @@ export async function logout(){
 }
 
 /**
- * 
- * @param {String} username 
- * @param {String} password 
+ * @param {json} body : body can have all of the following
  * @param {String} first 
  * @param {String} last 
  * @param {Array} units 
+ * @param {String} username 
+ * @param {String} password 
  * @param {String} email 
  * @param {String} phone 
  * @param {String} contactPreference 
@@ -48,7 +49,7 @@ export async function register(body) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     });
-
+    //console.log(res)
     return await res.json();
 }
 
