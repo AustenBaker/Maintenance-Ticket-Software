@@ -229,10 +229,10 @@ export default class Ticket extends React.Component{
    *
    * @return React FlatList display of a list of tickets
    */
-  async generateTicketList (tickets = [], filter = {type: 'user', email: 'user@email.com', unit_number: 'this_user_unit'}) {
+  generateTicketList = (tickets = [], filter = {type: 'user', email: 'user@email.com', unit_number: 'this_user_unit'}) => {
     // TODO: grab active user default values from store ^^
     var content;
-    let ticketList = await getTicketsFromEmail(userStore.email);
+    let ticketList = getTicketsFromEmail(userStore.email);
     let valid = false;
 
     // TODO: replace this with active user data imports from data store
