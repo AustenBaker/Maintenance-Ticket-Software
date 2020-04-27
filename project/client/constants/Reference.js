@@ -2,31 +2,30 @@
 export const REGEX = {
 
     // name pattern: up to 32 ASCII alphabetical characters
-    NAME: /^[[a-zA-Z]+[\. -]?]{1,32}$/,
+    NAME: /^([a-zA-Z]+[-\. ]?){1,32}$/gi,
 
     // email pattern:  some(.name)*@site.com
     // where some name & site are any combination of letters
     // and numbers, and the site ends in a 2-3 letter/digit extension
-    EMAIL: /^(\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+){6,32}$/,
+    EMAIL: /^(\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+){6,32}$/gi,
 
     // phone pattern:  ###-###-#### where # is a digit 0-9
-    PHONE: /^\(?([0-9]{3})\)?[-\. ]?([0-9]{3})[-\. ]?([0-9]{4})$/,
+    PHONE: /^\(?([0-9]{3})\)?[-\. ]?([0-9]{3})[-\. ]?([0-9]{4})$/gi,
 
-    // password pattern: a-zA-Z0-9_-!@#$%^&*+=
-    // requires at least one each: uppercase letter, number, punctuation
-    // length of 8-32 characters
-    // password must pass all REGEX.PASSWORD.exec(password)
-    // pattern matcher tests to be valid (total: 4)
-    PASSWORD: [/^[[\w]*[A-Z]*[\d]*[-\.!@#$%\^\*\+=]*]{8,32}$/,
-        /[A-Z]+/,
-        /[\d]+/,
-        /[-!@#$%\^\*\+=]+/
-    ],
+    // password pattern: a-zA-Z0-9_-^@$!%*#?&
+    // allow use of: uppercase or lowercase letter, number, punctuation
+    // length of 8-64 characters
+    PASSWORD: /^(\w*[-_\^@$!%*#?&]*){8,64}$/gi,
+
 
     // memo pattern: a-zA-Z0-9_-+=!?.,;:()&
     // allows any combination of letters, digits and select punctuation
     // length up to 255 characters
-    MEMO: /^[[\w]*[-\+=!\?\.,;:\(\)&]?]{,255}$/
+    MEMO: /^(\w*([-\+=!\?\.\&,;:\(\)&])?){,255}$/gi,
+
+    // unit number pattern: a-zA-Z0-9_-
+    // allows any combination of ASCII alphabetic characters, digits, underline and dashes
+    UNIT_NUMBER: /^(\w+){1,32}$/gi,
 };
 // User property list
 export const USER_PROPERTIES = [
@@ -158,29 +157,34 @@ export const readableTimestamp = (timestamp = Date.now()) => {
     return result;
 }
 
-
+/**
+ *
+ * @param {String} property
+ * @param {*} value
+ */
 export const validate = (property, value) => {
     let valid = false;
-    let validator = [{
-        'ticket_number': ((item) => {return (/^[\d+]{1,32}$/).exec(item)}),
+    console.log(`got here:` + valid);
+    let validator = {
+        'ticket_number': ((item) => {return (/^[\d+]{1,32}$/).test(item)}),
         'timestamp': ((item) => {return item < DATE.MAX && item > ((-1) * DATE.MAX)}),
         'status': ((item) => {return item in STATUS}),
         'location': ((item) => {return item in PROPERTY}),
-        'unit_number': ((item) => {return (/^[\w+]{1,32}$/).exec(item)}),
-        'email': ((item) => {return REGEX.EMAIL.exec(item)}),
-        'username': ((item) => {return REGEX.EMAIL.exec(item)}),
-        'user': ((item) => {return REGEX.EMAIL.exec(item)}),
+        'unit_number': ((item) => {return (/^[\w+]{1,32}$/).test(item)}),
+        'email': ((item) => {return REGEX.EMAIL.test(item)}),
+        'username': ((item) => {return REGEX.EMAIL.test(item)}),
+        'user': ((item) => {return REGEX.EMAIL.test(item)}),
         'emergency': ((item) => {return item in [true, false]}),
         'activate': ((item) => {return item in [true, false]}),
         'edit_mode': ((item) => {return item in [true, false]}),
-        'ticket_issue': ((item) => {return REGEX.MEMO.exec(item)}),
-        'note': ((item) => {return REGEX.MEMO.exec(item)}),
-        'details': ((item) => {return REGEX.MEMO.exec(item)}),
-        'first': ((item) => {return REGEX.NAME.exec(item)}),
-        'last': ((item) => {return REGEX.NAME.exec(item)}),
-        'ticket_issue_title': ((item) => {return REGEX.NAME.exec(item)}),
-        'password': ((item) => {return REGEX.PASSWORD.exec(item)}),
-        'phone': ((item) => {return REGEX.PHONE.exec(item)}),
+        'ticket_issue': ((item) => {return REGEX.MEMO.test(item)}),
+        'note': ((item) => {return REGEX.MEMO.test(item)}),
+        'details': ((item) => {return REGEX.MEMO.test(item)}),
+        'first': ((item) => {return REGEX.NAME.test(item)}),
+        'last': ((item) => {return REGEX.NAME.test(item)}),
+        'ticket_issue_title': ((item) => {return REGEX.NAME.test(item)}),
+        'password': ((item) => {return REGEX.PASSWORD.test(item)}),
+        'phone': ((item) => {return REGEX.PHONE.test(item)}),
         'type': ((item) => {return item in USER_TYPE}),
         'entryPermission': ((item) => {return item in ENTRY_PERMISSION}),
         'contactPreference': ((item) => {return item in PREFERRED_CONTACT}),
@@ -202,11 +206,12 @@ export const validate = (property, value) => {
             }
             return !fail;
         }),
-    }];
+    };
 
     if (property in validator) {
         valid = validator[property](value);
     }
+
 
     return valid;
 }

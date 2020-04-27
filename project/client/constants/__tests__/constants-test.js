@@ -1,3 +1,4 @@
+
 var reference = require('../Reference');
 
 //mocha -r esm binding-test.js
@@ -32,12 +33,12 @@ var expect = require('chai').expect;
     'ticket_updates': []
 }*/
 describe("Constants", function() {
-    describe('Reference',function() { 
+    describe('Reference',function() {
 
         //readableTimeStamp function
         it('readableTimeStamp (INVALID TIME)', async function(){
-            let res = reference.readableTimestamp(-8640000000000001)
-            expect(res).equal(null)
+            let res = reference.readableTimestamp(-8640000000000001);
+            expect(res).to.be.null;
         })
 
         it('readableTimeStamp (milliseconds)', async function(){
@@ -61,24 +62,38 @@ describe("Constants", function() {
         })
 
         // Validate function
-        it.skip('validate (resident type)', function(){
+        it('validate (resident type) INVALID PASSWORD', function(){
             let res = reference.validate('password', 'testing')
-            expect(res).equal(true)
+            expect(res).be.false
         })
 
-    })
-   
+        it(`validate (resident type) VALID PASSWORD`, function() {
+            let res = reference.validate('password', 'thisshouldbelongenough')
+            expect(res).be.true
+        })
 
-    describe('Colors',function() { 
-        it.skip("Future Developement", function(){
+        it(`validate phone number`, function() {
+            let res = reference.validate('phone', '123-456-7890');
+            expect(res).be.true;
+        })
+
+        it(`validate phone number INVALID`, () => {
+            let res = reference.validate('phone', 'hello');
+            expect(res).be.false;
+        })
+
+        it(`validate (resident type) user name`, () => {
+            let res = reference.validate('first', 'Mary');
+            expect(res).be.true;
+        })
+    })
+
+
+    describe('Colors',function() {
+        it.skip("Future Development", function(){
             let res = reference.validate('type', reference.USER_TYPE.RES)
             expect(res).equal(true)
         })
-        
+
     })
 })
-
-
-
-
-
