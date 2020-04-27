@@ -30,7 +30,7 @@ app.use(express.static('public'));
 
 // CORS allow
 app.use(cors({
-    origin: 'http://localhost:19006',
+    origin: true,
     credentials: true
 }));
 
