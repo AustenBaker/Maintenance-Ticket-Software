@@ -11,9 +11,10 @@ router.post('/status', (req, res) => {
     const ssn = req.session;
     if (!ssn.loggedIn) res.json({ loggedIn: false });
     else {
-        const { first, last, username, email, type } = ssn;
+        const { first, last, units, username, email, phone, contactPreference, entryPermission, type, note, tickets, activate } = ssn;
+        
         const loggedIn = true;
-        res.json({ loggedIn, first, last, username, email, type });
+        res.json({ first, last, units, username, email, phone, contactPreference, entryPermission, type, note, tickets, activate });
     }
 });
 
@@ -32,6 +33,17 @@ router.post('/login', async (req, res) => {
         ssn.loggedIn = true;
         ssn.username = username;
         ssn.email = email;
+        ssn.first = first;
+        ssn.last = last;
+        ssn.units = units;
+        ssn.email = email;
+        ssn.phone = phone;
+        ssn.contactPreference = contactPreference;
+        ssn.entryPermission = entryPermission;
+        ssn.type = type;
+        ssn.note = note;
+        ssn.tickets = tickets;
+        ssn.activate = activate;
         
         return res.json({ first, last, units, username, email, phone, contactPreference, entryPermission, type, note, tickets, activate });
     }
