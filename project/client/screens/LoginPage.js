@@ -21,8 +21,30 @@ class LoginPage extends React.PureComponent {
   // Checks for login status once app loads (to login page)
   async componentDidMount() {
     const data = await checkLoginStatus();
-    if (data.loggedIn)
+
+    // Login successful
+    if (data.loggedIn) {
+      const { username, first, last, units, email, phone,
+        contactPreference, entryPermission, type, note,
+        tickets, activate } = data;
+
+      userStore.loggedIn = true;
+      userStore.username = username;
+      userStore.first = first;
+      userStore.last = last;
+      userStore.units = units;
+      userStore.email = email;
+      userStore.phone = phone;
+      userStore.contactPreference = contactPreference;
+      userStore.entryPermission = entryPermission;
+      userStore.type = type;
+      userStore.note = note;
+      userStore.tickets = tickets;
+      userStore.activate = activate;
+
       this.props.navigation.replace('BottomTabNavigator');
+      this.props.navigation.replace('BottomTabNavigator');
+    }
   }
 
   async handleLogin() {

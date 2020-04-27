@@ -9,7 +9,7 @@ import * as fetchUser from '../fetch/user';
 import { userStore, colorScheme } from '../stores';
 
 // @inject('userStore')
-@observer
+// @observer
 // TODO: Update unit to properly use userStore
 export default class User extends React.Component {
 
@@ -256,7 +256,7 @@ export default class User extends React.Component {
      *
      * @returns {Boolean} true if updated successfully
      */
-    @action updateUser = async (props) => {
+    updateUser = async (props) => {
         var updated = false;
         var checked = [];
         let isUsername = ('username' in props) && !(props.username === undefined)
