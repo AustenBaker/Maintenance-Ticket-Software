@@ -26,7 +26,7 @@ export const REGEX = {
 
     // unit number pattern: a-zA-Z0-9_-
     // allows any combination of ASCII alphabetic characters, digits, underline and dashes
-    UNIT_NUMBER: /^([a-z]|[A-Z]|[0-9]){1,32}$/gi,
+    UNIT_NUMBER: /^([a-z]|[A-Z]|[0-9]|[- ]){1,32}$/gi,
 };
 
 // User property list
@@ -138,6 +138,7 @@ export const readableTimestamp = (timestamp = Date.now()) => {
     let time = new Date(timestamp);
     let morning = false;
     let hour = time.getHours();
+    // convert hours from 0-23 to 1-12 AM/PM
     if (hour < 12) {
         morning = true;
     }
@@ -150,13 +151,70 @@ export const readableTimestamp = (timestamp = Date.now()) => {
     let month = time.getMonth() + 1;
     let minutes = time.getMinutes();
     let seconds = time.getSeconds();
-    result = month + '/';
-    result += time.getDate() + '/';
-    result += time.getFullYear() + ' ';
-    result += hour + ':';
-    result += (minutes < 10 ? '0' + minutes : minutes) + ':';
+    result = month + '/' + time.getDate() + '/' + time.getFullYear() + ' ';
+    result += hour + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':';
     result += (seconds < 10 ? '0' + seconds : seconds) + (morning ? ' AM' : ' PM');
     return result;
+}
+
+const checkName = (name) => {return REGEX.NAME.test(name)}
+
+const checkEmail = (email) => {return REGEX.EMAIL.test(email)}
+
+const checkMemo = (memo) => {return REGEX.MEMO.test(memo)}
+
+const checkUnit = (unit) => {
+    let valid = !(unit === undefined || unit === null);
+    for (let value of TICKET_UPDATE_PROPERTIES) {
+      valid = valid && (value in unit) && validate(value, unit[value]);
+    }
+    return valid;
+}
+
+const checkUnitList = (unitList) => {
+    let valid = !(unitList === undefined || unitList === null);
+    for (let unit of unitList) {
+        valid = valid && checkUnit(unit);
+    }
+    return valid;
+}
+
+const checkTicketUpdate = (ticketUpdate) => {
+    let valid = !(ticketUpdate === undefined || ticketUpdate === null);
+    for (let value of TICKET_UPDATE_PROPERTIES) {
+        valid = valid && (value in ticketUpdate) && validate(value, ticketUpdate[value]);
+    }
+    return valid;
+}
+
+const checkTicketUpdateList = (ticketUpdateList) => {
+    let valid = !(ticketUpdateList === undefined || ticketUpdateList === null);
+    for (let ticketUpdate of ticketUpdateList) {
+        valid = valid && checkTicketUpdate(ticketUpdate);
+    }
+    return valid;
+}
+
+const checkTicket = (ticket) => {
+    let valid = !(ticket === undefined || ticket === null);
+    for (let value of TICKET_PROPERTIES) {
+        valid = valid && (value in ticket) && validate(value, ticket[value]);
+    }
+    return valid;
+}
+
+const checkTicketList = (ticketList) => {
+    let valid = !(ticketList === undefined || ticketList === null);
+    for (let ticket of ticketList) {
+        valid = valid && checkTicket(ticket);
+    }
+    return valid;
+}
+
+const checkIdNumber = (idNumber) => {
+    let valid = !(idNumber === undefined || idNumber === null)
+      && (idNumber > 0) && (idNumber < Number.MAX_SAFE_INTEGER);
+    return valid;
 }
 
 /**
@@ -167,48 +225,32 @@ export const readableTimestamp = (timestamp = Date.now()) => {
 export const validate = (property, value) => {
     let valid = false;
     let validator = {
-        'ticket_number': ((item) => {return (/^[\d+]{1,32}$/).test(item)}),
+        'ticket_number': ((item) => {return checkIdNumber(item)}),
         'timestamp': ((item) => {return item < DATE.MAX && item > ((-1) * DATE.MAX)}),
         'status': ((item) => {return item in STATUS}),
         'location': ((item) => {return item in PROPERTY}),
         'unit_number': ((item) => {return REGEX.UNIT_NUMBER.test(item)}),
-        'email': ((item) => {return REGEX.EMAIL.test(item)}),
-        'username': ((item) => {return REGEX.EMAIL.test(item)}),
-        'user': ((item) => {return REGEX.EMAIL.test(item)}),
+        'email': ((item) => {return checkEmail(item)}),
+        'username': ((item) => {return checkEmail(item)}),
+        'user': ((item) => {return checkEmail(item)}),
         'emergency': ((item) => {return item in [true, false]}),
         'activate': ((item) => {return item in [true, false]}),
         'edit_mode': ((item) => {return item in [true, false]}),
-        'ticket_issue': ((item) => {return REGEX.MEMO.test(item)}),
-        'note': ((item) => {return REGEX.MEMO.test(item)}),
-        'details': ((item) => {return REGEX.MEMO.test(item)}),
-        'first': ((item) => {return REGEX.NAME.test(item)}),
-        'last': ((item) => {return REGEX.NAME.test(item)}),
-        'ticket_issue_title': ((item) => {return REGEX.NAME.test(item)}),
+        'ticket_issue': ((item) => {return checkMemo(item)}),
+        'note': ((item) => {return checkMemo(item)}),
+        'details': ((item) => {return checkMemo(item)}),
+        'first': ((item) => {return checkName(item)}),
+        'last': ((item) => {return checkName(item)}),
+        'ticket_issue_title': ((item) => {return checkName(item)}),
         'password': ((item) => {return REGEX.PASSWORD.test(item)}),
         'phone': ((item) => {return REGEX.PHONE.test(item)}),
         'type': ((item) => {return item in USER_TYPE}),
         'entryPermission': ((item) => {return item in ENTRY_PERMISSION}),
         'contactPreference': ((item) => {return item in PREFERRED_CONTACT}),
         'ticket_view_mode': ((item) => {return item in TICKET_VIEW}),
-        'units': ((item) => {
-            let fail = false;
-            for (let unit in item) {
-              fail = fail || (unit === undefined) || (unit === null)
-                || !('number' in unit) || !('property' in unit)
-                || !(unit.property in PROPERTY) || !validate('unit_number', unit.number);
-            }
-            return !fail;
-          }),
-        'ticket_updates': ((item) => {
-            let fail = false;
-            for (let tUpdate in item) {
-                for (let key of TICKET_UPDATE_PROPERTIES) {
-                    fail = fail || (tUpdate === undefined) || (tUpdate === null)
-                    !(key in tUpdate) || !validate(key, tUpdate[key]);
-                }
-            }
-            return !fail;
-        }),
+        'units': ((item) => {return checkUnitList(item)}),
+        'ticket_updates': ((item) => {return checkTicketUpdateList(item)}),
+        'tickets': ((item) => {return checkTicketList(item)}),
     };
 
     if (property in validator) {
