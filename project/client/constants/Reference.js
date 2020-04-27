@@ -204,8 +204,9 @@ export const validate = (property, value) => {
         }),
     }];
 
-    if (property in validator) {
-        valid = validator[property](value);
+    if (property in validator[0]) {
+        console.log(property)
+        valid = validator[0][property](value);
     }
 
     return valid;
