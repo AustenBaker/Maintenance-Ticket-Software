@@ -2,12 +2,13 @@
 export const REGEX = {
 
     // name pattern: up to 32 ASCII alphabetical characters
-    NAME: /^([a-zA-Z]+[-\. ]?){1,32}$/gi,
+    // also allow dash, period and space connectors
+    NAME: /^([a-z]|[A-Z]|[-\. ]){2,32}$/gi,
 
     // email pattern:  some(.name)*@site.com
     // where some name & site are any combination of letters
     // and numbers, and the site ends in a 2-3 letter/digit extension
-    EMAIL: /^(\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+){6,32}$/gi,
+    EMAIL: /^(([a-z]|[A-Z]|[0-9])+([\.-]{1}([a-z]|[A-Z]|[0-9])+)*[@]{1}([a-z]|[A-Z]|[0-9])+([\.-]{1}([a-z]|[A-Z]|[0-9])+)*\.{1}([a-z]|[A-Z]|[0-9]){2,5}){6,32}$/gi,
 
     // phone pattern:  ###-###-#### where # is a digit 0-9
     PHONE: /^\(?([0-9]{3})\)?[-\. ]?([0-9]{3})[-\. ]?([0-9]{4})$/gi,
@@ -15,18 +16,19 @@ export const REGEX = {
     // password pattern: a-zA-Z0-9_-^@$!%*#?&
     // allow use of: uppercase or lowercase letter, number, punctuation
     // length of 8-64 characters
-    PASSWORD: /^(\w*[-_\^@$!%*#?&]*){8,64}$/gi,
+    PASSWORD: /^([a-z]|[A-Z]|[0-9]|[-!@#\$%\^&\*\(\)_\+=]){8,64}$/g,
 
 
     // memo pattern: a-zA-Z0-9_-+=!?.,;:()&
     // allows any combination of letters, digits and select punctuation
     // length up to 255 characters
-    MEMO: /^(\w*([-\+=!\?\.\&,;:\(\)&])?){,255}$/gi,
+    MEMO: /^(([a-z]|[A-Z]|[0-9])*([-\+=!\?\.\&,;:\(\)&])?){,255}$/gi,
 
     // unit number pattern: a-zA-Z0-9_-
     // allows any combination of ASCII alphabetic characters, digits, underline and dashes
-    UNIT_NUMBER: /^(\w+){1,32}$/gi,
+    UNIT_NUMBER: /^([a-z]|[A-Z]|[0-9]){1,32}$/gi,
 };
+
 // User property list
 export const USER_PROPERTIES = [
     'username', // String, 1-32 char
@@ -76,7 +78,7 @@ export const PROPERTY = {
 export const TICKET_UPDATE_PROPERTIES = [
     'timestamp',    // Number Date timestamp
     'user',         // User email address
-    'details'       // Details updating Ticket status
+    'details',      // Details updating Ticket status
 ];
 
 // Ticket status
@@ -169,7 +171,7 @@ export const validate = (property, value) => {
         'timestamp': ((item) => {return item < DATE.MAX && item > ((-1) * DATE.MAX)}),
         'status': ((item) => {return item in STATUS}),
         'location': ((item) => {return item in PROPERTY}),
-        'unit_number': ((item) => {return (/^[\w+]{1,32}$/).test(item)}),
+        'unit_number': ((item) => {return REGEX.UNIT_NUMBER.test(item)}),
         'email': ((item) => {return REGEX.EMAIL.test(item)}),
         'username': ((item) => {return REGEX.EMAIL.test(item)}),
         'user': ((item) => {return REGEX.EMAIL.test(item)}),
@@ -191,7 +193,8 @@ export const validate = (property, value) => {
         'units': ((item) => {
             let fail = false;
             for (let unit in item) {
-              fail = fail || !('number' in unit) || !('property' in unit)
+              fail = fail || (unit === undefined) || (unit === null)
+                || !('number' in unit) || !('property' in unit)
                 || !(unit.property in PROPERTY) || !validate('unit_number', unit.number);
             }
             return !fail;
@@ -199,8 +202,9 @@ export const validate = (property, value) => {
         'ticket_updates': ((item) => {
             let fail = false;
             for (let tUpdate in item) {
-                for (let key in TICKET_UPDATE_PROPERTIES) {
-                    fail = fail || !(key in tUpdate) || !validate(key, tUpdate[key]);
+                for (let key of TICKET_UPDATE_PROPERTIES) {
+                    fail = fail || (tUpdate === undefined) || (tUpdate === null)
+                    !(key in tUpdate) || !validate(key, tUpdate[key]);
                 }
             }
             return !fail;
@@ -208,7 +212,6 @@ export const validate = (property, value) => {
     };
 
     if (property in validator) {
-        console.log(property)
         valid = validator[property](value);
     }
 
