@@ -21,15 +21,15 @@ const SAMPLE_USER = [{
     first: "Peter",
     last: "Piper",
     units: [{
+      number: '1703',
       property: CONSTANTS.PROPERTY.WSP,
-      number: '1703'
     }],
     email: 'pick@peck.com',
     phone: '123-456-7890',
     contactPreference: CONSTANTS.PREFERRED_CONTACT.EMAIL,
     entryPermission: CONSTANTS.ENTRY_PERMISSION.ACC,
     type: CONSTANTS.USER_TYPE.RES,
-    note: "",
+    note: "Kids will be at home with sitter.",
     edit_mode: false,
     tickets: [],
     activate: true
@@ -39,15 +39,15 @@ const SAMPLE_USER = [{
     first: "Red",
     last: "Rover",
     units: [{
+      number: '1703',
       property: CONSTANTS.PROPERTY.WSP,
-      number: '1703'
     }],
     email: 'ima@yahoo.com',
     phone: '123-456-7890',
     contactPreference: CONSTANTS.PREFERRED_CONTACT.TXT,
     entryPermission: CONSTANTS.ENTRY_PERMISSION.NOT,
     type: CONSTANTS.USER_TYPE.MNT,
-    note: "",
+    note: "The dog that doesn't bark will bite.",
     edit_mode: false,
     tickets: [],
     activate: true
@@ -98,59 +98,64 @@ describe(`User`, () => {
       expect(tree).toMatchSnapshot();
     });
 
+    it(`renders the first test user correctly`, () => {
+      const tree = renderer.create(<User {...SAMPLE_USER[1]} />).toJSON();
+      expect(tree).toMatchSnapshot();
+    });
 
     describe(`created with default values`, () => {
       const { getByTestId, getByTitle, getByText, baseElement } = render(<User />);
 
-      let testElement = getByTestId(`user-name`);
+      let testElement = null;
       test(`renders User name`, () => {
+        testElement = getByTestId(`user-name`);
         expect(testElement).toBeEnabled();
       });
 
-      testElement = getByTestId(`user-first`);
       test(`renders User first name`, () => {
+        testElement = getByTestId(`user-first`);
         expect(testElement).toBeEnabled();
       });
 
-      testElement = getByTestId(`user-last`);
       test(`renders User last name`, () => {
+        testElement = getByTestId(`user-last`);
         expect(testElement).toBeEnabled();
       });
 
-      testElement = getByTestId(`user-email`);
       test(`renders User email`, () => {
+        testElement = getByTestId(`user-email`);
         expect(testElement).toBeEnabled();
       });
 
       // TODO: Figure out how to test to verify
       // this item is _not_ displayed without
       // crashing the test -.-
-      // testElement = getByTestId(`user-phone`);
-      test.skip(`does not render User phone number`, () => {
-        expect(testElement).toBeUndefined();
+      test(`renders User phone number`, () => {
+        testElement = getByTestId(`user-phone`);
+        expect(testElement).toBeEnabled();
       });
 
       // TODO: Figure out how to test this in a
       // way that doesn't break the test
-      // testElement = getByText(/\*/);
-      test.skip(`does not render User contact preferences`, () => {
-        expect(testElement).toBeUndefined();
-      });
+      // test(`does not render User contact preferences`, () => {
+      //   testElement = getByText(/\*/);
+      //   expect(testElement).toBeUndefined();
+      // });
 
-      testElement = getByTestId(`user-entry`);
       test(`renders User entry permissions`, () => {
+        testElement = getByTestId(`user-entry`);
         expect(testElement).toBeEnabled();
       });
 
       // TODO: figure out a method to test this
       // that doesn't break the test
-      // testElement = getByTestId(`user-note`);
       test.skip(`does not render User note`, () => {
+        testElement = getByTestId(`user-note`);
         expect(testElement).toBeUndefined();
       });
 
-      testElement = getByTestId(`edit-button`);
       test(`renders Edit Button`, () => {
+        testElement = getByTestId(`edit-button`);
         expect(testElement).toBeEnabled();
       });
 
@@ -165,60 +170,53 @@ describe(`User`, () => {
     // relevant properties & values for validation tests
     describe(`created with default values in edit_mode`, () => {
       const { getByPlaceholderText, getByTestId, getByTitle, getByText, baseElement } = render(<User edit_mode/>);
-      let testElement = getByPlaceholderText(`First Name`);
+      let testElement = null;
       test(`has the placeholder first name`, () => {
+        testElement = getByPlaceholderText(`First Name`);
         expect(testElement).toBeEnabled();
       });
 
-      testElement = getByPlaceholderText(`Last Name`);
       test(`has the placeholder last name`, () => {
+        testElement = getByPlaceholderText(`Last Name`);
         expect(testElement).toBeEnabled();
       });
 
-      // TODO: figure out how to test units assigned
-      // this way won't work
-      test.skip(`has the placeholder unit assigned`, () => {
-        expect(testElement).toHaveProperty(units);
-        expect(testElement.props.units).arrayContaining([`1703`]);
-        expect(testElement.props.units).toHaveLength(1);
-      });
-
-      testElement = getByPlaceholderText(`your.email@server.com`);
       test(`has the placeholder email address`, () => {
+        testElement = getByPlaceholderText(`your.email@server.com`);
         expect(testElement).toBeEnabled();
       });
 
-      testElement = getByPlaceholderText(`###-###-####`);
       test(`has the default phone number`, () => {
+        testElement = getByPlaceholderText(`###-###-####`);
         expect(testElement).toBeEnabled();
       });
 
       // TODO: figure out why this test is not working
       // the RCTPicker is not rendering the testId in
       // the render()???
-      // testElement = getByTestId(`user-contact`);
       test.skip(`has the default contact preference`, () => {
+        testElement = getByTestId(`user-contact`);
         expect(testElement).toBeEnabled();
       });
 
-      // testElement = getByTestId(`user-entry-w`);
       test.skip(`has the default entry permission`, () => {
+        testElement = getByTestId(`user-entry-w`);
         expect(testElement).toBeEnabled();
       });
 
       // TODO: figure out how to test this value
       // this isn't rendered and can't be tested this way
       // need an accessor somehow....
-      // testElement = getByPlaceholderText(CONSTANTS.USER_TYPE.RES);
       test.skip(`has the default user type`, () => {
+        testElement = getByPlaceholderText(CONSTANTS.USER_TYPE.RES);
         expect(testElement).toBeEnabled();
       });
 
       // TODO: why is this also having problems?
       // it shows up in the snapshot, and the error
       // message, so what is going on?
-      // testElement = getByTestId(`edit-note`);
-      test.skip(`has the default user note`, () => {
+      test(`has the default user note`, () => {
+        testElement = getByPlaceholderText(`Enter note here.`);
         expect(testElement).toBeEnabled();
       });
 
