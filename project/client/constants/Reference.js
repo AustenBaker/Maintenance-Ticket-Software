@@ -161,26 +161,26 @@ export const readableTimestamp = (timestamp = Date.now()) => {
 
 export const validate = (property, value) => {
     let valid = false;
-    let validator = [{
-        'ticket_number': ((item) => {return (/^[\d+]{1,32}$/).exec(item)}),
+    let validator = {
+        'ticket_number': ((item) => {return (/^[\d+]{1,32}$/).test(item)}),
         'timestamp': ((item) => {return item < DATE.MAX && item > ((-1) * DATE.MAX)}),
         'status': ((item) => {return item in STATUS}),
         'location': ((item) => {return item in PROPERTY}),
-        'unit_number': ((item) => {return (/^[\w+]{1,32}$/).exec(item)}),
-        'email': ((item) => {return REGEX.EMAIL.exec(item)}),
-        'username': ((item) => {return REGEX.EMAIL.exec(item)}),
-        'user': ((item) => {return REGEX.EMAIL.exec(item)}),
+        'unit_number': ((item) => {return (/^[\w+]{1,32}$/).test(item)}),
+        'email': ((item) => {return REGEX.EMAIL.test(item)}),
+        'username': ((item) => {return REGEX.EMAIL.test(item)}),
+        'user': ((item) => {return REGEX.EMAIL.test(item)}),
         'emergency': ((item) => {return item in [true, false]}),
         'activate': ((item) => {return item in [true, false]}),
         'edit_mode': ((item) => {return item in [true, false]}),
-        'ticket_issue': ((item) => {return REGEX.MEMO.exec(item)}),
-        'note': ((item) => {return REGEX.MEMO.exec(item)}),
-        'details': ((item) => {return REGEX.MEMO.exec(item)}),
-        'first': ((item) => {return REGEX.NAME.exec(item)}),
-        'last': ((item) => {return REGEX.NAME.exec(item)}),
-        'ticket_issue_title': ((item) => {return REGEX.NAME.exec(item)}),
-        'password': ((item) => {return REGEX.PASSWORD.exec(item)}),
-        'phone': ((item) => {return REGEX.PHONE.exec(item)}),
+        'ticket_issue': ((item) => {return REGEX.MEMO.test(item)}),
+        'note': ((item) => {return REGEX.MEMO.test(item)}),
+        'details': ((item) => {return REGEX.MEMO.test(item)}),
+        'first': ((item) => {return REGEX.NAME.test(item)}),
+        'last': ((item) => {return REGEX.NAME.test(item)}),
+        'ticket_issue_title': ((item) => {return REGEX.NAME.test(item)}),
+        'password': ((item) => {return REGEX.PASSWORD.test(item)}),
+        'phone': ((item) => {return REGEX.PHONE.test(item)}),
         'type': ((item) => {return item in USER_TYPE}),
         'entryPermission': ((item) => {return item in ENTRY_PERMISSION}),
         'contactPreference': ((item) => {return item in PREFERRED_CONTACT}),
@@ -202,11 +202,11 @@ export const validate = (property, value) => {
             }
             return !fail;
         }),
-    }];
+    };
 
-    if (property in validator[0]) {
+    if (property in validator) {
         console.log(property)
-        valid = validator[0][property](value);
+        valid = validator[property](value);
     }
 
     return valid;
