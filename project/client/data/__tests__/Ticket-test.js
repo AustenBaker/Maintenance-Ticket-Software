@@ -12,15 +12,16 @@ jest.mock('expo', () => ({
 }));
 
 //renders ticket screen
-test('renders display view correctly', () => {
-    const tree = renderer.create(<Ticket timestamp={0} />).toJSON();
-    expect(tree).toMatchSnapshot();
+test('renders editTicket() view correctly', () => {
+  const ticket_view_mode = 1;
+  const tree = renderer.create(<Ticket ticket_view_mode={ticket_view_mode}/>).toJSON();
+  expect(tree).toMatchSnapshot();
 });
 
-//renders ticket edit screen
-test('renders ticket edit view correctly', () => {
-    const tree = renderer.create(<Ticket ticket_edit_mode timestamp={0} />).toJSON();
-    expect(tree).toMatchSnapshot();
+test('renders ticketList() view correctly', () => {
+  const ticket_view_mode = 2;
+  const tree = renderer.create(<Ticket ticket_view_mode={ticket_view_mode}/>).toJSON();
+  expect(tree).toMatchSnapshot();
 });
 
 describe(`The following are enabled from user perspective: `, () => {
