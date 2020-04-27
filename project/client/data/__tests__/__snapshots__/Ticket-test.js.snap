@@ -11,7 +11,6 @@ exports[`renders display view correctly 1`] = `
         "marginBottom": 20,
         "marginLeft": "10%",
         "marginTop": 20,
-        "textAlign": "left",
         "width": "80%",
       }
     }
@@ -78,8 +77,8 @@ exports[`renders display view correctly 1`] = `
         }
       }
     >
-      Timestamp: 
-      
+      Submitted: 
+      12/31/1969 6:00:00 PM
     </Text>
   </View>
   <View
@@ -198,7 +197,6 @@ exports[`renders ticket edit view correctly 1`] = `
         "marginBottom": 20,
         "marginLeft": "10%",
         "marginTop": 20,
-        "textAlign": "left",
         "width": "80%",
       }
     }
@@ -265,8 +263,8 @@ exports[`renders ticket edit view correctly 1`] = `
         }
       }
     >
-      Timestamp: 
-      
+      Submitted: 
+      12/31/1969 6:00:00 PM
     </Text>
   </View>
   <View

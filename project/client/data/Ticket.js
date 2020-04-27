@@ -111,7 +111,7 @@ export default class Ticket extends React.Component{
           </Text>
 
           <Text style={styles.ticketLine4}>
-            Timestamp: {this.state.timestamp}
+            Submitted: {CONSTANTS.readableTimestamp(this.state.timestamp)}
           </Text>
         </View>
 
@@ -165,7 +165,7 @@ export default class Ticket extends React.Component{
             <Text>
               Updated:
               {'  '}
-              {update.timestamp.toString()}
+              {CONSTANTS.readableTimestamp(update.timestamp)}
             </Text>
             <Text>
               By:
@@ -199,7 +199,7 @@ export default class Ticket extends React.Component{
           <Text>
             Submitted:
             {'  '}
-            {this.state.timestamp.toString()}
+            {CONSTANTS.readableTimestamp(this.state.timestamp)}
           </Text>
           <Text>
             By:
@@ -301,7 +301,7 @@ export default class Ticket extends React.Component{
                   {' '}
                   {ticket.ticket_issue_title}
                   {' '}
-                  {ticket.timestamp}
+                  {CONSTANTS.readableTimestamp(ticket.timestamp)}
                 </Text>
                 <Button
                   id={ticket.ticket_number}
@@ -601,7 +601,7 @@ const styles = StyleSheet.create({
   },
 
   // simpler color alternation:
-  
+
   ticketColorBarRed: {
       flex: 1,
       color: 'red'

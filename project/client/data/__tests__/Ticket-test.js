@@ -13,13 +13,13 @@ jest.mock('expo', () => ({
 
 //renders ticket screen
 test('renders display view correctly', () => {
-    const tree = renderer.create(<Ticket />).toJSON();
+    const tree = renderer.create(<Ticket timestamp={0} />).toJSON();
     expect(tree).toMatchSnapshot();
 });
 
 //renders ticket edit screen
 test('renders ticket edit view correctly', () => {
-    const tree = renderer.create(<Ticket ticket_edit_mode />).toJSON();
+    const tree = renderer.create(<Ticket ticket_edit_mode timestamp={0} />).toJSON();
     expect(tree).toMatchSnapshot();
 });
 
@@ -44,7 +44,7 @@ describe(`The following are enabled from user perspective: `, () => {
   test.skip('location', () => {
     expect(getByTestId(`location`)).toBeEnabled();
   });
-  
+
 
   //add things
 });
