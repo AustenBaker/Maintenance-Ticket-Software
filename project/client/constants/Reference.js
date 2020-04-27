@@ -3,12 +3,12 @@ export const REGEX = {
 
     // name pattern: up to 32 ASCII alphabetical characters
     // also allow dash, period and space connectors
-    NAME: /^([a-z]|[A-Z]|[-\. ]){2,32}$/gi,
+    NAME: /^([a-zA-Z]|[-\. ]){2,32}$/gi,
 
     // email pattern:  some(.name)*@site.com
     // where some name & site are any combination of letters
     // and numbers, and the site ends in a 2-3 letter/digit extension
-    EMAIL: /^(([a-z]|[A-Z]|[0-9])+([\.-]{1}([a-z]|[A-Z]|[0-9])+)*[@]{1}([a-z]|[A-Z]|[0-9])+([\.-]{1}([a-z]|[A-Z]|[0-9])+)*\.{1}([a-z]|[A-Z]|[0-9]){2,5}){6,32}$/gi,
+    EMAIL: /^(([a-zA-Z0-9])+([\.-]{1}([a-zA-Z0-9])+)*[@]{1}([a-zA-Z0-9])+([\.-]{1}([a-zA-Z0-9])+)*\.{1}([a-zA-Z0-9]){2,5}){6,32}$/gi,
 
     // phone pattern:  ###-###-#### where # is a digit 0-9
     PHONE: /^\(?([0-9]{3})\)?[-\. ]?([0-9]{3})[-\. ]?([0-9]{4})$/gi,
@@ -16,17 +16,17 @@ export const REGEX = {
     // password pattern: a-zA-Z0-9_-^@$!%*#?&
     // allow use of: uppercase or lowercase letter, number, punctuation
     // length of 8-64 characters
-    PASSWORD: /^([a-z]|[A-Z]|[0-9]|[-!@#\$%\^&\*\(\)_\+=]){8,64}$/g,
+    PASSWORD: /^([a-zA-Z0-9]|[-!@#\$%\^&\*\(\)_\+=]){8,64}$/g,
 
 
     // memo pattern: a-zA-Z0-9_-+=!?.,;:()&
     // allows any combination of letters, digits and select punctuation
     // length up to 255 characters
-    MEMO: /^(([a-z]|[A-Z]|[0-9])*([-\+=!\?\.\&,;:\(\)&])?){,255}$/gi,
+    MEMO: /^([a-zA-Z0-9]|[-!@#\$%\^&\*\(\)_\+=\?\.,;: ]){0,255}$/gi,
 
     // unit number pattern: a-zA-Z0-9_-
     // allows any combination of ASCII alphabetic characters, digits, underline and dashes
-    UNIT_NUMBER: /^([a-z]|[A-Z]|[0-9]|[- ]){1,32}$/gi,
+    UNIT_NUMBER: /^([a-zA-Z0-9]|[- ]){1,32}$/gi,
 };
 
 // User property list
