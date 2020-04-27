@@ -5,33 +5,63 @@ var reference = require('../Reference');
 var expect = require('chai').expect;
 
 // jest --verbose --coverage
-/*testProperty: {
-    'ticket_number': 12345678,
-    'timestamp': 0,
-    'status': reference.STATUS.OPEN,
-    'location': reference.PROPERTY.LAA,
-    'unit_number': 200,
-    'email': "kyle@gmail.com",
-    'username': "golfKid",
-    'user': reference.USER_TYPE.RES,
-    'emergency': reference.EMERGENCY.NO,
-    'activate': true,
-    'edit_mode': "AHHH",
-    'ticket_issue': "Door is locked",
-    'note': "please help",
-    'details': "I am stuck outside",
-    'first': "Kyle",
-    'last': "Schneider",
-    'ticket_issue_title': "Locked out",
-    'password': "topSecret",
-    'phone': 2624739108,
-    'type': reference.USER_TYPE.RES,
-    'entryPermission': "any",
-    'contactPreference': "text",
-    'ticket_view_mode': ((item) => {return item in TICKET_VIEW}),
-    'units': [],
-    'ticket_updates': []
-}*/
+const testProperty= {
+  good: [
+    ['ticket_number', 12345678],
+    ['timestamp', 0],
+    ['status', 'Open ticket'],
+    ['location', 'Lincoln Avenue Apartments'],
+    ['unit_number', '200'],
+    ['email', "kyle@gmail.com"],
+    ['username', "golfKid"],
+    ['user', 'kyle@gmail.com'],
+    ['emergency', false],
+    ['activate', true],
+    ['edit_mode', true],
+    ['ticket_issue', "Door is locked"],
+    ['note', "please help"],
+    ['details', "I am stuck outside"],
+    ['first', "Kyle"],
+    ['last', "Schneider"],
+    ['ticket_issue_title', "Locked out"],
+    ['password', "topSecret"],
+    ['phone', '2624739108'],
+    ['type', 'resident'],
+    ['entryPermission', 'accompanied'],
+    ['contactPreference', "text"],
+    ['ticket_view_mode', 0],
+    ['units', []],
+    ['ticket_updates', []]
+  ],
+  bad: [
+    ['ticket_number', 'cat'],
+    ['timestamp', 'blue'],
+    ['status', 'green'],
+    ['location', 'window'],
+    ['unit_number', '@#$'],
+    ['email', "thewind"],
+    ['username', "57"],
+    ['user', 'gout'],
+    ['emergency', 'NO'],
+    ['activate', 'please'],
+    ['edit_mode', 'free'],
+    ['ticket_issue', "<script />"],
+    ['note', "<script />"],
+    ['details', "<script />"],
+    ['first', "1"],
+    ['last', "2"],
+    ['ticket_issue_title', "<script />"],
+    ['password', "47"],
+    ['phone', 'bluemoon37'],
+    ['type', 'KING'],
+    ['entryPermission', 'Pay tribute'],
+    ['contactPreference', "full body"],
+    ['ticket_view_mode', 47],
+    ['units', ['green']],
+    ['ticket_updates', ['red','blue','purple']]
+  ],
+};
+
 describe("Constants", function() {
     describe('Reference',function() {
 
@@ -76,6 +106,45 @@ describe("Constants", function() {
             let res = reference.validate('phone', '123-456-7890');
             expect(res).be.true;
         })
+    })
+
+
+    describe('Individual Validate functions',function() {
+        ///// Validate functions
+        test.each(testProperty)("validate (%p)", (property,value) => {
+            let res = reference.validate(property, value)
+            console.log(res)
+            expect(res).equal(true)
+        })
+/*
+        it('validate (ticket_number)', function(){
+            let res = reference.validate('ticket_number', '618684231')
+            console.log(res)
+            expect(res).equal(true)
+        })
+
+        it('validate ()', function(){
+            let res = reference.validate('', '')
+            console.log(res)
+            expect(res).equal(true)
+        })
+
+        it('validate ()', function(){
+            let res = reference.validate('', '')
+            console.log(res)
+            expect(res).equal(true)
+        })
+
+        it('validate (password type)', function(){
+            let res = reference.validate('password', 'Te$t1')
+            expect(res).equal(true)
+        })
+
+        it('validate (resident type)', function(){
+            let res = reference.validate('type', 'RES')
+            expect(res).equal(true)
+        })
+        */
 
         it(`validate phone number INVALID`, () => {
             let res = reference.validate('phone', 'hello');
@@ -87,7 +156,6 @@ describe("Constants", function() {
             expect(res).be.true;
         })
     })
-
 
     describe('Colors',function() {
         it.skip("Future Development", function(){

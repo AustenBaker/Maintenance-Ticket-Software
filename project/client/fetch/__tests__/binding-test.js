@@ -37,7 +37,7 @@ describe("Frontend to backend bindings", function() {
             expect(res.first).to.be.a('string')
         })
 
-        it.skip('fetch POST /account/status', async function(){
+        it('fetch POST /account/status', async function(){
             const res = await userFetch.checkLoginStatus({})
             expect(res.loggedIn).equal(true)
         })
@@ -80,14 +80,7 @@ describe("Frontend to backend bindings", function() {
 
     })
 
-    describe('2. Property',function() { 
-        it.skip("Future Developement", function(){
-            
-        })
-        
-    })
-
-    describe('3. Ticket', function() {
+    describe('2. Ticket', function() {
         it('fetch POST /ticket/create', async function(){
             const res = await ticketFetch.submit({
                 email: "kyle2@gmail.com",
@@ -144,7 +137,7 @@ describe("Frontend to backend bindings", function() {
         })
     })
 
-    describe('4. Clean up created entries', function() {
+    describe('3. Clean up created entries', function() {
         //delete accounts and try to update no existant stuff
         it('fetch DELETE /account/delete', async function(){
             const res = await userFetch.deleteAccount("golfkid")

@@ -9,6 +9,7 @@ import PropertyScreen from '../screens/PropertyScreen';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { colorScheme } from '../stores';
 import Colors from '../constants/Colors';
+import { checkLoginStatus } from '../fetch/user';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Tickets';
@@ -24,6 +25,14 @@ export default function BottomTabNavigator({ navigation, route }) {
   // currently active tab. Learn more in the documentation:
   // https://reactnavigation.org/docs/en/screen-options-resolution.html
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+
+  // Checks for login status
+  React.useEffect(() => {
+    (async () => {
+      const { loggedIn } = await checkLoginStatus();
+      if (!loggedIn) navigation.replace('Root');
+    })();
+  }, []);
 
   return (
     <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME} tabBarOptions={{

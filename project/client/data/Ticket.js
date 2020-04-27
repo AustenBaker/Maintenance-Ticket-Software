@@ -526,7 +526,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 20,
     backgroundColor: 'white',
-    textAlign: 'left',
+    //textAlign: 'left',
     borderRadius: 12,
 
   },

@@ -164,7 +164,6 @@ export const readableTimestamp = (timestamp = Date.now()) => {
  */
 export const validate = (property, value) => {
     let valid = false;
-    console.log(`got here:` + valid);
     let validator = {
         'ticket_number': ((item) => {return (/^[\d+]{1,32}$/).test(item)}),
         'timestamp': ((item) => {return item < DATE.MAX && item > ((-1) * DATE.MAX)}),
@@ -209,6 +208,7 @@ export const validate = (property, value) => {
     };
 
     if (property in validator) {
+        console.log(property)
         valid = validator[property](value);
     }
 
