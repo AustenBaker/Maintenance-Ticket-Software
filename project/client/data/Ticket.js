@@ -96,7 +96,6 @@ export default class Ticket extends React.Component{
     //************TicketDetailsView*****************
     content = (
       <View>
-
         <View testID="ticketContainer" style={styles.ticketDetailsContainer}>
           <Text style={styles.ticketDetailsHeader}>
             Location: Apt. {this.state.unit_number}, {this.state.location} {"\n"}
@@ -135,14 +134,15 @@ export default class Ticket extends React.Component{
             accessibilityLabel="Show Ticket List Button"
           />
         </View>
-
       </View>
     );
     return content;
   }
 
+
   /**
    * Generate a simple Text display for an individual Ticket
+   * This will be used to list tickets
    *
    * @param {Ticket} ticket
    * @param {Boolean} colorEmphasis
@@ -227,6 +227,22 @@ export default class Ticket extends React.Component{
     return content;
   }
 
+
+  //create a ticket view of each ticket for ticket list
+  simpleTicket = () => {
+    var content;
+    content = (
+      <View style={styles.simpleTicketContainer}>
+        <Text>
+          This is essential ticket info
+          Location: Apt. {this.state.unit_number}, {this.state.location} {"\n"}
+        </Text>
+     </View>
+    );
+    return content;
+  }
+
+ 
   //generate ticket list using FlatList
   /**
    * @param  {Object} filter
@@ -234,7 +250,7 @@ export default class Ticket extends React.Component{
    *
    * @return React FlatList display of a list of tickets
    */
-  generateTicketList = (tickets = [], filter = {type: 'user', email: 'user@email.com', unit_number: 'this_user_unit'}) => {
+  generateTicketList =  (tickets = [], filter = {type: 'user', email: 'user@email.com', unit_number: 'this_user_unit'}) => {
     // TODO: grab active user default values from store ^^
     var content;
     let ticketList = getTicketsFromEmail(userStore.email);
@@ -282,10 +298,20 @@ export default class Ticket extends React.Component{
       }
     }
 
+    //creates tickets for list view
+    var simpleTickets = [];
+    for(let i=0; i<8; i++){
+      simpleTickets.push(
+        this.simpleTicket()
+      );
+    }
+
     content = (
       <View>
-        <View style={styles.ticketListContainer}>
-          <FlatList
+        <ScrollView>
+          <View style={styles.ticketListContainer}>
+           {simpleTickets}
+           <FlatList
             data={ticketList}
             renderItem={({ticket}) => (
               <View
@@ -316,14 +342,15 @@ export default class Ticket extends React.Component{
             keyExtractor={ticket => ticket.ticket_number}
             extraData={this.state.ticket_view_mode}
           />
-        </View>
+          </View>
+        </ScrollView>
+
         <View style={styles.submitTicketUpdateButton}>
           <Button
             title="Go back to detail view"
             onPress={() => {
               this.setState({ticket_view_mode: CONSTANTS.TICKET_VIEW.DETAIL});
             }}
-
           />
         </View>
       </View>
@@ -353,29 +380,6 @@ export default class Ticket extends React.Component{
       <View>
 
         <Picker mode="dropdown"
-          selectedValue={ticket.location}
-          style={styles.editTicketPicker}
-          onValueChange={
-            (itemValue, itemIndex) => this.setState({location: itemValue})
-          }
-        >
-          <Picker.Item label={CONSTANTS.PROPERTY.WSP} value={CONSTANTS.PROPERTY.WSP} />
-          <Picker.Item label={CONSTANTS.PROPERTY.RH}  value={CONSTANTS.PROPERTY.RH} />
-          <Picker.Item label={CONSTANTS.PROPERTY.SA}  value={CONSTANTS.PROPERTY.SA} />
-          <Picker.Item label={CONSTANTS.PROPERTY.LAA} value={CONSTANTS.PROPERTY.LAA} />
-          <Picker.Item label={CONSTANTS.PROPERTY.TAW} value={CONSTANTS.PROPERTY.TAW} />
-        </Picker>
-
-        <TextInput
-          placeholder="Unit Number (type in box)"
-          style={styles.editTicketTextInput}
-          maxLength={5}
-          onChangeText={
-            input => this.setState({unit_number: input})
-          }
-        />
-
-        <Picker mode="dropdown"
           selectedValue={ticket.status}
           style={styles.editTicketPicker}
           onValueChange={
@@ -387,7 +391,6 @@ export default class Ticket extends React.Component{
         </Picker>
 
         <Picker mode="dropdown"
-          selectedValue={ticket.emergency}
           style={styles.editTicketPicker}
           onValueChange={
             (itemValue, itemIndex) => this.setState({emergency: itemValue})
@@ -414,18 +417,6 @@ export default class Ticket extends React.Component{
     return content;
   }
 
-
-  /**
-   * Create ticket method
-   * User selects which unit (Picker)
-   * Checkbox with common problems & other textbox
-   * emergency level (radio button)
-   * If switched to emergency, display warning
-   */
-  createTicket = () => {
-
-  }
-
   //returns a ticket
   getTicket = () => {
     let ticket = {
@@ -440,28 +431,6 @@ export default class Ticket extends React.Component{
       ticket_updates: [...this.state.ticket_updates]
     }
     return ticket;
-  }
-
-  /**
-   * boolean change ticket status
-   * note: Do i need this if can change
-   * with picker in edit ticket view
-   */
-  closeTicket = (props) => {
-    let success = false;
-    this.setState({status: CONSTANTS.STATUS.CLOSED});
-    if(this.state.status === CONSTANTS.STATUS.CLOSED){
-      success = true;
-    }
-    return success;
-  }
-
-  /**
-   * Delete ticket method
-   * for management and maint accounts
-   */
-  deleteTicket = () => {
-
   }
 
   render = () => {
@@ -512,19 +481,15 @@ const styles = StyleSheet.create({
   },
   editTicketButton: {
     width: 400,
-    textAlign: 'right',
-    //alignSelf: 'right',
   },
   generateTicketListButton: {
     width: 400,
-    textAlign: 'left'
   },
 
   //edit view screen styles
   editTicketPicker: {
     height: 50,
     width: '90%',
-    fontSize: 20,
     margin: 10,
     alignSelf: 'center',
   },
@@ -540,6 +505,16 @@ const styles = StyleSheet.create({
     width: 400,
     alignSelf: 'center',
 
+  },
+
+  //simple ticket view styles
+  simpleTicketContainer: {
+    height: 200,
+    width: '90%',
+    marginLeft: '5%',
+    padding: 10,
+    margin: 10,
+    backgroundColor: 'white',
   },
 
   //ticket list styles
