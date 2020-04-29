@@ -42,7 +42,7 @@ export default class Ticket extends React.Component{
     unit_number: "316",
     email: "email@email.com",
     emergency: false,
-    ticket_view_mode: 0,
+    ticket_view_mode: CONSTANTS.TICKET_VIEW.DETAIL,
     ticket_updates: [] // {timestamp,user,data}
   }
 
@@ -89,39 +89,40 @@ export default class Ticket extends React.Component{
     var ticket_number = "";
     ticket_number = (
       <Text testID="ticket_number">
-        Ticket ID #{this.state.ticket_number}
+        Ticket ID: {this.state.ticket_number}
       </Text>
     );
 
-    //ticket details content
+    //************TicketDetailsView*****************
     content = (
       <View>
 
-        <View testID="ticketContainer" style={styles.ticketContainer}>
-          <Text style={styles.ticketLine1}>
+        <View testID="ticketContainer" style={styles.ticketDetailsContainer}>
+          <Text style={styles.ticketDetailsHeader}>
             Location: Apt. {this.state.unit_number}, {this.state.location} {"\n"}
           </Text>
 
-          <Text style={styles.ticketLine2}>
-            {status}  |  {emergency}  |{"\n"}
+          <Text style={styles.ticketDetailsBody}>
+            Title: {this.state.ticket_issue_title} {"\n"}
+            {status} {"\n"}
+            {emergency} {"\n"}
+            Issue: {this.state.ticket_issue} {"\n"}
+            {ticket_number} {"\n"}
           </Text>
 
-          <Text style={styles.ticketLine3}>
-            {ticket_number}
-          </Text>
-
-          <Text style={styles.ticketLine4}>
-            Submitted: {CONSTANTS.readableTimestamp(this.state.timestamp)}
+          <Text style={styles.ticketDetailsFooter}>
+            Submitted: {CONSTANTS.readableTimestamp(this.state.timestamp)}{"\n"}
+            Email: {this.state.email} {"\n"}
           </Text>
         </View>
 
         <View style={styles.editTicketButton}>
           <Button
-            title="Edit Ticket"
+            title="Update Ticket"
             onPress={() => {
-              this.setState({ticket_view_mode: 1});
+              this.setState({ticket_view_mode: CONSTANTS.TICKET_VIEW.UPDATE});
             }}
-            accessibilityLabel="Edit Ticket Button"
+            accessibilityLabel="Update Ticket Button"
           />
         </View>
 
@@ -129,9 +130,9 @@ export default class Ticket extends React.Component{
           <Button
             title="Show Ticket List"
             onPress={() => {
-              this.setState({ticket_view_mode: 2});
+              this.setState({ticket_view_mode: CONSTANTS.TICKET_VIEW.LIST});
             }}
-            accessibilityLabel="Edit Ticket Button"
+            accessibilityLabel="Show Ticket List Button"
           />
         </View>
 
@@ -320,7 +321,7 @@ export default class Ticket extends React.Component{
           <Button
             title="Go back to detail view"
             onPress={() => {
-              this.setState({ticket_view_mode: 0});
+              this.setState({ticket_view_mode: CONSTANTS.TICKET_VIEW.DETAIL});
             }}
 
           />
@@ -328,39 +329,6 @@ export default class Ticket extends React.Component{
       </View>
     );
     return content;
-  }
-
-
-  /**
-   * This method updates ticket information
-   *
-   * @param ticket_number Ticket number/id
-   * @param emergency Ticket level
-   * @param unit Ticket unit number
-   * @param status Ticket status
-   *
-   * @returns true if updated correctly
-   */
-  update = (props) => {
-    var updated = false;
-    var checked = [];
-    if('ticket_number' in props){
-      checked.push({['ticket_number']: props.ticket_number});
-    }
-    if('status' in props && props.status in CONSTANTS.STATUS){
-	    checked.push({['status']: props.status});
-    }
-    if('location' in props && props.location in CONSTANTS.PROPERTY){
-      checked.push({['location']: props.location});
-    }
-    if('emergency' in props){
-	    checked.push({['emergency']: props.emergency});
-    }
-    if('unit_number' in props){
-	    checked.push({['unit_number']: props.unit_number});
-    }
-    //TODO: update server state and this.setState
-    return updated;
   }
 
   /**
@@ -374,7 +342,7 @@ export default class Ticket extends React.Component{
    * Emergency(Picker YES NO)
    * Ticket Status(Picker Open Closed)
    */
-  editTicket = () => {
+  updateTicket = () => {
     //content for return
     var content;
 
@@ -433,7 +401,7 @@ export default class Ticket extends React.Component{
           <Button
             title="Submit Ticket Update"
             onPress={() => {
-              this.setState({ticket_view_mode: 0});
+              this.setState({ticket_view_mode: CONSTANTS.TICKET_VIEW.DETAIL});
             }}
             accessibilityLabel="Submit Ticket Update Button"
           />
@@ -500,16 +468,16 @@ export default class Ticket extends React.Component{
     var content;
 
     //0 == display single ticket details
-    if (this.state.ticket_view_mode === 0) {
+    if (this.state.ticket_view_mode === CONSTANTS.TICKET_VIEW.DETAIL) {
       content = this.displayTicketDetails();
     }
 
     //1 === ticket edit
-    else if (this.state.ticket_view_mode === 1){
-      content = this.editTicket();
+    else if (this.state.ticket_view_mode === CONSTANTS.TICKET_VIEW.UPDATE){
+      content = this.updateTicket();
     }
     //2 === ticketlist
-    else if (this.state.ticket_view_mode === 2){
+    else if (this.state.ticket_view_mode === CONSTANTS.TICKET_VIEW.LIST){
       content = this.generateTicketList();
     }
     return (content);
@@ -518,9 +486,9 @@ export default class Ticket extends React.Component{
 }
 
 const styles = StyleSheet.create({
-  //ticket view screen styles
-  ticketContainer: {
-    height: 120,
+  //ticket deatisl view screen styles
+  ticketDetailsContainer: {
+    height: '100%',
     width: '80%',
     marginLeft: '10%',
     marginBottom: 20,
@@ -528,32 +496,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     //textAlign: 'left',
     borderRadius: 12,
-
   },
-  ticketLine1: {
+  ticketDetailsHeader: {
     fontWeight: 'bold',
     fontSize: 20,
   },
-  ticketLine2: {
-    fontSize: 18,
+  ticketDetailsBody: {
+    fontSize: 16,
+    lineHeight: 32,
   },
-  ticketLine3: {
+  ticketDetailsFooter: {
     fontSize: 14,
-    textAlign: 'right',
-  },
-  ticketLine4: {
-    fontSize: 14,
-    textAlign: 'right',
+    lineHeight: 16,
+    textAlign: 'right'
   },
   editTicketButton: {
     width: 400,
-    alignSelf: 'auto',
+    textAlign: 'right',
     //alignSelf: 'right',
   },
   generateTicketListButton: {
     width: 400,
-    alignSelf: 'auto'
-    //alignSelf: 'left'
+    textAlign: 'left'
   },
 
   //edit view screen styles
@@ -569,7 +533,6 @@ const styles = StyleSheet.create({
     marginRight: '5%',
     height: 50,
     fontSize: 20,
-    //placeholderTextColor: 'grey',
     color: 'black',
     backgroundColor: 'white',
   },
