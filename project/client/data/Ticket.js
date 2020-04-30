@@ -232,7 +232,7 @@ export default class Ticket extends React.Component{
   simpleTicket = () => {
     var content;
     content = (
-      <View style={styles.simpleTicketContainer}>
+      <View style={styles.simpleTicketContainer} key={this.state.ticket_number}>
         <Text>
           This is essential ticket info
           Location: Apt. {this.state.unit_number}, {this.state.location} {"\n"}
@@ -242,7 +242,7 @@ export default class Ticket extends React.Component{
     return content;
   }
 
- 
+
   //generate ticket list using FlatList
   /**
    * @param  {Object} filter
