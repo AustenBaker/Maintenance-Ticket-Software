@@ -150,7 +150,6 @@ export default class Ticket extends React.Component{
    * @return React element display for ticket
    */
   ticketDisplay = (ticket, colorEmphasis = false) => {
-    let details = [];
     let emergency = ''
     if (this.state.emergency) {
       emergency = (
@@ -158,28 +157,25 @@ export default class Ticket extends React.Component{
         Maintenance Emergency!
       </Text>);
     }
-    for (let update of this.state.ticket_updates) {
-      // TODO: if timestamp is not a string, add toString()
-      details.push(
-        <View>
+    let details = this.state.ticket_updates.map((update) => {(
+      <View key={update.timestamp}>
+        <Text>
           <Text>
-            <Text>
-              Updated:
-              {'  '}
-              {CONSTANTS.readableTimestamp(update.timestamp)}
-            </Text>
-            <Text>
-              By:
-              {'  '}
-              {update.user}
-            </Text>
+            Updated:
+            {'  '}
+            {CONSTANTS.readableTimestamp(update.timestamp)}
           </Text>
           <Text>
-            {update.data}
+            By:
+            {'  '}
+            {update.userEmail}
           </Text>
-        </View>
-      );
-    }
+        </Text>
+        <Text>
+          {update.data}
+        </Text>
+      </View>
+    )});
 
     if (colorEmphasis === true) {let viewStyle = styles.ticketColorBarRed }
     else { let viewStyle = styles.ticketColorBarRed }
@@ -234,8 +230,12 @@ export default class Ticket extends React.Component{
     content = (
       <View style={styles.simpleTicketContainer} key={this.state.ticket_number}>
         <Text>
-          This is essential ticket info
-          Location: Apt. {this.state.unit_number}, {this.state.location} {"\n"}
+          Ticket #{this.state.ticket_number}
+          {' | '}
+          Location: {this.state.unit_number} {this.state.location}
+          {' | '}
+          Issue: {this.state.ticket_issue_title}
+          {this.state.emergency ? " | >>> Emergency! <<<" : null}
         </Text>
      </View>
     );
@@ -300,6 +300,11 @@ export default class Ticket extends React.Component{
 
     //creates tickets for list view
     var simpleTickets = [];
+    /**
+     * for (let ticket in ticketList) {
+     *   simpleTickets.push(this.simpleTicket(ticket));
+     * }
+     */
     for(let i=0; i<8; i++){
       simpleTickets.push(
         this.simpleTicket()
@@ -455,7 +460,7 @@ export default class Ticket extends React.Component{
 }
 
 const styles = StyleSheet.create({
-  //ticket deatisl view screen styles
+  //ticket details view screen styles
   ticketDetailsContainer: {
     height: '100%',
     width: '80%',
@@ -463,7 +468,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 20,
     backgroundColor: 'white',
-    //textAlign: 'left',
+    //textAlign: 'left', // invalid parameter  alignContent: 'flex-start',
     borderRadius: 12,
   },
   ticketDetailsHeader: {

@@ -15,7 +15,7 @@ export default class TicketUpdate extends React.Component {
     }
 
     static defaultProps = {
-        user: 'none',
+        userEmail: 'none',
         timestamp: Date.now(),
         details: 'No changes.',
         edit_mode: false
@@ -56,7 +56,7 @@ export default class TicketUpdate extends React.Component {
                   label='Update Ticket'
                   onPress={() => this.setState({
                       timestamp: Date.now(),
-                      user: userStore.email,
+                      userEmail: userStore.email,
                       edit_mode: false,
                     }), () => {
                         this.updateTicket();
