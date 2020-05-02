@@ -41,6 +41,7 @@
     const PATH = 'http://<LAN_Address_Of_Your_Machine>:3001';  // http://192.168.1.100:3000, for example
     ```
     This ensures proper client/server communication. If simulating locally in a browser, ignore this step.
+1. You can create a user in register. Alternatively, you can use our test user with username: `frontend`, password: `12345678`
 
 ## Running test suites and code coverage
 1. Navigate to `./project/client`. Do:
