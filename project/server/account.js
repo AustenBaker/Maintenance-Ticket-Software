@@ -14,7 +14,7 @@ router.post('/status', (req, res) => {
         const { first, last, units, username, email, phone, contactPreference, entryPermission, type, note, tickets, activate } = ssn;
         
         const loggedIn = true;
-        res.json({ loggedIn, first, last, units, username, email, phone, contactPreference, entryPermission, type, note, tickets, activate });
+        return res.json({ loggedIn, first, last, units, username, email, phone, contactPreference, entryPermission, type, note, tickets, activate });
     }
 });
 

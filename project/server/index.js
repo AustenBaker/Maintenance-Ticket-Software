@@ -45,12 +45,12 @@ app.use(session({
     cookie: {
         secure: settings.secure,
         httpOnly: true,
-        maxAge: 3600 * 1000, // 1 hour,
+        maxAge: 3600 * 24 * 7 * 1000, // 7 days,
     },
-    // store: new MongoStore({
-    //     mongooseConnection: mongoose.connection,
-    //     ttl: 3600
-    // })
+    store: new MongoStore({
+        mongooseConnection: mongoose.connection,
+        ttl: 3600 * 24 * 7
+    })
 }));
 
 // Home
@@ -58,10 +58,11 @@ app.get('/', (req, res) => { // jshint ignore:line
     res.status(200).end('Hello world or whatever')
 });
 
-app.use((req, res, next) => {
-    console.log(req.session);
-    next();
-});
+// app.use((req, res, next) => {
+//     console.log(req.session);
+//     next();
+// });
+
 
 ////////// API ENDPOINTS //////////
 //// account.js endpoints

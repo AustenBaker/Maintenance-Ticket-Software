@@ -186,6 +186,136 @@ exports[`renders display view correctly 1`] = `
 </View>
 `;
 
+exports[`renders editTicket() view correctly 1`] = `
+<View>
+  <View
+    style={
+      Object {
+        "alignSelf": "center",
+        "height": 50,
+        "margin": 10,
+        "width": "90%",
+      }
+    }
+  >
+    <RCTPicker
+      items={
+        Array [
+          Object {
+            "label": "Open ticket",
+            "textColor": undefined,
+            "value": "Open ticket",
+          },
+          Object {
+            "label": "Closed ticket",
+            "textColor": undefined,
+            "value": "Closed ticket",
+          },
+        ]
+      }
+      onChange={[Function]}
+      selectedIndex={0}
+      style={
+        Array [
+          Object {
+            "height": 216,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "alignSelf": "center",
+        "height": 50,
+        "margin": 10,
+        "width": "90%",
+      }
+    }
+  >
+    <RCTPicker
+      items={
+        Array [
+          Object {
+            "label": "No emergency",
+            "textColor": undefined,
+            "value": "No emergency",
+          },
+          Object {
+            "label": "Yes emergency",
+            "textColor": undefined,
+            "value": "Yes emergency",
+          },
+        ]
+      }
+      onChange={[Function]}
+      selectedIndex={0}
+      style={
+        Array [
+          Object {
+            "height": 216,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <View
+    style={
+      Object {
+        "alignSelf": "center",
+        "width": 400,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="Submit Ticket Update Button"
+      accessibilityRole="button"
+      accessibilityState={Object {}}
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#007AFF",
+                "fontSize": 18,
+                "margin": 8,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          Submit Ticket Update
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
 exports[`renders ticket edit view correctly 1`] = `
 <View>
   <View
@@ -365,6 +495,287 @@ exports[`renders ticket edit view correctly 1`] = `
           }
         >
           Show Ticket List
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`renders ticketList() view correctly 1`] = `
+<View>
+  <RCTScrollView
+    collapsable={false}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+  >
+    <View>
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "white",
+              "height": 200,
+              "margin": 10,
+              "marginLeft": "5%",
+              "padding": 10,
+              "width": "90%",
+            }
+          }
+        >
+          <Text>
+            This is essential ticket info Location: Apt. 
+            316
+            , 
+            Whispering Pines
+             
+            
+
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "backgroundColor": "white",
+              "height": 200,
+              "margin": 10,
+              "marginLeft": "5%",
+              "padding": 10,
+              "width": "90%",
+            }
+          }
+        >
+          <Text>
+            This is essential ticket info Location: Apt. 
+            316
+            , 
+            Whispering Pines
+             
+            
+
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "backgroundColor": "white",
+              "height": 200,
+              "margin": 10,
+              "marginLeft": "5%",
+              "padding": 10,
+              "width": "90%",
+            }
+          }
+        >
+          <Text>
+            This is essential ticket info Location: Apt. 
+            316
+            , 
+            Whispering Pines
+             
+            
+
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "backgroundColor": "white",
+              "height": 200,
+              "margin": 10,
+              "marginLeft": "5%",
+              "padding": 10,
+              "width": "90%",
+            }
+          }
+        >
+          <Text>
+            This is essential ticket info Location: Apt. 
+            316
+            , 
+            Whispering Pines
+             
+            
+
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "backgroundColor": "white",
+              "height": 200,
+              "margin": 10,
+              "marginLeft": "5%",
+              "padding": 10,
+              "width": "90%",
+            }
+          }
+        >
+          <Text>
+            This is essential ticket info Location: Apt. 
+            316
+            , 
+            Whispering Pines
+             
+            
+
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "backgroundColor": "white",
+              "height": 200,
+              "margin": 10,
+              "marginLeft": "5%",
+              "padding": 10,
+              "width": "90%",
+            }
+          }
+        >
+          <Text>
+            This is essential ticket info Location: Apt. 
+            316
+            , 
+            Whispering Pines
+             
+            
+
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "backgroundColor": "white",
+              "height": 200,
+              "margin": 10,
+              "marginLeft": "5%",
+              "padding": 10,
+              "width": "90%",
+            }
+          }
+        >
+          <Text>
+            This is essential ticket info Location: Apt. 
+            316
+            , 
+            Whispering Pines
+             
+            
+
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "backgroundColor": "white",
+              "height": 200,
+              "margin": 10,
+              "marginLeft": "5%",
+              "padding": 10,
+              "width": "90%",
+            }
+          }
+        >
+          <Text>
+            This is essential ticket info Location: Apt. 
+            316
+            , 
+            Whispering Pines
+             
+            
+
+          </Text>
+        </View>
+        <RCTScrollView
+          data={
+            Promise {
+              "_40": 0,
+              "_55": null,
+              "_65": 0,
+              "_72": null,
+            }
+          }
+          disableVirtualization={false}
+          extraData={2}
+          getItem={[Function]}
+          getItemCount={[Function]}
+          horizontal={false}
+          initialNumToRender={10}
+          keyExtractor={[Function]}
+          maxToRenderPerBatch={10}
+          onContentSizeChange={[Function]}
+          onEndReachedThreshold={2}
+          onLayout={[Function]}
+          onMomentumScrollEnd={[Function]}
+          onScroll={[Function]}
+          onScrollBeginDrag={[Function]}
+          onScrollEndDrag={[Function]}
+          removeClippedSubviews={false}
+          renderItem={[Function]}
+          scrollEventThrottle={50}
+          stickyHeaderIndices={Array []}
+          updateCellsBatchingPeriod={50}
+          viewabilityConfigCallbackPairs={Array []}
+          windowSize={21}
+        >
+          <View />
+        </RCTScrollView>
+      </View>
+    </View>
+  </RCTScrollView>
+  <View
+    style={
+      Object {
+        "alignSelf": "center",
+        "width": 400,
+      }
+    }
+  >
+    <View
+      accessibilityRole="button"
+      accessibilityState={Object {}}
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#007AFF",
+                "fontSize": 18,
+                "margin": 8,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          Go back to detail view
         </Text>
       </View>
     </View>

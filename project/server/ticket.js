@@ -10,6 +10,7 @@ const { User, Ticket } = require('./database');
 router.post('/create', async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email:email });
+
     if (!user) return res.json({ error: 'NO_SUCH_USER_TICKET_SUBMIT_FAILED' });
     
     let ticketID = Date.now()
@@ -60,7 +61,7 @@ router.delete('/delete', async (req, res) => {
     if (ticketDeleted) {
         res.status(200).json({ success: "TICKET_DELETED" });
     } else {
-         res.status(404).json({ error: 'NO_SUCH_TICKET'} );
+        res.status(404).json({ error: 'NO_SUCH_TICKET'} );
     }
     return res
 });
