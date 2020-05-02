@@ -125,19 +125,7 @@ export default function PropertyScreen({navigation}) {
           onChangeText={text => onChangeInputUnit(text)}
           value = {inputUnit}
         />
-        <MenuProvider>
-            <MenuOptions>
-            <MenuTrigger>
-                <Text style = {styles.headerText}>to Resident (if there's a new resident make sure you add them first)</Text>
-            </MenuTrigger>
-            <MenuOption value = {"Rachel"}>
-                    <Text style={styles.menuContent}>Rachel</Text>
-                </MenuOption>
-                <MenuOption value = {"Jerry"}>
-                    <Text style={styles.menuContent}>Jerry</Text>
-                </MenuOption>
-            </MenuOptions>
-        </MenuProvider>
+
           </SafeAreaView>
       </AppearanceProvider>
     );

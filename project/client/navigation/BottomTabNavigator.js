@@ -10,6 +10,7 @@ import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-app
 import { colorScheme } from '../stores';
 import Colors from '../constants/Colors';
 import { checkLoginStatus } from '../fetch/user';
+import { userStore } from '../stores';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Tickets';
@@ -29,8 +30,28 @@ export default function BottomTabNavigator({ navigation, route }) {
   // Checks for login status
   React.useEffect(() => {
     (async () => {
-      const { loggedIn } = await checkLoginStatus();
-      if (!loggedIn) navigation.replace('Root');
+      const data = await checkLoginStatus();
+      if (!data.loggedIn) navigation.replace('Root');
+
+      // Sets userStore
+
+      const { username, first, last, units, email, phone,
+        contactPreference, entryPermission, type, note,
+        tickets, activate } = data;
+
+      userStore.loggedIn = true;
+      userStore.username = username;
+      userStore.first = first;
+      userStore.last = last;
+      userStore.units = units;
+      userStore.email = email;
+      userStore.phone = phone;
+      userStore.contactPreference = contactPreference;
+      userStore.entryPermission = entryPermission;
+      userStore.type = type;
+      userStore.note = note;
+      userStore.tickets = tickets;
+      userStore.activate = activate;
     })();
   }, []);
 

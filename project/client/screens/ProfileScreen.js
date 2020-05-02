@@ -39,7 +39,7 @@ export default function ProfileScreen(properties) {
     first: userStore.first,
     last: userStore.last,
     email: userStore.email,
-    phone: userStore.phone.toString(),
+    phone: userStore.phone + '',
     contactPreference: userStore.contactPreference,
     entryPermission: userStore.entryPermission,
     note: userStore.note || '',
