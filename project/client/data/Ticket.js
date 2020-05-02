@@ -177,8 +177,9 @@ export default class Ticket extends React.Component{
       </View>
     )});
 
-    if (colorEmphasis === true) {let viewStyle = styles.ticketColorBarRed }
-    else { let viewStyle = styles.ticketColorBarRed }
+    let viewStyle = null;
+    if (colorEmphasis === true) {viewStyle = styles.ticketColorBarRed }
+    else {viewStyle = styles.ticketColorBarRed }
 
     // TODO: Correct implementation to incorporate
     // TicketUpdate item when refactoring
