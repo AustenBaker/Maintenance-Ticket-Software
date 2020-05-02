@@ -43,7 +43,6 @@ class LoginPage extends React.PureComponent {
       userStore.activate = activate;
 
       this.props.navigation.replace('BottomTabNavigator');
-      this.props.navigation.replace('BottomTabNavigator');
     }
   }
 
@@ -130,35 +129,6 @@ class LoginPage extends React.PureComponent {
               style={themeBodyText}
               title="Don’t have an account?"
               accessibilityLabel="Go to Sign Up page"
-            />
-
-            <Button
-              onPress={() => this.props.navigation.replace('BottomTabNavigator', () => {
-                let testUser = {
-                  username: "MurphysLaw",
-                  first: "Mary",
-                  last: "Sue",
-                  units: [{
-                    number: '1703',
-                    property: 'Whispering Pines'
-                  },],
-                  email: "someday@somepl.ace",
-                  phone: "123-456-7890",
-                  contactPreference: "text",
-                  entryPermission: "notify",
-                  note: "The dog definitely bites.",
-                  tickets: [],
-                  activate: true,
-                };
-
-                for (let key in testUser) {
-                  userStore[key] = testUser[key];
-                }
-                userStore.loggedIn = true;
-              }) }
-              style={themeBodyText}
-              title="Skip Sign In"
-              accessibilityLabel="Secret Dev Button to Skip Sign In"
             />
 
       </SafeAreaView>
