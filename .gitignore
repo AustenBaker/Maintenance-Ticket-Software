@@ -1,3 +1,8 @@
 .vscode/**
 .vscode/settings.json
 ./.vscode/**
+project/client/constants/REGEX-debug-data.js
+project/client/data/User2.js
+project/client/data/User3.js
+project/client/data/Ticket2.js
+project/client/constants/__tests__/REGEX-test.js
