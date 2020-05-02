@@ -172,7 +172,7 @@ export default class Ticket extends React.Component{
           </Text>
         </Text>
         <Text>
-          {update.data}
+          {update.details}
         </Text>
       </View>
     )});
