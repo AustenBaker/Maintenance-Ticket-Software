@@ -1,5 +1,6 @@
 var ticketFetch = require('../ticket');
 var userFetch = require('../user');
+var propertyFetch = require('../property');
 
 //mocha -r esm binding-test.js
 var expect = require('chai').expect;
@@ -31,15 +32,15 @@ describe("Frontend to backend bindings", function() {
             expect(res.username).equal("golfkid")
         })
 
+        it('fetch POST /account/status', async function(){
+            const res = await userFetch.checkLoginStatus()
+            expect(res.loggedIn).equal(false)
+        })
+
         //login
         it('fetch POST /account/login', async function(){
             const res = await userFetch.login({username:"golfkid",password:"topSecret"})
             expect(res.first).to.be.a('string')
-        })
-
-        it('fetch POST /account/status', async function(){
-            const res = await userFetch.checkLoginStatus({})
-            expect(res.loggedIn).equal(true)
         })
 
         it('fetch POST /account/login (WRONG PASSWORD)', async function(){
@@ -137,8 +138,34 @@ describe("Frontend to backend bindings", function() {
         })
     })
 
-    describe('3. Clean up created entries', function() {
+    describe('3. Propety', function() {
+        it('fetch POST /property/create', async function() {
+            const res = await propertyFetch.create( {name:"New Property", id:49865431, location:"234 Way Dr., WI 53703"} )
+            expect(res.name).equal("New Property")
+        })
+
+        it('fetch GET /property/:property', async function() {
+            const res = await propertyFetch.getProperty("New Property")
+            expect(res.id).equal(49865431)
+        })
+
+        it.skip('fetch PUT /property/update', async function() {
+            const res = await propertyFetch.update({propName:"New property name", id:49865431, location:"234 Way Dr., WI 53703"})
+            expect(res.name).equal("New property name")
+        })
+
+        it.skip('fetch GET /property/:property', async function() {
+            const res = await propertyFetch.getProperty("New prop name")
+            expect(res.id).equal(49865431)
+        })
+    })
+
+    describe('4. Clean up created entries', function() {
         //delete accounts and try to update no existant stuff
+        it('fetch DELTE /property/delete', async function(){
+            const res = await propertyFetch.deleteProperty(49865431)
+            expect(res.status).equal(200)
+        })
         it('fetch DELETE /account/delete', async function(){
             const res = await userFetch.deleteAccount("golfkid")
             expect(res.status).equal(200)
@@ -168,9 +195,6 @@ describe("Frontend to backend bindings", function() {
             const res = await ticketFetch.deleteTicket(newTicketID1)
             expect(res.status).equal(404)
         })
-
-        
-
     })
 
 })
