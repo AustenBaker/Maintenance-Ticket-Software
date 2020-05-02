@@ -13,7 +13,7 @@
     "url": "https://git.harryxue.com/cs506maint/project.git"
   },
   "author": "Team",
-  "license": "Unlicensed",
+  "license": "MIT license",
   "dependencies": {
     "bcrypt": "^4.0.1",
     "bluebird": "^3.7.2",
