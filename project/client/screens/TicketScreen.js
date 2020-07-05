@@ -9,6 +9,7 @@ import Colors from '../constants/Colors';
 import * as CONSTANTS from '../constants/Reference';
 
 import Ticket from '../data/Ticket';
+import User from '../data/User';
 
 export default function TicketScreen({ navigation }) {
   // if (!userStore.loggedIn) navigation.replace('Root');
@@ -36,33 +37,48 @@ export default function TicketScreen({ navigation }) {
     [selected],
   );
   let testTicket = {
-    ticket_number: 1234,
-    timestamp: 202004220730,
-    status: CONSTANTS.STATUS.OPEN,
-    location: CONSTANTS.PROPERTY.WSP,
-    unit_number: '1703',
-    email: 'i.am@home.ru',
-    emergency: false,
-    ticket_issue_title: 'Leaky faucet',
-    ticket_issue: 'Bathroom faucet closest to door is constantly dripping, about 1 drop every 5 seconds.',
-    ticket_updates: [{
-      timestamp: 202004220830,
-      email: 'kyle@CastlebergCommunities.com',
-      details: 'Gasket rotted.  New gasket ordered.  Should arrive 2 days, will replace then.',
-    },],
-
+    emergency: ticketStore.emergency,
+    closed: ticketStore.closed,
+    id: ticketStore.id,
+    email: ticketStore.email,
+    aptComplex: ticketStore.aptComplex,
+    unit: ticketStore.unit,
+    issue: ticketStore.issue,
+    progress: ticketStore.progress,
   };
+  console.log(testTicket);
   return (
     <View style={styles.container, themeContainer}>
       <ScrollView>
         <View>
           <Ticket {...testTicket}/>
+          <DisplayTicketList />
         </View>
       </ScrollView>
     </View>
   );
 }
 
+function DisplayTicketList() {
+  let ticketArray, content;
+
+  //retrieve observable ticket array from user
+  ticketArray = new User().getTicketArray(userStore.email);
+  //print that array
+  console.log("Ticket Array" + ticketArray);
+  //print list of ticket ids
+  content = ticketArray.map((ticketId) => { 
+    return (
+      <Text style={styles.lightBodyText}>
+        {ticketId} 
+      </Text>
+    );
+  });
+
+  return (
+    <ScrollView>{content}</ScrollView>
+  );
+}
 
 function Item({ id, title, selected, onSelect, itemTheme, bodyTheme }) {
   return (
@@ -78,7 +94,6 @@ function Item({ id, title, selected, onSelect, itemTheme, bodyTheme }) {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -87,7 +102,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 8,
     fontSize: 34,
-    color: Colors.black,
+    color: Colors.white,
     textAlign: 'center',
 },
   darkLargeTitle: {
@@ -98,9 +113,9 @@ const styles = StyleSheet.create({
    textAlign: 'center',
 },
   lightBodyText: {
-     fontSize: 17,
-     color: Colors.black,
-     textAlign: 'left',
+     fontSize: 25,
+     color: Colors.white,
+     textAlign: 'center',
   },
   darkBodyText: {
     fontSize: 17,

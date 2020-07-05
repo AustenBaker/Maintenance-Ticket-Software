@@ -71,6 +71,7 @@ export default class User extends React.Component {
           profile.push({[key]: userStore[key]});
       }
       this.setState({...profile});
+      console.log([...profile]);
     }
 
     /**
@@ -714,36 +715,24 @@ export default class User extends React.Component {
     }
 
     /**
-     * This method generates a list of tickets created by this
-     * user.
+     * This method generates an array of ticketIds created by this
+     * user
      *
-     * @param filter Filter ticket list by none, open, closed.
-     *
-     * @returns List of user's tickets.
+     * @returns List of user's ticket's IDs.
      */
-    listTickets = (filter) => {
-        let ticketList = [];
-        if (filter === undefined || filter === 'none') {
-            for (let ticket in this.state.tickets) {
-                ticketList.push(ticket);
-            }
-        } else if (filter === 'open') {
-            // generates list of user's tickets that are open
-            for (let ticket of this.state.tickets) {
-                if (ticket.isOpen()) {
-                    ticketList.push(ticket);
-                }
-            }
-        } else if (filter === 'closed') {
-            // generates list of user's tickets that are closed
-            for (let ticket of this.state.tickets) {
-                if (!ticket.isOpen()) {
-                    ticketList.push(ticket);
-                }
-            }
+    getTicketArray = () => {
+      //retrieve observable ticket array from user
+      var ticketStore = userStore.tickets;
+      let ticketArray = [], content;
+      for(let i=0; i<5; i++){
+        let tempId = ticketStore.get(i)
+        if(tempId != null){
+          ticketArray.push(tempId);
         }
-        return ticketList;
+      }
+      return ticketArray;
     }
+
 
     /**
      * This method allows user to update their password.

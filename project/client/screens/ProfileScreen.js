@@ -26,16 +26,10 @@ export default function ProfileScreen(properties) {
   // TODO: Check for valid session and then load user values
   // from UserStore if it exists and if session is valid
   // otherwise redirect to login page
+
+
+  //correct use of states
   let testUser = {
-    first: "Mary",
-    last: "Sue",
-    email: "someday@somepl.ace",
-    phone: "123-456-7890",
-    contactPreference: "text",
-    entryPermission: "notify",
-    note: "The dog definitely bites."
-  };
-  let testUser2 = {
     first: userStore.first,
     last: userStore.last,
     email: userStore.email,
@@ -43,13 +37,15 @@ export default function ProfileScreen(properties) {
     contactPreference: userStore.contactPreference,
     entryPermission: userStore.entryPermission,
     note: userStore.note || '',
+    units: userStore.units,
+    tickets: userStore.tickets,
   };
-  console.log(testUser2);
+  console.log(testUser);
   return (
     <View style={styles.container, themeContainer}>
       <ScrollView>
         <View>
-          <User {...testUser2}/>
+          <User {...testUser}/>
         </View>
       </ScrollView>
     </View>

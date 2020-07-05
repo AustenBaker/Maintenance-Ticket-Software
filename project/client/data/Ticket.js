@@ -5,6 +5,7 @@ import User from './User.js';
 import { TextInput, ScrollView, TouchableOpacity, TouchableHighlight } from 'react-native-gesture-handler';
 import { userStore, ticketStore } from '../stores';
 import { getTicketsFromEmail } from '../fetch/user';
+import * as fetchTicket from '../fetch/ticket';
 
 /**
  * TODO: make ticket_number a GUID?
@@ -14,20 +15,14 @@ import { getTicketsFromEmail } from '../fetch/user';
 //TODO: make ticket_number a GUID?
 //ticket status holds the value which says a ticket is open(0) or closed(1) or deleted(2)
 export default class Ticket extends React.Component{
+  
   constructor(props) {
     super(props);
-    this.state = {
-      ticket_number: props.ticket_number,
-      timestamp: props.timestamp,
-      status: props.status,
-      location: props.location,
-      unit_number: props.unit_number,
-      email: props.email,
-      emergency: props.emergency,
-      ticket_issue_title: props.ticket_issue_title,
-      ticket_issue: props.ticket_issue,
-      ticket_view_mode: props.ticket_view_mode,
-      ticket_updates: [...props.ticket_updates]
+    this.state = {...Ticket.defaultProps};
+    for (let key in props) {
+      if(key in this.state){
+        this.state[key] = props[key];
+      }
     }
   }
 
@@ -35,17 +30,16 @@ export default class Ticket extends React.Component{
    * Declare default values for Ticket props
    */
   static defaultProps = {
-    ticket_number: "99999",
-    timestamp: "",
-    status: CONSTANTS.STATUS.OPEN,
-    location: CONSTANTS.PROPERTY.WSP,
-    unit_number: "316",
-    email: "email@email.com",
-    emergency: false,
+    ticket_number: null,
+    timestamp: null,
+    status: null,
+    location: null,
+    unit_number: null,
+    email: CONSTANTS.PREFERRED_CONTACT.EMAIL,
+    emergency: null,
     ticket_view_mode: CONSTANTS.TICKET_VIEW.DETAIL,
-    ticket_updates: [] // {timestamp,user,data}
+    ticket_updates: null // {timestamp,user,data}
   }
-
 
 
   /**
@@ -59,7 +53,7 @@ export default class Ticket extends React.Component{
 
     // create <Text> container for emergency data
     var emergency = "";
-    if (this.state.emergency){
+    if (this.state.emergency === true){
       emergency = (
         <Text testID="emergency">
           Level: EMERGENCY

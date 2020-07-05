@@ -2,6 +2,7 @@ import { extendObservable } from 'mobx';
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import * as CONSTANTS from '../constants/Reference';
 
+//correct status use
 class UserStore {
     constructor() {
         extendObservable(this, {
@@ -27,13 +28,14 @@ class UserStore {
 class TicketStore {
     constructor() {
         extendObservable(this, {
-          ticket_number: '',
-          timestamp: '',
-          status: '',
-          location: '',
-          unit_number: '',
           emergency: '',
-          ticket_updates: [],
+          closed: '',
+          id: '',
+          email: '',
+          aptComplex: '',
+          unit: '',
+          issue: '',
+          progress: '',
             /* Add new global states here */
         });
     }

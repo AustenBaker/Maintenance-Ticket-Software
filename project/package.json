@@ -6,7 +6,8 @@
   "scripts": {
     "postinstall": "cd client && npm i",
     "server": "nodemon server",
-    "backend-tests": "mocha server/testing/tests.js"
+    "backend-tests": "mocha server/testing/tests.js",
+    "start": "cd client && npm start"
   },
   "repository": {
     "type": "git",
