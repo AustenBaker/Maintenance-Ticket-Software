@@ -59,12 +59,13 @@ If using a mobile device:
     ```
 
 ## Team
--Kelly V
--Harry Xue
--Kyle Schneider
--Austen Baker
--Kellie Stein
--Annalise Ho
+
+* **Kelly V**
+* **Harry Xue**
+* **Kyle Schneider**
+* **Austen Baker**
+* **Kellie Stein**
+* **Annalise Ho**
 
 ## License
 This project is licensed under the MIT License - see [LICENSE.md](https://github.com/AustenBaker/Maintenance-Ticket-Software/blob/reversion-recovery/LICENSE.md) for more details
