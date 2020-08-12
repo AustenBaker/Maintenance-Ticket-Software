@@ -1,3 +1,4 @@
 theme: jekyll-theme-minimal
 title: Maintenance Ticket Software
 description: A react native application for web and mobile devices that allows users to create, track, and view their maintenance tickets
+logo: /MaintLogo.png
