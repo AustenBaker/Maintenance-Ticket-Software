@@ -2,56 +2,45 @@
 ## Getting Started
 These instructions will help you get your own local version up and running.
 
-### Installing
+## Installation and Usage
 1. Have [Node.js](https://nodejs.org) installed (node and npm)
-2. Clone the repository
+
+1. Open Terminal/Command Prompt
+
+1. Navigate to desired location and clone the repository
     ```bash
     $ git clone https://github.com/AustenBaker/Maintenance-Ticket-Software.git
     ```
-3. Navigate to `project/server` directory, create a file named `settings.json`. Or from project root: 
-    ```bash
-    $ touch ./project/server/settings.json
-    ```
-4. Edit `settings.json` with the following content
-    ```json
-    {
-        "PORT": 3001,
-        "secure": false
-    }
-    ```
-5. Install all dependencies
+    
+1. Install dependencies
     ```bash
     $ cd ./project
-    $ npm i
-
-    ### If you are using windows, do the following too, just in case client dependencies are not being installed for some windows machines ###
-    $ cd client
     $ npm i
     ```
     
-### Desktop Usage
-After installing the project: 
-1. Open a terminal window and do:
+1. Start the server:
     ```bash
-    $ cd ./project
+    $ cd ./Maintenance-Ticket-Software/project/
     $ npm run server  # This runs the backend server, listening to file changes
     ```
-2. Open another window and do:
+    
+1.  In a new Terminal/Command Prompt, start the frontend client:
     ```bash
-    $ cd ./project/client
+    $ cd ./Maintenance-Ticket-Software/project/client
     $ npm start  # This runs the frontend client (in the browser) listening to changes. Can run the app on mobile devices or run directly in the browser
     ```
-    The app client should pop up in a browser. You can run the app there directly
+    Client app should pop up in a browser. You can run the app there directly
     
-### Mobile Usage
-If using a mobile device: 
+   <br/><br/>
+    
+### If using a mobile device:
 1.  Navigate to `./project/client/fetch`. Open the two files. On the first line, replace the code to:
     ```js
     const PATH = 'http://<LAN_Address_Of_Your_Machine>:3001';  // http://192.168.1.100:3000, for example
     ```
     This ensures proper client/server communication. If simulating locally in a browser, ignore this step.
 
-### Running test suites and code coverage
+## Running test suites and code coverage
 1. Navigate to `./project/client`. Do:
     ```bash
     $ npm run test
@@ -65,6 +54,15 @@ If using a mobile device:
 * **Austen Baker**
 * **Kellie Stein**
 * **Annalise Ho**
+
+## Related Documentation
+
+* [React Native](https://reactnative.dev/docs/getting-started)<br/><br/>
+* [React Navigation](https://reactnavigation.org/docs/getting-started)<br/><br/>
+* [Mobx](https://mobx.js.org/getting-started.html)<br/><br/>
+* [MongoDB Compass](https://www.mongodb.com/blog/post/getting-started-with-mongodb-compass)<br/><br/>
+* [Node.js](https://nodejs.org)<br/><br/>
+* [Express](https://expressjs.com/en/starter/hello-world.html)<br/><br/>
 
 ## License
 This project is licensed under the MIT License - see [LICENSE.md](https://github.com/AustenBaker/Maintenance-Ticket-Software/blob/reversion-recovery/LICENSE.md) for more details
