@@ -1,6 +1,4 @@
 # Maintenance Ticket Software
-## Getting Started
-These instructions will help you get your own local version up and running.
 
 ## Step by step installation instructions
 
@@ -10,36 +8,41 @@ These instructions will help you get your own local version up and running.
 
 3. Navigate to desired location and clone the repository
 
-`$ git clone https://github.com/AustenBaker/Maintenance-Ticket-Software.git` <br>
+`$ git clone https://github.com/AustenBaker/Maintenance-Ticket-Software.git`
     
 4. Install dependencies
 
-`$ cd ./project` <br>
-`$ npm i` <br>
+`$ cd ./project`
+
+`$ npm i` 
     
 5. Start the server:
 
-`$ cd ./Maintenance-Ticket-Software/project/` <br>
-`$ npm run server  # This runs the backend server, listening to file changes` <br>
+`$ cd ./Maintenance-Ticket-Software/project/`
+
+`$ npm run server  # This runs the backend server, listening to file changes`
     
 6. Open a new Terminal/Command Prompt and start the frontend client:
 
-`$ cd ./Maintenance-Ticket-Software/project/client` <br>
-`$ npm start  # This runs the frontend client.` <br>
+`$ cd ./Maintenance-Ticket-Software/project/client` 
+
+`$ npm start  # This runs the frontend client.`
 
 Client app should pop up in a browser.
 
 If using a mobile device:
+
 Navigate to `./project/client/fetch`. Open the two files. On the first line, replace the code to:
 
-`const PATH = 'http://<LAN_Address_Of_Your_Machine>:3001';  // http://192.168.1.100:3000, for example` <br>
+`const PATH = 'http://<LAN_Address_Of_Your_Machine>:3001';  // http://192.168.1.100:3000, for example`
 
 This ensures proper client/server communication. If simulating locally in a browser, ignore this step.
 
 ## Run test suites and code coverage
 
-`$ cd ./project/client` <br>
-`$ npm run test` <br>
+`$ cd ./project/client`
+
+`$ npm run test`
 
 ## Team
 
