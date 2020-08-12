@@ -1,5 +1,10 @@
 # Maintenance Ticket Software
 
+## Ideation & Goals
+
+Our goal is to facilitate the tracking, managing, and recording of residential maintenance requests comprised of multiple properties with many units. It is important to us to ensure the fidelity and security of all information related to our software. We want to maximize ease of use for residents, management, and maintenance personnel. 
+
+
 ## Step by step installation instructions
 
 1. Install [Node.js](https://nodejs.org) (node and npm)
@@ -48,6 +53,7 @@ This ensures proper client/server communication. If simulating locally in a brow
 
 * **Kelly V**
 * **Harry Xue**
+* **Ellen Lee**
 * **Kyle Schneider**
 * **Austen Baker**
 * **Kellie Stein**
