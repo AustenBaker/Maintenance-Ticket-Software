@@ -3,37 +3,37 @@
 These instructions will help you get your own local version up and running.
 
 ## Step by step installation instructions
-### Have [Node.js](https://nodejs.org) installed (node and npm)
-### Open Terminal/Command Prompt
-### Navigate to desired location and clone the repository
+### 1. Install [Node.js](https://nodejs.org) (node and npm)
+### 2. Open Terminal/Command Prompt
+### 3. Navigate to desired location and clone the repository
     ```bash
     $ git clone https://github.com/AustenBaker/Maintenance-Ticket-Software.git
     ```
-### Install dependencies
+### 4. Install dependencies
     ```bash
     $ cd ./project
     $ npm i
     ```
-### Start the server:
+### 5. Start the server:
     ```bash
     $ cd ./Maintenance-Ticket-Software/project/
     $ npm run server  # This runs the backend server, listening to file changes
     ```
-### In a new Terminal/Command Prompt, start the frontend client:
+### 6. In a new Terminal/Command Prompt, start the frontend client:
     ```bash
     $ cd ./Maintenance-Ticket-Software/project/client
     $ npm start  # This runs the frontend client (in the browser) listening to changes. Can run the app on mobile devices or run directly in the browser
     ```
     Client app should pop up in a browser. You can run the app there directly
 #### If using a mobile device:
-1.  Navigate to `./project/client/fetch`. Open the two files. On the first line, replace the code to:
+Navigate to `./project/client/fetch`. Open the two files. On the first line, replace the code to: 
     ```js
     const PATH = 'http://<LAN_Address_Of_Your_Machine>:3001';  // http://192.168.1.100:3000, for example
     ```
     This ensures proper client/server communication. If simulating locally in a browser, ignore this step.
 
 ## Run test suites and code coverage
-1. Navigate to `./project/client`. Do:
+Navigate to `./project/client`. Do:
     ```bash
     $ npm run test
     ```
