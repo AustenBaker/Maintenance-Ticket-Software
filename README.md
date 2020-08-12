@@ -43,9 +43,9 @@ If you are running in a mobile device, be sure to navigate to `./project/client/
     ```
     
 ## Related Documentation
-[React Native](https://reactnative.dev/docs/getting-started)
-[React Navigation](https://reactnavigation.org/docs/getting-started)
-[Mobx](https://mobx.js.org/getting-started.html)
-[MongoDB Compass](https://www.mongodb.com/blog/post/getting-started-with-mongodb-compass)
-[Node.js](https://nodejs.org)
-[Express](https://expressjs.com/en/starter/hello-world.html)
+[React Native](https://reactnative.dev/docs/getting-started)<br/><br/>
+[React Navigation](https://reactnavigation.org/docs/getting-started)<br/><br/>
+[Mobx](https://mobx.js.org/getting-started.html)<br/><br/>
+[MongoDB Compass](https://www.mongodb.com/blog/post/getting-started-with-mongodb-compass)<br/><br/>
+[Node.js](https://nodejs.org)<br/><br/>
+[Express](https://expressjs.com/en/starter/hello-world.html)<br/><br/>
