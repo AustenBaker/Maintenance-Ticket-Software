@@ -9,28 +9,32 @@ These instructions will help you get your own local version up and running.
     ```bash
     $ git clone https://github.com/AustenBaker/Maintenance-Ticket-Software.git
     ```
+    
 ### 4. Install dependencies
     ```bash
     $ cd ./project
     $ npm i
     ```
+    
 ### 5. Start the server:
     ```bash
     $ cd ./Maintenance-Ticket-Software/project/
     $ npm run server  # This runs the backend server, listening to file changes
     ```
-### 6. In a new Terminal/Command Prompt, start the frontend client:
+    
+### 6. Open a new Terminal/Command Prompt and start the frontend client:
     ```bash
     $ cd ./Maintenance-Ticket-Software/project/client
     $ npm start  # This runs the frontend client (in the browser) listening to changes. Can run the app on mobile devices or run directly in the browser
     ```
-    Client app should pop up in a browser. You can run the app there directly
+Client app should pop up in a browser. You can run the app there directly
+
 #### If using a mobile device:
 Navigate to `./project/client/fetch`. Open the two files. On the first line, replace the code to: 
     ```js
     const PATH = 'http://<LAN_Address_Of_Your_Machine>:3001';  // http://192.168.1.100:3000, for example
     ```
-    This ensures proper client/server communication. If simulating locally in a browser, ignore this step.
+This ensures proper client/server communication. If simulating locally in a browser, ignore this step.
 
 ## Run test suites and code coverage
 Navigate to `./project/client`. Do:
