@@ -28,8 +28,7 @@
     ```
     Client app should pop up in a browser. You can run the app there directly
     
-    
-    
+   <br/><br/>
     
 If you are running in a mobile device, be sure to navigate to `./project/client/fetch`. Open the two files. On the first line, replace the code to:
     ```js
