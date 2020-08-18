@@ -92,7 +92,7 @@ class LoginPage extends React.PureComponent {
 
     return (
       <SafeAreaView style={styles.container, themeContainerStyle}>
-            <Image source={require('../assets/images/uwcrest.png')}
+            <Image source={require('../assets/images/MaintLogo.png')}
               style={styles.smallImage}/>
 
             <Text style={themeLargeTitle}>Welcome Back</Text>

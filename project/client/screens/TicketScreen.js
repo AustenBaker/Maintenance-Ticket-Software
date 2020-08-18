@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList, Header } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList, Header, TextComponent } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
@@ -8,6 +8,7 @@ import { colorScheme, ticketStore, userStore } from '../stores';
 import Colors from '../constants/Colors';
 import * as CONSTANTS from '../constants/Reference';
 
+import User from '../data/User';
 import Ticket from '../data/Ticket';
 
 export default function TicketScreen({ navigation }) {
@@ -24,34 +25,18 @@ export default function TicketScreen({ navigation }) {
   let themeSeparator =
     colorScheme.theme === 'light' ? Colors.iosLightSeparator : Colors.iosDarkSeparator;
 
-
-  const [selected, setSelected] = React.useState(new Map());
-  const onSelect = React.useCallback(
-    id => {
-      const newSelected = new Map(selected);
-      newSelected.set(id, !selected.get(id));
-
-      setSelected(newSelected);
-    },
-    [selected],
-  );
   let testTicket = {
-    ticket_number: 1234,
-    timestamp: 202004220730,
-    status: CONSTANTS.STATUS.OPEN,
-    location: CONSTANTS.PROPERTY.WSP,
-    unit_number: '1703',
-    email: 'i.am@home.ru',
-    emergency: false,
-    ticket_issue_title: 'Leaky faucet',
-    ticket_issue: 'Bathroom faucet closest to door is constantly dripping, about 1 drop every 5 seconds.',
-    ticket_updates: [{
-      timestamp: 202004220830,
-      email: 'kyle@CastlebergCommunities.com',
-      details: 'Gasket rotted.  New gasket ordered.  Should arrive 2 days, will replace then.',
-    },],
-
+    id: ticketStore.id,
+    email: ticketStore.email,
+    aptComplex: ticketStore.aptComplex,
+    unit: ticketStore.unit,
+    issue: ticketStore.issue,
+    emergency: ticketStore.emergency,
+    resolvedTime: ticketStore.resolvedTime,
+    progress: ticketStore.progress,
+    closed: ticketStore.closed,
   };
+
   return (
     <View style={styles.container, themeContainer}>
       <ScrollView>

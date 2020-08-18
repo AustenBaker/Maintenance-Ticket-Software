@@ -95,7 +95,7 @@ export default function BottomTabNavigator({ navigation, route }) {
           options={{
             title: 'Property',
             tabBarIcon: ({ focused }) => <TabBarIcon focused={focused}
-            name={Platform.OS === 'ios' ? "ios-person" : "md-person"} />,
+            name={Platform.OS === 'ios' ? "ios-business" : "md-business"} />,
           }}
           />
     </BottomTab.Navigator>

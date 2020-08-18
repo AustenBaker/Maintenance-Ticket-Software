@@ -43,8 +43,9 @@ export default function ProfileScreen(properties) {
     contactPreference: userStore.contactPreference,
     entryPermission: userStore.entryPermission,
     note: userStore.note || '',
+    tickets: userStore.tickets,
   };
-  console.log(testUser2);
+  console.log(JSON.stringify(testUser2.tickets));
   return (
     <View style={styles.container, themeContainer}>
       <ScrollView>

@@ -70,7 +70,7 @@ export default class User extends React.Component {
       for (let key in this.state) {
           profile.push({[key]: userStore[key]});
       }
-      this.setState({...profile});
+      this.setState(null);
     }
 
     /**
@@ -211,6 +211,7 @@ export default class User extends React.Component {
                 {entry}
                 {units}
                 {note}
+                {this.state.tickets}
               </View>
               <View style={styles.buttons}>
                 <View style={styles.bigButton}>
@@ -721,27 +722,10 @@ export default class User extends React.Component {
      *
      * @returns List of user's tickets.
      */
-    listTickets = (filter) => {
+    listTickets = () => {
         let ticketList = [];
-        if (filter === undefined || filter === 'none') {
-            for (let ticket in this.state.tickets) {
-                ticketList.push(ticket);
-            }
-        } else if (filter === 'open') {
-            // generates list of user's tickets that are open
-            for (let ticket of this.state.tickets) {
-                if (ticket.isOpen()) {
-                    ticketList.push(ticket);
-                }
-            }
-        } else if (filter === 'closed') {
-            // generates list of user's tickets that are closed
-            for (let ticket of this.state.tickets) {
-                if (!ticket.isOpen()) {
-                    ticketList.push(ticket);
-                }
-            }
-        }
+        ticketList = JSON.stringify(userStore.tickets);
+        console.log(ticketList);
         return ticketList;
     }
 

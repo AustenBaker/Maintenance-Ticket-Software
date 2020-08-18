@@ -27,12 +27,15 @@ class UserStore {
 class TicketStore {
     constructor() {
         extendObservable(this, {
-          ticket_number: '',
-          timestamp: '',
-          status: '',
-          location: '',
-          unit_number: '',
+          id: '',
+          email: '',
+          aptComplex: '',
+          unit: '',
+          issue: '',
           emergency: '',
+          resolvedTime: '',
+          progress: '',
+          closed: '',
           ticket_updates: [],
             /* Add new global states here */
         });
