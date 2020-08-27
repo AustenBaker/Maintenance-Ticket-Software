@@ -33,24 +33,34 @@ export default function GridList() {
       return (
        <View style={styles.itemContainer}>
         <TouchableOpacity 
-        style={styles.bodyContainer}
-        onPress={() => navigation.navigate('ProfileScreen')}
+          style={styles.bodyContainer}
+          onPress={() => {
+            alert("TO DO: navigate to single ticket detail page")
+          }}
         >
-          <Text>
-            ID: {item.id} {'\n'}
-            Property: {item.aptComplex}{'\n'}
-            Unit: {item.unit}
+          <Text style={styles.headerText}>
+            Property: {item.aptComplex} Unit: {item.unit}
+          </Text>
+          <View style={{ borderBottomColor: '#52575d', borderBottomWidth: 6,}}/> 
+          <Text style={styles.bodyText}>
+            Reason for ticket (issue): {item.issue}
           </Text>
         </TouchableOpacity>
-        <View style={styles.editTicketButtonContainer}>
-          <Button
-            title="Update Ticket"
-            color="grey"
+
+        <View style={styles.updateTicketButtonContainer}>
+          <Text style={styles.footerText}>
+            Ticket ID Number: {item.id}
+            {'\n'}
+          </Text>
+          <TouchableOpacity 
+            style={styles.updateTicketButton}
             onPress={() => {
-              alert("TO DO")
+              alert("TO DO: move this full ticket detail page")
             }}
             accessibilityLabel="Update Ticket Button"
-          />
+          >
+            <Text style={{fontSize:18, fontWeight: 'bold'}}>Update Ticket</Text>
+          </TouchableOpacity>
         </View>
       </View>
       )
@@ -72,9 +82,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: WIDTH/numColumns,
     height: HEIGHT/numRows,
-    backgroundColor: 'white',
-    borderColor: 'grey',
-    borderWidth: 5,
+    backgroundColor: '#f6f4e6',
+    borderColor: '#52575d',
+    borderWidth: 6,
+    borderRadius: 10,
     margin: 3,
     padding: 2,
   },
@@ -83,14 +94,41 @@ const styles = StyleSheet.create({
     flex: 2,
   },
 
+  headerText: {
+    fontSize: 24,
+    alignSelf: 'center',
+    fontWeight: '600',
+    margin: 5,
+  },
+
+  bodyText: {
+    fontSize: 18,
+    fontWeight: '300'
+  },
+
+  footerText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    alignSelf: 'flex-end',
+  },
+
   itemInvisible: {
     backgroundColor: 'black',
   },
 
-  editTicketButtonContainer: {
-    flex: 1,
-    width: '20%',
-    backgroundColor: 'grey',
+  updateTicketButtonContainer: {
+  },
+
+  updateTicketButton: {
+    height: 30,
+    width: 150,
+    backgroundColor: "#fddb3a",
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 3,
+    borderWidth: 3,
+    borderColor: '#52575d',
+    alignSelf: 'flex-end'
   },
 
 });
